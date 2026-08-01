@@ -1,0 +1,443 @@
+generated: '2026-08-01'
+method: derived
+status: candidate
+source:
+- openapi/leaflink-api-openapi-original.yml
+- openapi/leaflink-marketplace-v2-openapi-original.yml
+note: LeafLink publishes NO official MCP server. Searched the docs, the LeafLink GitHub org, npm and the public
+  MCP registries — nothing. This is a CANDIDATE tool surface derived from real LeafLink OpenAPI operations so an
+  agent builder has a grounded starting point; every tool maps to an operationId that exists verbatim in the referenced
+  spec. No hosted endpoint exists.
+server:
+  name: leaflink
+  transport: http
+  url: null
+  published: false
+auth:
+  scheme: http bearer (JWT)
+  header: 'Authorization: Bearer <JWT>'
+  note: A server implementation would need to pass through a LeafLink API key/JWT per company.
+coverage:
+  tools: 70
+  rest_operations_available: 380
+tools:
+- name: products_list
+  description: List Products
+  method: GET
+  path: /products
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_list
+  read_only: true
+- name: products_retrieve
+  description: Get Product
+  method: GET
+  path: /products/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_retrieve
+  read_only: true
+- name: products_create
+  description: LeafLink API for Marketplace products.
+  method: POST
+  path: /products
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_create
+  read_only: false
+- name: products_partial_update
+  description: LeafLink API for Marketplace products.
+  method: PATCH
+  path: /products/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_partial_update
+  read_only: false
+- name: customers_list
+  description: List Customers
+  method: GET
+  path: /customers
+  source_operation: openapi/leaflink-api-openapi-original.yml#customers_list
+  read_only: true
+- name: customers_retrieve
+  description: Get Customer
+  method: GET
+  path: /customers/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#customers_retrieve
+  read_only: true
+- name: customers_create
+  description: LeafLink API for Marketplace customers.
+  method: POST
+  path: /customers
+  source_operation: openapi/leaflink-api-openapi-original.yml#customers_create
+  read_only: false
+- name: customers_partial_update
+  description: LeafLink API for Marketplace customers.
+  method: PATCH
+  path: /customers/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#customers_partial_update
+  read_only: false
+- name: brands_list
+  description: List Brands
+  method: GET
+  path: /brands
+  source_operation: openapi/leaflink-api-openapi-original.yml#brands_list
+  read_only: true
+- name: brands_retrieve
+  description: Get Brand
+  method: GET
+  path: /brands/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#brands_retrieve
+  read_only: true
+- name: batches_list
+  description: List Batches
+  method: GET
+  path: /batches
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_list
+  read_only: true
+- name: batches_create
+  description: Create a Batch
+  method: POST
+  path: /batches
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_create
+  read_only: false
+- name: batches_retrieve
+  description: Retrieve a Batch
+  method: GET
+  path: /batches/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_retrieve
+  read_only: true
+- name: payments_list
+  description: ViewSet for handling requests related to order payments.
+  method: GET
+  path: /payments
+  source_operation: openapi/leaflink-api-openapi-original.yml#payments_list
+  read_only: true
+- name: payments_create
+  description: ViewSet for handling requests related to order payments.
+  method: POST
+  path: /payments
+  source_operation: openapi/leaflink-api-openapi-original.yml#payments_create
+  read_only: false
+- name: payments_retrieve
+  description: ViewSet for handling requests related to order payments.
+  method: GET
+  path: /payments/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#payments_retrieve
+  read_only: true
+- name: payment_contracts_list
+  description: List Payment Contracts
+  method: GET
+  path: /payment_contracts
+  source_operation: openapi/leaflink-api-openapi-original.yml#payment_contracts_list
+  read_only: true
+- name: sales_invoices_list
+  description: sales_invoices_list
+  method: GET
+  path: /sales_invoices
+  source_operation: openapi/leaflink-api-openapi-original.yml#sales_invoices_list
+  read_only: true
+- name: sales_invoices_retrieve
+  description: sales_invoices_retrieve
+  method: GET
+  path: /sales_invoices/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#sales_invoices_retrieve
+  read_only: true
+- name: invoice_recorded_payments_create
+  description: Create an Invoice Recorded Payment
+  method: POST
+  path: /invoice_recorded_payments
+  source_operation: openapi/leaflink-api-openapi-original.yml#invoice_recorded_payments_create
+  read_only: false
+- name: compliance_licenses_list
+  description: Unified API to list company licenses
+  method: GET
+  path: /compliance/licenses
+  source_operation: openapi/leaflink-api-openapi-original.yml#compliance_licenses_list
+  read_only: true
+- name: compliance_license_types_list
+  description: Ignore type because the ViewSet class is not typed and the UnifiedApiReadOnlyModelViewSet is.
+  method: GET
+  path: /compliance/license_types
+  source_operation: openapi/leaflink-api-openapi-original.yml#compliance_license_types_list
+  read_only: true
+- name: facilities_list
+  description: List Facilities
+  method: GET
+  path: /facilities
+  source_operation: openapi/leaflink-api-openapi-original.yml#facilities_list
+  read_only: true
+- name: facilities_create
+  description: Create a Facility
+  method: POST
+  path: /facilities
+  source_operation: openapi/leaflink-api-openapi-original.yml#facilities_create
+  read_only: false
+- name: product_categories_list
+  description: List Product Categories
+  method: GET
+  path: /product_categories
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_categories_list
+  read_only: true
+- name: product_subcategories_list
+  description: List Product Subcategories
+  method: GET
+  path: /product_subcategories
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_subcategories_list
+  read_only: true
+- name: product_lines_list
+  description: List Product Lines
+  method: GET
+  path: /product_lines
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_lines_list
+  read_only: true
+- name: product_images_list
+  description: List Product Images
+  method: GET
+  path: /product_images
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_images_list
+  read_only: true
+- name: strains_list
+  description: List Strains
+  method: GET
+  path: /strains
+  source_operation: openapi/leaflink-api-openapi-original.yml#strains_list
+  read_only: true
+- name: states_list
+  description: List States
+  method: GET
+  path: /states
+  source_operation: openapi/leaflink-api-openapi-original.yml#states_list
+  read_only: true
+- name: contacts_list
+  description: List Contacts
+  method: GET
+  path: /contacts
+  source_operation: openapi/leaflink-api-openapi-original.yml#contacts_list
+  read_only: true
+- name: customer_groups_list
+  description: List Customer Groups
+  method: GET
+  path: /customer_groups
+  source_operation: openapi/leaflink-api-openapi-original.yml#customer_groups_list
+  read_only: true
+- name: customer_statuses_list
+  description: List Company Customer Status
+  method: GET
+  path: /customer_statuses
+  source_operation: openapi/leaflink-api-openapi-original.yml#customer_statuses_list
+  read_only: true
+- name: inventory_measurements_by_product_retrieve
+  description: List measurements by product
+  method: GET
+  path: /inventory/measurements/by-product
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_measurements_by_product_retrieve
+  read_only: true
+- name: inventory_measurements_by_facility_retrieve
+  description: List measurements by facility
+  method: GET
+  path: /inventory/measurements/by-facility
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_measurements_by_facility_retrieve
+  read_only: true
+- name: inventory_orders_reservations_list
+  description: List reservations for an order
+  method: GET
+  path: /inventory/orders/{order_id}/reservations
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_orders_reservations_list
+  read_only: true
+- name: inventory_commands_transfer_create
+  description: Submit transfer command
+  method: POST
+  path: /inventory/commands/transfer
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_commands_transfer_create
+  read_only: false
+- name: inventory_commands_hold_create
+  description: Submit hold command
+  method: POST
+  path: /inventory/commands/hold
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_commands_hold_create
+  read_only: false
+- name: transportation_orders_list
+  description: List Transport Order
+  method: GET
+  path: /transportation/orders
+  source_operation: openapi/leaflink-api-openapi-original.yml#transportation_orders_list
+  read_only: true
+- name: transportation_orders_create
+  description: Unified API product categories.
+  method: POST
+  path: /transportation/orders
+  source_operation: openapi/leaflink-api-openapi-original.yml#transportation_orders_create
+  read_only: false
+- name: transportation_drivers_list
+  description: List Drivers
+  method: GET
+  path: /transportation/drivers
+  source_operation: openapi/leaflink-api-openapi-original.yml#transportation_drivers_list
+  read_only: true
+- name: transportation_vehicles_list
+  description: List Vehicles
+  method: GET
+  path: /transportation/vehicles
+  source_operation: openapi/leaflink-api-openapi-original.yml#transportation_vehicles_list
+  read_only: true
+- name: deliveries_list
+  description: Unified API product categories.
+  method: GET
+  path: /deliveries
+  source_operation: openapi/leaflink-api-openapi-original.yml#deliveries_list
+  read_only: true
+- name: deliveries_create
+  description: Unified API product categories.
+  method: POST
+  path: /deliveries
+  source_operation: openapi/leaflink-api-openapi-original.yml#deliveries_create
+  read_only: false
+- name: distribution_zones_list
+  description: Distribution Zones defined by the seller
+  method: GET
+  path: /distribution-zones
+  source_operation: openapi/leaflink-api-openapi-original.yml#distribution_zones_list
+  read_only: true
+- name: taxes_tax_schedules_list
+  description: Get tax schedules for company.
+  method: GET
+  path: /taxes/tax_schedules
+  source_operation: openapi/leaflink-api-openapi-original.yml#taxes_tax_schedules_list
+  read_only: true
+- name: pricing_custom_menus_list
+  description: List Custom Menus
+  method: GET
+  path: /pricing/custom-menus
+  source_operation: openapi/leaflink-api-openapi-original.yml#pricing_custom_menus_list
+  read_only: true
+- name: packages_list
+  description: List Packages
+  method: GET
+  path: /packages
+  source_operation: openapi/leaflink-api-openapi-original.yml#packages_list
+  read_only: true
+- name: chats_list
+  description: List all discussions
+  method: GET
+  path: /chats
+  source_operation: openapi/leaflink-api-openapi-original.yml#chats_list
+  read_only: true
+- name: chats_messages_list
+  description: Get or post messages for a discussion
+  method: GET
+  path: /chats/{id}/messages
+  source_operation: openapi/leaflink-api-openapi-original.yml#chats_messages_list
+  read_only: true
+- name: traceability_items_list
+  description: Get all items from the traceability service for a company.
+  method: GET
+  path: /traceability/items
+  source_operation: openapi/leaflink-api-openapi-original.yml#traceability_items_list
+  read_only: true
+- name: traceability_companies_retrieve
+  description: Get company by ID.
+  method: GET
+  path: /traceability/companies/{id}
+  source_operation: openapi/leaflink-api-openapi-original.yml#traceability_companies_retrieve
+  read_only: true
+- name: managed_companies_list
+  description: Managed Companies collection view. Companies you are the admin of
+  method: GET
+  path: /managed_companies
+  source_operation: openapi/leaflink-api-openapi-original.yml#managed_companies_list
+  read_only: true
+- name: vendors_recommended_list
+  description: vendors_recommended_list
+  method: GET
+  path: /vendors/recommended
+  source_operation: openapi/leaflink-api-openapi-original.yml#vendors_recommended_list
+  read_only: true
+- name: product_promotions_list
+  description: List Product Promotions
+  method: GET
+  path: /product_promotions
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_promotions_list
+  read_only: true
+- name: product_templates_list
+  description: List Product Templates
+  method: GET
+  path: /product_templates
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_templates_list
+  read_only: true
+- name: express_menus_list
+  description: List Express Product Menus
+  method: GET
+  path: /express_menus
+  source_operation: openapi/leaflink-api-openapi-original.yml#express_menus_list
+  read_only: true
+- name: product_specifications_list
+  description: List Product Specifications
+  method: GET
+  path: /product_specifications
+  source_operation: openapi/leaflink-api-openapi-original.yml#product_specifications_list
+  read_only: true
+- name: orders_received_list
+  description: List orders
+  method: GET
+  path: /orders-received/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_list
+  read_only: true
+- name: orders_received_read
+  description: Retrieve an order
+  method: GET
+  path: /orders-received/{number}/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_read
+  read_only: true
+- name: orders_received_create
+  description: Create an order
+  method: POST
+  path: /orders-received/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_create
+  read_only: false
+- name: orders_received_partial_update
+  description: Update an order
+  method: PATCH
+  path: /orders-received/{number}/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_partial_update
+  read_only: false
+- name: orders_received_transition_create
+  description: Transition an order
+  method: POST
+  path: /orders-received/{number}/transition/{action}/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_transition_create
+  read_only: false
+- name: line_items_list
+  description: List line items
+  method: GET
+  path: /line-items/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#line-items_list
+  read_only: true
+- name: line_items_create
+  description: Create line item
+  method: POST
+  path: /line-items/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#line-items_create
+  read_only: false
+- name: order_payments_list
+  description: List payments
+  method: GET
+  path: /order-payments/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#order-payments_list
+  read_only: true
+- name: order_payments_create
+  description: Create a payment
+  method: POST
+  path: /order-payments/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#order-payments_create
+  read_only: false
+- name: buyer_orders_list
+  description: List orders
+  method: GET
+  path: /buyer/orders/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#buyer-orders_list
+  read_only: true
+- name: order_event_logs_list
+  description: List
+  method: GET
+  path: /order-event-logs/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#order-event-logs_list
+  read_only: true
+- name: retailer_inventory_list
+  description: List products
+  method: GET
+  path: /retailer-inventory/
+  source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#retailer-inventory_list
+  read_only: true

@@ -1,0 +1,1687 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/leaflink-api-openapi-original.yml
+note: 'Derived mechanically from components.schemas in the current LeafLink OpenAPI: $ref links become has_one/has_many
+  and *_id / *_slug fields become belongs_to edges. LeafLink publishes no object reference page with id prefixes,
+  so none are asserted.'
+summary:
+  schemas: 415
+  operations: 269
+  tags: 64
+  ref_relationships: 209
+  id_reference_relationships: 299
+domains:
+- name: Catalog
+  entities:
+  - Product
+  - ProductLine
+  - ProductImage
+  - ProductCategory
+  - ProductSubcategory
+  - ProductTemplate
+  - ProductPromotion
+  - ProductSpecification
+  - Strain
+  - ExpressMenu
+  operations: 62
+- name: Commerce
+  entities:
+  - Order
+  - LineItem
+  - Customer
+  - CustomerGroup
+  - CustomerStatus
+  - Contact
+  - PromoCode
+  operations: null
+- name: Inventory
+  entities:
+  - InventoryItem
+  - Allocation
+  - Measurement
+  - Reservation
+  - Facility
+  - Batch
+  - Package
+  operations: 39
+- name: Payments
+  entities:
+  - Payment
+  - PaymentContract
+  - SalesInvoice
+  - InvoiceRecordedPayment
+  - TaxSchedule
+  operations: null
+- name: Logistics
+  entities:
+  - Delivery
+  - TransportationOrder
+  - Driver
+  - Vehicle
+  - TransportationPartner
+  - DistributionZone
+  operations: 21
+- name: Compliance & Traceability
+  entities:
+  - License
+  - LicenseType
+  - TraceabilityCompany
+  - TraceabilityItem
+  - TraceabilityDriver
+  operations: 33
+- name: Messaging
+  entities:
+  - Chat
+  - Message
+  - NotificationPreference
+  operations: 14
+external_ids:
+  field: external_ids
+  'on':
+  - Product
+  - Order
+  - Customer
+  purpose: Store IDs from an external system (ERP/seed-to-sale) against a LeafLink object.
+  source: Marketplace V2 release 2.25.0
+relationships:
+- from: Buyer
+  to: License
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: Buyer
+  to: LegalEntity
+  kind: has_one
+  via: legal_entity
+  evidence: $ref
+- from: Buyer
+  to: StatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: BuyerRequest
+  to: LicenseRequest
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: BuyerRequest
+  to: LegalEntityRequest
+  kind: has_one
+  via: legal_entity
+  evidence: $ref
+- from: BuyerRequest
+  to: StatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: Company
+  to: LegalEntity
+  kind: has_one
+  via: legal_entity
+  evidence: $ref
+- from: Contract
+  to: DefaultFlexiblePaymentStrategyEnum
+  kind: has_one
+  via: default_flexible_payment_strategy
+  evidence: $ref
+- from: ContractRequest
+  to: DefaultFlexiblePaymentStrategyEnum
+  kind: has_one
+  via: default_flexible_payment_strategy
+  evidence: $ref
+- from: License
+  to: State
+  kind: has_one
+  via: state
+  evidence: $ref
+- from: License
+  to: VerificationStatusEnum
+  kind: has_one
+  via: verification_status
+  evidence: $ref
+- from: PaginatedCompanyList
+  to: Company
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedContractList
+  to: Contract
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedLicenseList
+  to: License
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PatchedContractRequest
+  to: DefaultFlexiblePaymentStrategyEnum
+  kind: has_one
+  via: default_flexible_payment_strategy
+  evidence: $ref
+- from: Seller
+  to: License
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: Seller
+  to: LegalEntity
+  kind: has_one
+  via: legal_entity
+  evidence: $ref
+- from: Seller
+  to: StatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: SellerRequest
+  to: LicenseRequest
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: SellerRequest
+  to: LegalEntityRequest
+  kind: has_one
+  via: legal_entity
+  evidence: $ref
+- from: SellerRequest
+  to: StatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: BatchListPaginatedResponse
+  to: UnifiedBatch
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: BatchMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: BatchUpdateRequest
+  to: TerpeneRequest
+  kind: has_many
+  via: terpenes
+  evidence: $ref array
+- from: BatchUpdateRequest
+  to: PricingStrategyInputRequest
+  kind: has_many
+  via: pricing_strategies
+  evidence: $ref array
+- from: BrandListingContent
+  to: SponsorshipPayload
+  kind: has_one
+  via: sponsorships
+  evidence: $ref
+- from: BrandListingContent
+  to: BrandResource
+  kind: has_many
+  via: collection
+  evidence: $ref array
+- from: BrandResource
+  to: CompanyResource
+  kind: has_one
+  via: owner
+  evidence: $ref
+- from: BrandResource
+  to: Badge
+  kind: has_many
+  via: badges
+  evidence: $ref array
+- from: BuyerNotificationSettingEvent
+  to: User
+  kind: has_many
+  via: users
+  evidence: $ref array
+- from: BuyerNotificationSettingEventRequest
+  to: UserRequest
+  kind: has_many
+  via: users
+  evidence: $ref array
+- from: BuyerOrder
+  to: NestedCompany
+  kind: has_one
+  via: buyer
+  evidence: $ref
+- from: BuyerOrder
+  to: NestedOrderedProduct
+  kind: has_many
+  via: line_items
+  evidence: $ref array
+- from: CompanyCreateRequest
+  to: CompanyApiKeyRequest
+  kind: has_many
+  via: api_configs
+  evidence: $ref array
+- from: CompanyLicense
+  to: CompanyLicenseType
+  kind: has_one
+  via: type
+  evidence: $ref
+- from: CompanyRequest
+  to: PaymentTermRequest
+  kind: has_one
+  via: default_payment_on_sell_through_payment_term
+  evidence: $ref
+- from: CustomerPaymentOptionSerializerV2
+  to: ShortPaymentMethod
+  kind: has_one
+  via: payment_method
+  evidence: $ref
+- from: CustomerPaymentOptionSerializerV2
+  to: ShortPaymentTerm
+  kind: has_one
+  via: payment_term
+  evidence: $ref
+- from: CustomerPaymentOptionSerializerV2Request
+  to: ShortPaymentMethodRequest
+  kind: has_one
+  via: payment_method
+  evidence: $ref
+- from: CustomerPaymentOptionSerializerV2Request
+  to: ShortPaymentTermRequest
+  kind: has_one
+  via: payment_term
+  evidence: $ref
+- from: DistributionZone
+  to: Facility
+  kind: has_many
+  via: facilities
+  evidence: $ref array
+- from: DistributionZone
+  to: ZipCode
+  kind: has_many
+  via: zip_codes
+  evidence: $ref array
+- from: DistributionZoneCreateRequest
+  to: FacilityRequest
+  kind: has_many
+  via: facilities
+  evidence: $ref array
+- from: DistributionZoneCreateRequest
+  to: ZipCodeRequest
+  kind: has_many
+  via: zip_codes
+  evidence: $ref array
+- from: FacilityBatchMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: FacilityMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: FeaturedProduct
+  to: SpotlightBadgesEnum
+  kind: has_many
+  via: spotlight_badges
+  evidence: $ref array
+- from: FeaturedProduct
+  to: FeaturedBrand
+  kind: has_one
+  via: brand
+  evidence: $ref
+- from: InternalCompanyAPIConfig
+  to: InternalCompanyLicense
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: InternalCompanyLicense
+  to: InternalLicenseTypeResponse
+  kind: has_one
+  via: type
+  evidence: $ref
+- from: InternalLogisticsCompany
+  to: ComplianceLicense
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: MetrcPackage
+  to: TraceabilityItem
+  kind: has_one
+  via: item
+  evidence: $ref
+- from: NestedCompany
+  to: NestedLicense
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: NestedOrderSeller
+  to: NestedLicense
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: NestedOrderedProduct
+  to: NestedProduct
+  kind: has_one
+  via: product
+  evidence: $ref
+- from: NestedProduct
+  to: ProductCategory
+  kind: has_one
+  via: category
+  evidence: $ref
+- from: NestedProduct
+  to: ProductSubCategory
+  kind: has_one
+  via: sub_category
+  evidence: $ref
+- from: NotificationPreferences
+  to: NotificationTopic
+  kind: has_many
+  via: items
+  evidence: $ref array
+- from: PackageAssignRequest
+  to: PackageAssignmentInputRequest
+  kind: has_many
+  via: assignments
+  evidence: $ref array
+- from: PackageAssignResponse
+  to: UnifiedPackage
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedBrandListingContentList
+  to: BrandListingContent
+  kind: has_one
+  via: content
+  evidence: $ref
+- from: PaginatedBuyerNotificationSettingList
+  to: BuyerNotificationSetting
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedCompanyLicenseList
+  to: CompanyLicense
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedCompanyTransportPartnerList
+  to: CompanyTransportPartner
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedDistributionZoneList
+  to: DistributionZone
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedFacilityList
+  to: Facility
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedFeaturedProductList
+  to: FeaturedProduct
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedInternalDriverList
+  to: InternalDriver
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedLicenseTypeInternalResponseList
+  to: LicenseTypeInternalResponse
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedMessageList
+  to: Message
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedNotificationPreferencesList
+  to: NotificationPreferences
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedProductAuditLogResponse
+  to: ProductAuditLogEntry
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedProductCategoryList
+  to: ProductCategory
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedProductPromotionList
+  to: ProductPromotion
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedRecommendedProductList
+  to: RecommendedProduct
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedStateList
+  to: State-unified-upstream-marketplace
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityDriverList
+  to: TraceabilityDriver
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityItemList
+  to: TraceabilityItem
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityPackageList
+  to: TraceabilityPackage
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityRefreshRequestList
+  to: TraceabilityRefreshRequest
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityTemplateList
+  to: TraceabilityTemplate
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityTransferList
+  to: TraceabilityTransfer
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTraceabilityVehicleList
+  to: TraceabilityVehicle
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTransferCompanyList
+  to: TransferCompany
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedTransportCompanyList
+  to: TransportCompany
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedBuyerProductImageList
+  to: UnifiedBuyerProductImage
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedChatsList
+  to: UnifiedChats
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedCustomMenuList
+  to: UnifiedCustomMenu
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedCustomerGroupList
+  to: UnifiedCustomerGroup
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedL3OrderList
+  to: UnifiedL3Order
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedMessagingFindSellerList
+  to: UnifiedMessagingFindSeller
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedOrderAsSalesInvoiceList
+  to: UnifiedOrderAsSalesInvoice
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedOrderPaymentList
+  to: UnifiedOrderPayment
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedPackageList
+  to: UnifiedPackage
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductAssignmentProductList
+  to: UnifiedProductAssignmentProduct
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductAssignmentWithItemsList
+  to: UnifiedProductAssignmentWithItems
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductDosageUnitList
+  to: UnifiedProductDosageUnit
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductImageList
+  to: UnifiedProductImage
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductLineList
+  to: UnifiedProductLine
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductMVPList
+  to: UnifiedProductMVP
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductSpecificationList
+  to: UnifiedProductSpecification
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductSubCategoryList
+  to: UnifiedProductSubCategory
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedProductTemplateList
+  to: UnifiedProductTemplate
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedRecommendedBrandList
+  to: UnifiedRecommendedBrand
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedRecommendedCompanyList
+  to: UnifiedRecommendedCompany
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedStrainList
+  to: UnifiedStrain
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedTaxScheduleList
+  to: UnifiedTaxSchedule
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedTraceabilityCompanyCustomerList
+  to: UnifiedTraceabilityCompanyCustomer
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedTraceabilityPackageOrdersList
+  to: UnifiedTraceabilityPackageOrders
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedUnitDenominationList
+  to: UnifiedUnitDenomination
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedUnifiedUnitOfMeasureList
+  to: UnifiedUnitOfMeasure
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PaginatedVehicleList
+  to: Vehicle
+  kind: has_many
+  via: results
+  evidence: $ref array
+- from: PatchedCompanyUpdateRequest
+  to: CompanyApiKeyRequest
+  kind: has_many
+  via: api_configs
+  evidence: $ref array
+- from: PatchedDistributionZoneUpdateRequest
+  to: FacilityRequest
+  kind: has_many
+  via: facilities
+  evidence: $ref array
+- from: PatchedDistributionZoneUpdateRequest
+  to: ZipCodeRequest
+  kind: has_many
+  via: zip_codes
+  evidence: $ref array
+- from: PatchedProductPromotionRequest
+  to: PromotionStatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: PatchedTransferUpdateInputRequest
+  to: TransferCreateUpdatePackageRequest
+  kind: has_many
+  via: packages
+  evidence: $ref array
+- from: PatchedUnifiedBatchRequest
+  to: TerpeneRequest
+  kind: has_many
+  via: terpenes
+  evidence: $ref array
+- from: PatchedUnifiedChatsRequest
+  to: DiscussionCompanyRequest
+  kind: has_one
+  via: sender_company
+  evidence: $ref
+- from: PatchedUnifiedChatsRequest
+  to: DiscussionCompanyRequest
+  kind: has_one
+  via: recipient_company
+  evidence: $ref
+- from: PatchedUnifiedProductMVPRequest
+  to: UnifiedProductSpecificationItemRequest
+  kind: has_many
+  via: product_specification_items
+  evidence: $ref array
+- from: PatchedUnifiedProductMVPRequest
+  to: UnifiedSubProductMVPRequest
+  kind: has_many
+  via: varieties
+  evidence: $ref array
+- from: PatchedUnifiedProductRequest
+  to: CustomMenuItemRequest
+  kind: has_many
+  via: custom_menu
+  evidence: $ref array
+- from: ProductBatchMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: ProductBulkUpdateResponseErrorDetail
+  to: ProductBulkUpdateResponseProduct
+  kind: has_many
+  via: products
+  evidence: $ref array
+- from: ProductFacilityBatchMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: ProductFacilityMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: ProductMeasurementResponse
+  to: MeasurementData
+  kind: has_one
+  via: measurements
+  evidence: $ref
+- from: ProductPromotion
+  to: PromotionStatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: ProductPromotionRequest
+  to: PromotionStatusEnum
+  kind: has_one
+  via: status
+  evidence: $ref
+- from: RebuildProjectionsResponse
+  to: RebuildProjectionsStream
+  kind: has_many
+  via: streams
+  evidence: $ref array
+- from: RecommendedProduct
+  to: SpotlightBadgesEnum
+  kind: has_many
+  via: spotlight_badges
+  evidence: $ref array
+- from: RecommendedProduct
+  to: FeaturedBrand
+  kind: has_one
+  via: brand
+  evidence: $ref
+- from: SkyscraperSponsorshipContent
+  to: SkyscraperSponsorshipItem
+  kind: has_many
+  via: products
+  evidence: $ref array
+- from: Sponsorship
+  to: SponsorshipItem
+  kind: has_many
+  via: items
+  evidence: $ref array
+- from: Sponsorship
+  to: AdPlacement
+  kind: has_one
+  via: placement
+  evidence: $ref
+- from: SponsorshipContent
+  to: Sponsorship
+  kind: has_one
+  via: sponsorship
+  evidence: $ref
+- from: SponsorshipPayload
+  to: SponsorshipContent
+  kind: has_many
+  via: banners
+  evidence: $ref array
+- from: SponsorshipPayload
+  to: SponsorshipResource
+  kind: has_many
+  via: listing
+  evidence: $ref array
+- from: SponsorshipPayload
+  to: SkyscraperSponsorshipContent
+  kind: has_many
+  via: skyscrapers
+  evidence: $ref array
+- from: SponsorshipResource
+  to: Sponsorship
+  kind: has_one
+  via: sponsorship
+  evidence: $ref
+- from: SponsorshipResource
+  to: BrandResource
+  kind: has_one
+  via: resource
+  evidence: $ref
+- from: SponsorshipsContent
+  to: _SponsorshipsContent
+  kind: has_one
+  via: content
+  evidence: $ref
+- from: StateRequest
+  to: CountryRequest
+  kind: has_one
+  via: country
+  evidence: $ref
+- from: TraceabilityCompany
+  to: TraceabilityCompanyIncludedLocation
+  kind: has_many
+  via: included_locations
+  evidence: $ref array
+- from: TraceabilityCompany
+  to: InternalCompanyAPIConfig
+  kind: has_many
+  via: api_configs
+  evidence: $ref array
+- from: TraceabilityDelivery
+  to: MetrcDelivery
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TraceabilityDeliveryPackage
+  to: PolymorphicDeliveryPackageVendorFields
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TraceabilityDriver
+  to: PolymorphicDriverVendorFields
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TraceabilityLicenses
+  to: TraceabilityLicense
+  kind: has_many
+  via: licenses
+  evidence: $ref array
+- from: TraceabilityLocation
+  to: MetrcLocation
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TraceabilityOrder
+  to: LightCompany
+  kind: has_one
+  via: seller
+  evidence: $ref
+- from: TraceabilityPackage
+  to: MetrcPackage
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TraceabilityPackage
+  to: TraceabilityLocation
+  kind: has_one
+  via: location
+  evidence: $ref
+- from: TraceabilityTransfer
+  to: TraceabilityOrder
+  kind: has_many
+  via: orders
+  evidence: $ref array
+- from: TraceabilityTransfer
+  to: PolymorphicTransferVendorFields
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TraceabilityTransfer
+  to: TraceabilityDelivery
+  kind: has_many
+  via: deliveries
+  evidence: $ref array
+- from: TraceabilityTransfer
+  to: TraceabilityDeliveryPackage
+  kind: has_many
+  via: delivery_packages
+  evidence: $ref array
+- from: TraceabilityVehicle
+  to: PolymorphicVehicleVendorFields
+  kind: has_one
+  via: vendor_fields
+  evidence: $ref
+- from: TransferCreateInputRequest
+  to: TransferCreateUpdatePackageRequest
+  kind: has_many
+  via: packages
+  evidence: $ref array
+- from: UnifiedBatch
+  to: Terpene
+  kind: has_many
+  via: terpenes
+  evidence: $ref array
+- from: UnifiedChats
+  to: DiscussionCompany
+  kind: has_one
+  via: sender_company
+  evidence: $ref
+- from: UnifiedChats
+  to: DiscussionCompany
+  kind: has_one
+  via: recipient_company
+  evidence: $ref
+- from: UnifiedChatsRequest
+  to: DiscussionCompanyRequest
+  kind: has_one
+  via: sender_company
+  evidence: $ref
+- from: UnifiedChatsRequest
+  to: DiscussionCompanyRequest
+  kind: has_one
+  via: recipient_company
+  evidence: $ref
+- from: UnifiedCustomer
+  to: CustomerPaymentOptionSerializerV2
+  kind: has_many
+  via: available_payment_options
+  evidence: $ref array
+- from: UnifiedL3Order
+  to: Driver
+  kind: has_one
+  via: pickup_driver
+  evidence: $ref
+- from: UnifiedL3Order
+  to: InternalVehicle
+  kind: has_one
+  via: pickup_vehicle
+  evidence: $ref
+- from: UnifiedL3Order
+  to: Driver
+  kind: has_one
+  via: delivery_driver
+  evidence: $ref
+- from: UnifiedL3Order
+  to: InternalVehicle
+  kind: has_one
+  via: delivery_vehicle
+  evidence: $ref
+- from: UnifiedL3Order
+  to: PaymentMethod
+  kind: has_one
+  via: payment_method
+  evidence: $ref
+- from: UnifiedL3Order
+  to: PaymentTerm
+  kind: has_one
+  via: payment_term
+  evidence: $ref
+- from: UnifiedL3Order
+  to: TransportCompany
+  kind: has_one
+  via: transport_company
+  evidence: $ref
+- from: UnifiedL3Order
+  to: InternalLogisticsCompany
+  kind: has_one
+  via: brand
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: DriverRequest
+  kind: has_one
+  via: pickup_driver
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: InternalVehicleRequest
+  kind: has_one
+  via: pickup_vehicle
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: DriverRequest
+  kind: has_one
+  via: delivery_driver
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: InternalVehicleRequest
+  kind: has_one
+  via: delivery_vehicle
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: PaymentMethodRequest
+  kind: has_one
+  via: payment_method
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: PaymentTermRequest
+  kind: has_one
+  via: payment_term
+  evidence: $ref
+- from: UnifiedL3OrderRequest
+  to: InternalLogisticsCompanyRequest
+  kind: has_one
+  via: brand
+  evidence: $ref
+- from: UnifiedOrderAsSalesInvoice
+  to: UnifiedInvoiceCustomer
+  kind: has_one
+  via: buyer
+  evidence: $ref
+- from: UnifiedOrderAsSalesInvoice
+  to: UnifiedOrderedProductAsInvoiceLineItem
+  kind: has_many
+  via: line_items
+  evidence: $ref array
+- from: UnifiedProductAssignmentProduct
+  to: UnifiedProductAssignmentWithItems
+  kind: has_many
+  via: assignments
+  evidence: $ref array
+- from: UnifiedProductAssignmentUpdateRequest
+  to: UnifiedProductAssignmentBuyerItemInputRequest
+  kind: has_many
+  via: assigned_buyers
+  evidence: $ref array
+- from: UnifiedProductAssignmentUpdateRequest
+  to: UnifiedProductAssignmentGroupItemInputRequest
+  kind: has_many
+  via: assigned_groups
+  evidence: $ref array
+- from: UnifiedProductAssignmentWithItems
+  to: UnifiedProductAssignmentBuyerItem
+  kind: has_many
+  via: assigned_buyers
+  evidence: $ref array
+- from: UnifiedProductAssignmentWithItems
+  to: UnifiedProductAssignmentGroupItem
+  kind: has_many
+  via: assigned_groups
+  evidence: $ref array
+- from: UnifiedProductBulkUpdateDataRequest
+  to: TypeEnum
+  kind: has_one
+  via: type
+  evidence: $ref
+- from: UnifiedProductBulkUpdateDataRequest
+  to: FieldEnum
+  kind: has_one
+  via: field
+  evidence: $ref
+- from: UnifiedProductBulkUpdateRequest
+  to: UnifiedProductBulkUpdateDataRequest
+  kind: has_many
+  via: update_data
+  evidence: $ref array
+- from: UnifiedProductLine
+  to: UnifiedProductLineProduct
+  kind: has_many
+  via: products
+  evidence: $ref array
+- from: UnifiedProductLineCreate
+  to: UnifiedProductLineProduct
+  kind: has_many
+  via: products
+  evidence: $ref array
+- from: UnifiedProductMVP
+  to: UnifiedProductSpecificationItem
+  kind: has_many
+  via: product_specification_items
+  evidence: $ref array
+- from: UnifiedProductMVP
+  to: UnifiedSubProductMVP
+  kind: has_many
+  via: varieties
+  evidence: $ref array
+- from: UnifiedProductMVPFromTemplate
+  to: UnifiedProductSpecificationItem
+  kind: has_many
+  via: product_specification_items
+  evidence: $ref array
+- from: UnifiedProductMVPFromTemplate
+  to: UnifiedSubProductMVP
+  kind: has_many
+  via: varieties
+  evidence: $ref array
+- from: UnifiedProductMVPRequest
+  to: UnifiedProductSpecificationItemRequest
+  kind: has_many
+  via: product_specification_items
+  evidence: $ref array
+- from: UnifiedProductMVPRequest
+  to: UnifiedSubProductMVPRequest
+  kind: has_many
+  via: varieties
+  evidence: $ref array
+- from: UnifiedProductRequest
+  to: CustomMenuItemRequest
+  kind: has_many
+  via: custom_menu
+  evidence: $ref array
+id_reference_relationships:
+- from: Buyer
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_id
+  evidence: id-reference field
+- from: Buyer
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_slug
+  evidence: id-reference field
+- from: BuyerRequest
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_id
+  evidence: id-reference field
+- from: BuyerRequest
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_slug
+  evidence: id-reference field
+- from: BuyerRequest
+  to: legal_entity
+  kind: belongs_to
+  via: legal_entity_id
+  evidence: id-reference field
+- from: Contract
+  to: docusign
+  kind: belongs_to
+  via: docusign_id
+  evidence: id-reference field
+- from: ContractRequest
+  to: docusign
+  kind: belongs_to
+  via: docusign_id
+  evidence: id-reference field
+- from: ContractRequest
+  to: buyer
+  kind: belongs_to
+  via: buyer_id
+  evidence: id-reference field
+- from: ContractRequest
+  to: seller
+  kind: belongs_to
+  via: seller_id
+  evidence: id-reference field
+- from: LegalEntity
+  to: lexis_nexis
+  kind: belongs_to
+  via: lexis_nexis_id
+  evidence: id-reference field
+- from: LegalEntityRequest
+  to: lexis_nexis
+  kind: belongs_to
+  via: lexis_nexis_id
+  evidence: id-reference field
+- from: PatchedContractRequest
+  to: docusign
+  kind: belongs_to
+  via: docusign_id
+  evidence: id-reference field
+- from: PatchedContractRequest
+  to: buyer
+  kind: belongs_to
+  via: buyer_id
+  evidence: id-reference field
+- from: PatchedContractRequest
+  to: seller
+  kind: belongs_to
+  via: seller_id
+  evidence: id-reference field
+- from: RecordInvoicePayment
+  to: source
+  kind: belongs_to
+  via: source_id
+  evidence: id-reference field
+- from: RecordInvoicePaymentRequest
+  to: source
+  kind: belongs_to
+  via: source_id
+  evidence: id-reference field
+- from: Seller
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_id
+  evidence: id-reference field
+- from: Seller
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_slug
+  evidence: id-reference field
+- from: Seller
+  to: docusign
+  kind: belongs_to
+  via: docusign_id
+  evidence: id-reference field
+- from: SellerRequest
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_id
+  evidence: id-reference field
+- from: SellerRequest
+  to: marketplace
+  kind: belongs_to
+  via: marketplace_slug
+  evidence: id-reference field
+- from: SellerRequest
+  to: legal_entity
+  kind: belongs_to
+  via: legal_entity_id
+  evidence: id-reference field
+- from: SellerRequest
+  to: docusign
+  kind: belongs_to
+  via: docusign_id
+  evidence: id-reference field
+- from: Allocation
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: Allocation
+  to: facility
+  kind: belongs_to
+  via: facility_id
+  evidence: id-reference field
+- from: Allocation
+  to: batch
+  kind: belongs_to
+  via: batch_id
+  evidence: id-reference field
+- from: Allocation
+  to: group
+  kind: belongs_to
+  via: group_ids
+  evidence: id-reference field
+- from: Allocation
+  to: buyer
+  kind: belongs_to
+  via: buyer_ids
+  evidence: id-reference field
+- from: ArchiveRequestRequest
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: ArchiveRequestRequest
+  to: facility
+  kind: belongs_to
+  via: facility_id
+  evidence: id-reference field
+- from: ArchiveRequestRequest
+  to: batch
+  kind: belongs_to
+  via: batch_id
+  evidence: id-reference field
+- from: BatchCreateRequest
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: BatchCreateRequest
+  to: product
+  kind: belongs_to
+  via: product_ids
+  evidence: id-reference field
+- from: BatchMeasurementResponse
+  to: batch
+  kind: belongs_to
+  via: batch_id
+  evidence: id-reference field
+- from: BatchUpdateRequest
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: BatchUpdateRequest
+  to: product
+  kind: belongs_to
+  via: product_ids
+  evidence: id-reference field
+- from: BiotrackDeliveryPackage
+  to: common_delivery_package
+  kind: belongs_to
+  via: common_delivery_package_id
+  evidence: id-reference field
+- from: BiotrackDeliveryPackage
+  to: transaction
+  kind: belongs_to
+  via: transaction_id
+  evidence: id-reference field
+- from: BiotrackDriver
+  to: transaction
+  kind: belongs_to
+  via: transaction_id
+  evidence: id-reference field
+- from: BiotrackVehicle
+  to: transaction
+  kind: belongs_to
+  via: transaction_id
+  evidence: id-reference field
+- from: BrandResource
+  to: resource
+  kind: belongs_to
+  via: resource_id
+  evidence: id-reference field
+- from: BuyerOrder
+  to: short
+  kind: belongs_to
+  via: short_id
+  evidence: id-reference field
+- from: CommandAcceptedResponse
+  to: command
+  kind: belongs_to
+  via: command_id
+  evidence: id-reference field
+- from: CommandStatusResponse
+  to: command
+  kind: belongs_to
+  via: command_id
+  evidence: id-reference field
+- from: CommandStatusResponse
+  to: task
+  kind: belongs_to
+  via: task_id
+  evidence: id-reference field
+- from: CompanyApiKeyRequest
+  to: integration
+  kind: belongs_to
+  via: integration_id
+  evidence: id-reference field
+- from: CompanyApiKeyRequest
+  to: license
+  kind: belongs_to
+  via: license_ids
+  evidence: id-reference field
+- from: CompanyCreateRequest
+  to: enable_search_by_product
+  kind: belongs_to
+  via: enable_search_by_product_id
+  evidence: id-reference field
+- from: CompanyCreateRequest
+  to: included_location
+  kind: belongs_to
+  via: included_location_ids
+  evidence: id-reference field
+- from: CompanyResource
+  to: resource
+  kind: belongs_to
+  via: resource_id
+  evidence: id-reference field
+- from: CompanyTransportPartnerRequest
+  to: transport_company
+  kind: belongs_to
+  via: transport_company_id
+  evidence: id-reference field
+- from: CompanyTransportPartnerRequest
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: CompanyWriteSuccessResponse
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: CreateInputRequest
+  to: product_category
+  kind: belongs_to
+  via: product_category_ids
+  evidence: id-reference field
+- from: CustomerPaymentOptionSerializerV2Request
+  to: payment_method
+  kind: belongs_to
+  via: payment_method_id
+  evidence: id-reference field
+- from: CustomerPaymentOptionSerializerV2Request
+  to: payment_term
+  kind: belongs_to
+  via: payment_term_id
+  evidence: id-reference field
+- from: DestroyRequestRequest
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: DestroyRequestRequest
+  to: facility
+  kind: belongs_to
+  via: facility_id
+  evidence: id-reference field
+- from: DestroyRequestRequest
+  to: batch
+  kind: belongs_to
+  via: batch_id
+  evidence: id-reference field
+- from: DistributionZoneCreateRequest
+  to: owner
+  kind: belongs_to
+  via: owner_id
+  evidence: id-reference field
+- from: Driver
+  to: metrc_employee
+  kind: belongs_to
+  via: metrc_employee_id
+  evidence: id-reference field
+- from: Driver
+  to: transport_company
+  kind: belongs_to
+  via: transport_company_id
+  evidence: id-reference field
+- from: DriverRequest
+  to: metrc_employee
+  kind: belongs_to
+  via: metrc_employee_id
+  evidence: id-reference field
+- from: FacilityBatchMeasurementResponse
+  to: facility
+  kind: belongs_to
+  via: facility_id
+  evidence: id-reference field
+- from: FacilityBatchMeasurementResponse
+  to: batch
+  kind: belongs_to
+  via: batch_id
+  evidence: id-reference field
+- from: FacilityCreateRequest
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: FacilityCreateRequest
+  to: external
+  kind: belongs_to
+  via: external_id
+  evidence: id-reference field
+- from: FacilityMeasurementResponse
+  to: facility
+  kind: belongs_to
+  via: facility_id
+  evidence: id-reference field
+- from: FeaturedProduct
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: FulfillmentRequestRequest
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: FulfillmentRequestRequest
+  to: order
+  kind: belongs_to
+  via: order_id
+  evidence: id-reference field
+- from: FulfillmentRequestRequest
+  to: order_product
+  kind: belongs_to
+  via: order_product_id
+  evidence: id-reference field
+- from: HoldRequestRequest
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: HoldRequestRequest
+  to: facility
+  kind: belongs_to
+  via: facility_id
+  evidence: id-reference field
+- from: HoldRequestRequest
+  to: batch
+  kind: belongs_to
+  via: batch_id
+  evidence: id-reference field
+- from: InternalCompanyAPIConfig
+  to: integration
+  kind: belongs_to
+  via: integration_id
+  evidence: id-reference field
+- from: InternalCompanyLicense
+  to: company_license
+  kind: belongs_to
+  via: company_license_id
+  evidence: id-reference field
+- from: InternalDriver
+  to: metrc_employee
+  kind: belongs_to
+  via: metrc_employee_id
+  evidence: id-reference field
+- from: InternalDriverRequest
+  to: metrc_employee
+  kind: belongs_to
+  via: metrc_employee_id
+  evidence: id-reference field
+- from: LicenseCreateUpdateRequest
+  to: type
+  kind: belongs_to
+  via: type_id
+  evidence: id-reference field
+- from: LicenseTypeInternalResponse
+  to: state
+  kind: belongs_to
+  via: state_id
+  evidence: id-reference field
+- from: LicensesCreateUpdateResponse
+  to: license
+  kind: belongs_to
+  via: license_ids
+  evidence: id-reference field
+- from: MetrcDeliveryPackage
+  to: item_metrc
+  kind: belongs_to
+  via: item_metrc_id
+  evidence: id-reference field
+- from: MetrcDriver
+  to: common_driver
+  kind: belongs_to
+  via: common_driver_id
+  evidence: id-reference field
+- from: MetrcDriver
+  to: employee
+  kind: belongs_to
+  via: employee_id
+  evidence: id-reference field
+- from: MetrcLocation
+  to: common_location
+  kind: belongs_to
+  via: common_location_id
+  evidence: id-reference field
+- from: MetrcLocation
+  to: metrc_type
+  kind: belongs_to
+  via: metrc_type_id
+  evidence: id-reference field
+- from: MetrcPackage
+  to: common_package
+  kind: belongs_to
+  via: common_package_id
+  evidence: id-reference field
+- from: MetrcPackage
+  to: item
+  kind: belongs_to
+  via: item_id
+  evidence: id-reference field
+- from: MetrcTransfer
+  to: metrc_delivery
+  kind: belongs_to
+  via: metrc_delivery_id
+  evidence: id-reference field
+- from: PackageAssignmentInputRequest
+  to: package
+  kind: belongs_to
+  via: package_id
+  evidence: id-reference field
+- from: PackageAssignmentInputRequest
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: PatchedCompanyTransportPartnerRequest
+  to: transport_company
+  kind: belongs_to
+  via: transport_company_id
+  evidence: id-reference field
+- from: PatchedCompanyTransportPartnerRequest
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: PatchedCompanyUpdateRequest
+  to: enable_search_by_product
+  kind: belongs_to
+  via: enable_search_by_product_id
+  evidence: id-reference field
+- from: PatchedCompanyUpdateRequest
+  to: included_location
+  kind: belongs_to
+  via: included_location_ids
+  evidence: id-reference field
+- from: PatchedDistributionZoneUpdateRequest
+  to: owner
+  kind: belongs_to
+  via: owner_id
+  evidence: id-reference field
+- from: PatchedFacilityPatchRequest
+  to: address
+  kind: belongs_to
+  via: address_id
+  evidence: id-reference field
+- from: PatchedFacilityPatchRequest
+  to: external
+  kind: belongs_to
+  via: external_id
+  evidence: id-reference field
+- from: PatchedInternalDriverRequest
+  to: metrc_employee
+  kind: belongs_to
+  via: metrc_employee_id
+  evidence: id-reference field
+- from: PatchedProductPromotionRequest
+  to: moloco
+  kind: belongs_to
+  via: moloco_id
+  evidence: id-reference field
+- from: PatchedProductPromotionRequest
+  to: brand
+  kind: belongs_to
+  via: brand_id
+  evidence: id-reference field
+- from: PatchedProductPromotionRequest
+  to: company
+  kind: belongs_to
+  via: company_id
+  evidence: id-reference field
+- from: PatchedProductPromotionRequest
+  to: billing_company
+  kind: belongs_to
+  via: billing_company_id
+  evidence: id-reference field
+- from: PatchedTemplateUpdateRequest
+  to: ll_order
+  kind: belongs_to
+  via: ll_order_id
+  evidence: id-reference field
+- from: PatchedTemplateUpdateRequest
+  to: driver
+  kind: belongs_to
+  via: driver_id
+  evidence: id-reference field
+- from: PatchedTemplateUpdateRequest
+  to: vehicle
+  kind: belongs_to
+  via: vehicle_id
+  evidence: id-reference field
+- from: PatchedTraceabilityRefreshProductsPackagesRequest
+  to: product
+  kind: belongs_to
+  via: product_ids
+  evidence: id-reference field
+- from: PatchedTransferUpdateInputRequest
+  to: ll_order
+  kind: belongs_to
+  via: ll_order_id
+  evidence: id-reference field
+- from: PatchedTransferUpdateInputRequest
+  to: buyer_external
+  kind: belongs_to
+  via: buyer_external_id
+  evidence: id-reference field
+- from: PatchedTransferUpdateInputRequest
+  to: driver
+  kind: belongs_to
+  via: driver_id
+  evidence: id-reference field
+- from: PatchedTransferUpdateInputRequest
+  to: vehicle
+  kind: belongs_to
+  via: vehicle_id
+  evidence: id-reference field
+- from: PatchedUnifiedBatchRequest
+  to: lab_result_file
+  kind: belongs_to
+  via: lab_result_file_id
+  evidence: id-reference field
+- from: PatchedUnifiedChatsRequest
+  to: product
+  kind: belongs_to
+  via: product_id
+  evidence: id-reference field
+- from: PatchedUnifiedCustomerRequest
+  to: external
+  kind: belongs_to
+  via: external_ids
+  evidence: id-reference field
+- from: PatchedUnifiedCustomerRequest
+  to: owner
+  kind: belongs_to
+  via: owner_id
+  evidence: id-reference field
+- from: PatchedUnifiedCustomerRequest
+  to: partner
+  kind: belongs_to
+  via: partner_id
+  evidence: id-reference field
+- from: PatchedUnifiedCustomerRequest
+  to: price_schedule
+  kind: belongs_to
+  via: price_schedule_id
+  evidence: id-reference field
+- from: PatchedUnifiedCustomerRequest
+  to: service_zone
+  kind: belongs_to
+  via: service_zone_id
+  evidence: id-reference field
+- from: PatchedUnifiedCustomerRequest
+  to: status
+  kind: belongs_to
+  via: status_id
+  evidence: id-reference field

@@ -1,0 +1,172 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/legacy/v2/api/release-notes/
+docs: https://developer.leaflink.com/legacy/v2/api/release-notes/
+note: 'LeafLink maintains a single public changelog: the Marketplace V2 API release notes. It is semver-numbered
+  and not dated per entry. The current dated API (LeafLink-Version 2022-10-31) has no separate public changelog
+  page — new dated versions are the change signal. Recent window captured; the live page remains the source of truth.'
+schemes:
+- api: LeafLink API
+  scheme: date-versioned via the LeafLink-Version header
+  current: '2022-10-31'
+  changelog_url: null
+- api: LeafLink Marketplace V2 API
+  scheme: semver
+  current: 2.39.0
+  changelog_url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+entries:
+- version: 2.39.0
+  additions:
+  - Create an Order endpoint added
+  - Create a Line Item endpoint added
+  breaking: []
+- version: 2.38.0
+  additions:
+  - Buyers Order object gains delivery_address
+  - Product object default threshold action returned in standard GET and updatable via POST/PATCH
+  breaking: []
+- version: 2.37.0
+  additions:
+  - Orders GET returns facility_id
+  - App authentication extended to Order Event Logs, Order Sales Reps, Promo Codes, Reports, Batches, Batch Documents,
+    Product Batches
+  breaking: []
+- version: 2.36.0
+  additions:
+  - Customers GET returns ein inherited from the Buyer Company federal EIN
+  - Customer Statuses endpoint added
+  breaking:
+  - Customers POST ein is now read-only
+- version: 2.35.0
+  additions:
+  - Buyers Order GET supports the Orders GET query parameters (excluding buyer filtering)
+  - Product object gains product_data_items array
+  breaking: []
+- version: 2.34.0
+  additions:
+  - Buyers Order line items gain category and sub_category
+  - Product object gains threshold and quantity fields
+  breaking: []
+- version: 2.33.0
+  additions:
+  - Order and Customer objects gain payment_methods
+  - payment_term details updated
+  breaking: []
+- version: 2.32.0
+  additions:
+  - Order and Customer objects gain corporate_address and delivery_address
+  breaking: []
+- version: 2.31.0
+  additions:
+  - Order object gains credits
+  breaking: []
+- version: 2.30.0
+  additions:
+  - Product list filtering supports SKU
+  breaking: []
+- version: 2.29.0
+  additions:
+  - Order object gains short_id and final_tax
+  - Brand permissions can access /companies/ and /company-staff/
+  breaking: []
+- version: 2.28.0
+  additions:
+  - payment_term and payment_due_date updatable via PATCH on Order
+  breaking: []
+- version: 2.27.0
+  additions:
+  - Order object gains llf_payment_method
+  breaking:
+  - '"Case" no longer accepted for unit_of_measure on Product — use sell_in_unit_of_measure + unit_multiplier'
+- version: 2.26.0
+  additions:
+  - Product object gains base_units_per_unit
+  breaking: []
+- version: 2.25.0
+  additions:
+  - Product, Order and Customer objects gain external_ids for external system ID storage
+  breaking: []
+- version: 2.24.0
+  additions:
+  - License Types response gains state_abbr
+  breaking: []
+- version: 2.23.0
+  additions:
+  - Orders GET supports fields_add for created_by and last_changed_by
+  breaking: []
+- version: 2.22.0
+  additions:
+  - Order object gains discount
+  breaking:
+  - discount_amount deprecated for removal on 2020-05-01
+- version: 2.21.0
+  additions:
+  - unit_multiplier on Product resettable to 1
+  breaking: []
+- version: 2.20.0
+  additions:
+  - Product PATCH accepts available_inventory updates
+  breaking: []
+- version: 2.19.0
+  additions:
+  - Subcategories object gains category
+  - Retailer Inventory product object gains created_on and modified
+  breaking: []
+- version: 2.18.0
+  additions:
+  - Batch object gains cannabinoid_unit
+  - Batch Document endpoint added
+  breaking: []
+- version: 2.17.0
+  additions:
+  - Retailer Inventory endpoint added
+  breaking: []
+- version: 2.16.0
+  additions:
+  - package_tags added to the line item object for Metrc add-on users
+  breaking: []
+- version: 2.15.0
+  additions:
+  - fields_include supports buyer_transaction_license and seller_transaction_licenses on Orders GET
+  breaking: []
+- version: 2.14.0
+  additions:
+  - include_children expanded for Orders and Customers GET
+  breaking: []
+- version: 2.13.0
+  additions:
+  - Line items filterable by company via /api/v2/companies/{company_id}/line-items/
+  breaking: []
+- version: 2.12.0
+  additions:
+  - Orders GET include_children supports line-items
+  breaking: []
+- version: 2.11.0
+  additions:
+  - Companies response gains address fields
+  - companies_read accepts a slug identifier
+  - include_children for licenses and taxes
+  breaking: []
+- version: 2.10.0
+  additions:
+  - Product property expansion in line_items
+  - Product/Customer GET support additional include_children values
+  - Line items filterable by external_id_seller
+  breaking: []
+- version: 2.9.0
+  additions:
+  - User endpoint added
+  breaking: []
+- version: 2.8.0
+  additions:
+  - Batch document details in the documents object
+  - Order Sales Rep endpoint added
+  breaking: []
+- version: 2.0.0
+  additions:
+  - Major architectural overhaul
+  - Multi-company user access
+  - OpenAPI documentation published
+  - 'New endpoints: delivery providers, promo codes, payments, order event logs, price schedules, batches, reports,
+    Metrc data access'
+  breaking: []

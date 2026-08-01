@@ -1,0 +1,89 @@
+generated: '2026-08-01'
+method: searched
+source: https://registry.npmjs.org/-/v1/search?text=leaflink
+note: LeafLink publishes no first-party API client SDK for the LeafLink API in any public registry. The @leaflink
+  npm scope is genuine first-party LeafLink engineering output, but it is front-end / design-system tooling (Stash
+  design system, Vue components, eslint config) rather than API client libraries. Recorded here honestly; no SDKs
+  pointer is emitted because no API client library exists. The PyPI package named "leaflink" is an UNRELATED third-party
+  Overleaf sync CLI (github.com/xiongqi123123/LeafLink) and is deliberately excluded.
+api_client_sdks: []
+packages:
+- language: javascript
+  registry: npm
+  name: '@leaflink/stash'
+  url: https://www.npmjs.com/package/@leaflink/stash
+  install: npm install @leaflink/stash
+  official: true
+  api_client: false
+  kind: design-system
+  description: LeafLink's design system.
+  repository: https://github.com/LeafLink/stash
+- language: javascript
+  registry: npm
+  name: '@leaflink/stash-vue'
+  url: https://www.npmjs.com/package/@leaflink/stash-vue
+  install: npm install @leaflink/stash-vue
+  official: true
+  api_client: false
+  kind: ui-components
+  description: LeafLink's first-party Vue components.
+  repository: https://github.com/LeafLink/stash
+- language: javascript
+  registry: npm
+  name: '@leaflink/stash-theme'
+  url: https://www.npmjs.com/package/@leaflink/stash-theme
+  install: npm install @leaflink/stash-theme
+  official: true
+  api_client: false
+  kind: design-tokens
+  description: Stash design tokens, fonts, and Tailwind theme adapter.
+- language: javascript
+  registry: npm
+  name: '@leaflink/design-system'
+  url: https://www.npmjs.com/package/@leaflink/design-system
+  install: npm install @leaflink/design-system
+  official: true
+  api_client: false
+  kind: design-tokens
+  description: Multi-brand design-system color tokens and Tailwind theme.
+- language: javascript
+  registry: npm
+  name: '@leaflink/snitch'
+  url: https://www.npmjs.com/package/@leaflink/snitch
+  install: npm install @leaflink/snitch
+  official: true
+  api_client: false
+  kind: logging
+  description: Front end logging inspired by winston.
+  repository: https://github.com/LeafLink/snitch
+- language: javascript
+  registry: npm
+  name: '@leaflink/eslint-config'
+  url: https://www.npmjs.com/package/@leaflink/eslint-config
+  install: npm install -D @leaflink/eslint-config
+  official: true
+  api_client: false
+  kind: tooling
+  description: Opinionated linting configuration for LeafLink's front-end repositories.
+- language: javascript
+  registry: npm
+  name: '@leaflink/vue-notification-feed'
+  url: https://www.npmjs.com/package/@leaflink/vue-notification-feed
+  install: npm install @leaflink/vue-notification-feed
+  official: true
+  api_client: false
+  kind: ui-components
+  description: Components for integrating Knock in-app notifications.
+registries_probed:
+- registry: npm
+  result: first-party @leaflink scope found (front-end tooling only)
+- registry: pypi
+  result: no first-party package; name "leaflink" is an unrelated Overleaf CLI
+- registry: rubygems
+  result: no results
+- registry: packagist
+  result: no results
+- registry: crates.io
+  result: no results
+- registry: pkg.go.dev
+  result: no first-party module found

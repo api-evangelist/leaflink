@@ -1,0 +1,57 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/api/getting-started/
+versioning:
+  scheme: date-based request header
+  header: LeafLink-Version
+  current: '2022-10-31'
+  docs: https://developer.leaflink.com/api/getting-started/
+  policy: A new dated version is released when backwards-incompatible changes are made. Versions are dates representing
+    the date the API was first published.
+  default: If the header is omitted the current version applies automatically.
+generations:
+- name: LeafLink API
+  status: current
+  version: '2022-10-31'
+  base_url: https://api.leaflink.com
+  spec: openapi/leaflink-api-openapi-original.yml
+- name: LeafLink Marketplace V2 API
+  status: legacy
+  version: 2.39.0
+  base_url: https://app.leaflink.com/api/v2
+  spec: openapi/leaflink-marketplace-v2-openapi-original.yml
+  docs: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  note: Published under the /legacy/ path of the developer hub; still documented and supported, superseded by the
+    dated API.
+beta:
+  status: true
+  statement: The API is a beta feature and is in active development & subject to change.
+  source: https://developer.leaflink.com/legacy/v2/api/getting-started/
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: LeafLink publishes no standalone deprecation policy page and neither OpenAPI marks any operation deprecated.
+    Field-level deprecations are announced in the release notes with a removal date — e.g. Marketplace V2 2.22.0
+    deprecated the Order discount_amount field for removal on 2020-05-01, and 2.27.0 removed "Case" as an accepted
+    unit_of_measure.
+  announced_via: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  examples:
+  - version: 2.22.0
+    change: Order object discount_amount field deprecated
+    removal_date: '2020-05-01'
+  - version: 2.27.0
+    change: '"Case" no longer accepted for unit_of_measure on the Product object'
+    type: breaking
+status_page:
+  url: null
+  probed: https://status.leaflink.com/
+  http_status: 200
+  result: The status.leaflink.com hostname resolves to an Instatus login shell, not a published status page — no
+    components, incidents, history or feed are served. Recorded as NOT published; no StatusPage pointer is wired.
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime commitment found.
+deprecated_operations: []
+changelog: changelog/leaflink-changelog.yml

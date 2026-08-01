@@ -1,0 +1,136 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/api/getting-started/
+docs:
+- https://developer.leaflink.com/api/
+- https://developer.leaflink.com/api/getting-started/
+- https://developer.leaflink.com/legacy/v2/api/authorization/
+style: REST-like JSON over HTTP
+media_types:
+  request:
+  - application/json
+  response:
+  - application/json
+  note: The API exclusively uses application/json.
+naming:
+  convention: snake_case
+  applies_to:
+  - paths
+  - query parameters
+  - object attributes
+trailing_slash:
+  current_api: must NOT end in a trailing slash — trailing slashes return 404
+  legacy_v2: paths must end in '/' — those that do not return 400 Bad Request
+authentication:
+  current:
+    scheme: http bearer
+    format: JWT
+    header: 'Authorization: Bearer <YOUR_JWT>'
+    unauthenticated: 401 Unauthorized
+  legacy_v2:
+    scheme: apiKey in header
+    header: 'Authorization: App <api_key>'
+    alternate: 'Authorization: Token <api_key>'
+    token_types:
+    - name: User Token
+      scope: all companies the token holder has permission for
+    - name: App Token
+      scope: only the single company where the token was created
+  artifact: authentication/leaflink-authentication.yml
+idempotency:
+  supported: false
+  evidence: No Idempotency-Key header or equivalent parameter appears in either OpenAPI (0 of 380 operations) and
+    the docs describe no idempotency contract. Retrying a POST is not safe.
+  agent_guidance: 'Treat every write as non-idempotent: read back by external_id before retrying a create. The Product,
+    Order and Customer objects carry an external_ids field for external system IDs, which is the closest available
+    de-duplication handle.'
+pagination:
+  style: page-number
+  params:
+  - name: page
+    type: integer
+    default: 1
+  - name: page_size
+    type: integer
+    default: 50
+    min: 1
+    max: 500
+  - name: ordering
+    type: string
+    note: prefix with '-' for descending
+  response_fields:
+  - count
+  - next
+  - previous
+  - results
+  invalid_page: 404 Not Found
+  legacy_v2:
+    style: limit-offset
+    params:
+    - limit
+    - offset
+field_selection:
+  legacy_v2:
+    sparse_fields:
+    - fields_include
+    - fields_exclude
+    - field_include
+    - field_exclude
+    expansion: include_children
+    extra: fields_add
+    note: Legacy V2 calls these "dynamic responses"; the current API does not document an equivalent.
+filtering:
+  search: search query parameter (71 operations)
+  date_ranges:
+  - created_on__gt
+  - created_on__gte
+  - created_on__lt
+  - created_on__lte
+  - modified__gt
+  - modified__gte
+  - modified__lt
+  - modified__lte
+metadata:
+  external_ids: Product, Order and Customer objects carry an external_ids field for storing IDs from external systems
+    (added in Marketplace V2 2.25.0).
+versioning:
+  scheme: date-based request header
+  header: LeafLink-Version
+  current: '2022-10-31'
+  omitted_behavior: the current version applies automatically
+  note: A new dated version is released when backwards-incompatible changes are made.
+rate_limits:
+  per_minute: 300
+  per_second: 8
+  burst_per_minute: 1000
+  status: 429
+  headers:
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  attribution: limits track the API key owner on a rolling basis
+  artifact: rate-limits/leaflink-rate-limits.yml
+errors:
+  envelope: application/json
+  format: not RFC 9457 — no application/problem+json in either spec
+  documented_statuses:
+  - 400
+  - 401
+  - 404
+  - 408
+  - 409
+  - 429
+  - 500
+  artifact: errors/leaflink-problem-types.yml
+tracing:
+  request_id_header: null
+  note: No request-id / correlation-id header is documented or declared in either OpenAPI.
+cors:
+  allowed: false
+  note: Cross-origin requests are not permitted; browser-based calls fail preflight validation.
+cross_links:
+  authentication: authentication/leaflink-authentication.yml
+  errors: errors/leaflink-problem-types.yml
+  lifecycle: lifecycle/leaflink-lifecycle.yml
+  sandbox: sandbox/leaflink-sandbox.yml
+  webhooks: asyncapi/leaflink-webhooks.yml

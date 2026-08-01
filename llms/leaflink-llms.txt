@@ -1,0 +1,50 @@
+# LeafLink
+
+> LeafLink is the wholesale cannabis marketplace and B2B commerce platform connecting licensed cannabis
+> brands, distributors and retailers across 30 US markets. The platform bundles a marketplace, order
+> management, payments (LeafLink Financial), logistics/transportation, inventory, traceability
+> (Metrc/BioTrack), compliance and insights. LeafLink publishes a public REST API at
+> https://api.leaflink.com (current version 2022-10-31, JWT bearer auth) plus a legacy Marketplace V2 API
+> at https://app.leaflink.com/api/v2 (token auth).
+
+## APIs
+- [LeafLink API](https://developer.leaflink.com/api/): Current REST API, version 2022-10-31. 182 paths / 269 operations covering products, orders, customers, inventory, payments, logistics, traceability, compliance, taxes and chats.
+- [LeafLink Marketplace V2 API (legacy)](https://developer.leaflink.com/legacy/v2/api/getting-started/): Legacy REST API, 66 paths / 111 operations for brands and retailers.
+
+## Specs
+- [LeafLink API OpenAPI 3.0.3](https://raw.githubusercontent.com/api-evangelist/leaflink/refs/heads/main/openapi/leaflink-api-openapi-original.yml)
+- [LeafLink Marketplace V2 OpenAPI 3.0.0](https://raw.githubusercontent.com/api-evangelist/leaflink/refs/heads/main/openapi/leaflink-marketplace-v2-openapi-original.yml)
+
+## Docs
+- [Developer Hub](https://developer.leaflink.com/)
+- [Introduction](https://developer.leaflink.com/api/)
+- [Getting Started](https://developer.leaflink.com/api/getting-started/)
+- [API Reference](https://developer.leaflink.com/api/ref/)
+- [Legacy V2 Authorization](https://developer.leaflink.com/legacy/v2/api/authorization/)
+- [Legacy V2 Release Notes](https://developer.leaflink.com/legacy/v2/api/release-notes/)
+- [Legacy V2 FAQs](https://developer.leaflink.com/legacy/v2/api/faqs/)
+- [Webhooks](https://developer.leaflink.com/legacy/v2/brands/webhooks/)
+- [Webhook Setup](https://developer.leaflink.com/legacy/v2/brands/webhooks/setup/)
+- [Integration Solutions](https://developer.leaflink.com/legacy/v2/brands/integration-solutions/)
+- [Developer Support](https://developer.leaflink.com/support/)
+- [Help Center](https://help.leaflink.com/)
+
+## Conventions
+- Base URL: https://api.leaflink.com — content type application/json only, snake_case paths and attributes.
+- Current API paths must NOT have a trailing slash; legacy V2 paths MUST end in a slash.
+- Auth: `Authorization: Bearer <JWT>` (current API); `Authorization: App <api_key>` / `Token <key>` (legacy V2).
+- Versioning: `LeafLink-Version: 2022-10-31` request header; versions are dates.
+- Pagination: `page` + `page_size` (1-500, default 50) + `ordering`; envelope is count/next/previous/results.
+- Rate limits: 300 requests/minute and 8 requests/second, burst 1000/minute; 429 with RateLimit-* headers.
+- CORS is not permitted — the API cannot be called from a browser.
+- Webhooks: order and product create/update events, HMAC-SHA256 signed in the `LL-Signature` header.
+- No idempotency key mechanism is documented or present in either OpenAPI.
+
+## Company
+- [LeafLink](https://www.leaflink.com/)
+- [Pricing](https://www.leaflink.com/pricing/)
+- [Blog](https://www.leaflink.com/blog/)
+- [Trust Center](https://trust.leaflink.com/)
+- [Terms and Conditions](https://www.leaflink.com/terms-and-conditions/)
+- [Privacy Policy](https://www.leaflink.com/privacy-policy/)
+- [GitHub](https://github.com/LeafLink)

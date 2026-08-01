@@ -1,0 +1,114 @@
+generated: '2026-08-01'
+method: derived
+source:
+- openapi/leaflink-api-openapi-original.yml
+- openapi/leaflink-marketplace-v2-openapi-original.yml
+format: json
+rfc9457: false
+note: Derived from the 4xx/5xx responses declared in the current LeafLink OpenAPI. LeafLink does not use RFC 9457
+  application/problem+json; error bodies are plain application/json. The legacy Marketplace V2 OpenAPI declares
+  no error responses at all. LeafLink publishes no consolidated error reference page, so titles below are the spec
+  response descriptions verbatim.
+coverage:
+  current_api_operations: 269
+  operations_declaring_429: 269
+  operations_declaring_400: 21
+  operations_declaring_404: 8
+  operations_declaring_409: 1
+  operations_declaring_408: 1
+  operations_declaring_500: 1
+  legacy_v2_operations: 111
+  legacy_v2_error_responses: 0
+documented_statuses:
+- status: 400
+  title: Bad Request
+  cause: Malformed request; on legacy V2 also a missing trailing slash.
+- status: 401
+  title: Unauthorized
+  cause: Missing or invalid credentials.
+  docs: https://developer.leaflink.com/api/getting-started/
+- status: 404
+  title: Not Found
+  cause: Unknown resource; also returned for a trailing slash on the current API, and for an out-of-range page.
+- status: 408
+  title: Request Timeout
+- status: 409
+  title: Conflict
+- status: 429
+  title: Too Many Requests
+  cause: Rate limit exceeded (300/min or 8/sec).
+  headers:
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+- status: 500
+  title: Internal Server Error
+problems:
+- status: 400
+  title: 'Invalid list parameters (e.g. page size over 100 when unassigned=true), failure loading unassigned candidates
+    from traceability, or a domain error from the batch layer surfaced as 400. Response body: {"detail": string}.'
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_list
+- status: 400
+  title: 'Create/update validation or persistence error (not duplicate number or missing batch). Body: {"detail":
+    string}.'
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_create
+- status: 400
+  title: No response body
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#chats_messages_list
+- status: 400
+  title: Validation error
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_commands_archive_create
+- status: 400
+  title: 'Assignment payload invalid (serializer), or traceability bulk update failed. Body: {"detail": string}.'
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#packages_create
+- status: 400
+  title: Bad Request
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_bulk_update
+- status: 400
+  title: Invalid request
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#splits_retrieve
+- status: 404
+  title: 'No batch exists for this id in the current company. Body: {"detail": string} (default message is generic).'
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_retrieve
+- status: 404
+  title: No response body
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#chats_messages_list
+- status: 404
+  title: Command not found
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#inventory_commands_status_retrieve
+- status: 404
+  title: Product not found
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_audit_log_retrieve
+- status: 404
+  title: Preferences from User with ID <user_id> not found.
+  content_types:
+  - application/json
+  source_operation: openapi/leaflink-api-openapi-original.yml#None
+- status: 408
+  title: Timeout Error
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#products_bulk_update
+- status: 409
+  title: 'A batch with this number already exists for the company. Body: {"detail": string} (includes the conflicting
+    number).'
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#batches_create
+- status: 429
+  title: Rate Limit Error
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#companies_stats_cashback_retrieve
+- status: 500
+  title: 'Traceability package list failed (non-success HTTP or error payload). Body: {"detail": string}.'
+  content_types: null
+  source_operation: openapi/leaflink-api-openapi-original.yml#packages_list

@@ -1,0 +1,59 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for LeafLink Marketplace V2 API
+  version: 1.0.0
+extends: openapi/leaflink-marketplace-v2-openapi-original.yml
+x-generated: '2026-08-01'
+x-method: generated
+actions:
+- target: $.info
+  update:
+    x-apievangelist-slug: leaflink
+    x-apievangelist-harvested: '2026-08-01'
+    x-apievangelist-source: https://developer.leaflink.com/legacy/v2/api/ref/
+    x-apievangelist-spec-origin: extracted verbatim from the ReDoc __redoc_state bundle embedded in the published
+      reference page
+    x-industry:
+    - Cannabis
+    - Wholesale
+    - B2B Marketplace
+    - Supply Chain
+    x-lifecycle-status: legacy
+- target: $.info
+  update:
+    x-rate-limits:
+      per_minute: 300
+      per_second: 8
+      burst_per_minute: 1000
+      headers:
+      - RateLimit-Limit
+      - RateLimit-Remaining
+      - RateLimit-Reset
+      source: https://developer.leaflink.com/api/getting-started/
+- target: $.info
+  update:
+    x-conventions:
+      naming: snake_case
+      media_type: application/json
+      trailing_slash: true
+      pagination: limit/offset
+      idempotency: false
+      cors: false
+      artifact: conventions/leaflink-conventions.yml
+- target: $.info
+  update:
+    x-webhooks:
+      published: true
+      events:
+      - order.created_or_updated
+      - product.created_or_updated
+      signature_header: LL-Signature
+      signature_algorithm: HMAC-SHA256
+      artifact: asyncapi/leaflink-webhooks.yml
+      docs: https://developer.leaflink.com/legacy/v2/brands/webhooks/
+- target: $.info
+  update:
+    x-environments:
+      production: https://app.leaflink.com/api/v2/
+      test: https://www.sandbox.leaflink.com/api/v2/
+      artifact: sandbox/leaflink-sandbox.yml

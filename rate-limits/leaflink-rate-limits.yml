@@ -1,0 +1,31 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/api/getting-started/
+docs:
+- https://developer.leaflink.com/api/getting-started/
+- https://developer.leaflink.com/legacy/v2/api/authorization/
+rate_limits:
+- name: Per minute
+  limit_count: 300
+  period: minute
+  api: LeafLink API
+  scope: API key owner
+  response: 429
+- name: Per second
+  limit_count: 8
+  period: second
+  api: LeafLink API
+  scope: API key owner
+  response: 429
+- name: Burst per minute (legacy V2)
+  limit_count: 1000
+  period: minute
+  api: LeafLink Marketplace V2 API
+  scope: API key owner
+  response: 429
+headers:
+- RateLimit-Limit
+- RateLimit-Remaining
+- RateLimit-Reset
+header_note: Minute-specific and second-specific variants of the RateLimit-* headers are also returned.
+spec_evidence: 429 responses are declared on all 269 operations of the current OpenAPI.

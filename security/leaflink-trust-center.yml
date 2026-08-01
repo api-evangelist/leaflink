@@ -1,0 +1,21 @@
+generated: '2026-08-01'
+method: searched
+url: https://trust.leaflink.com/
+published: true
+discovery: Linked as "Trust Center" from the leaflink.com primary navigation.
+certifications: []
+certifications_verified: false
+note: LeafLink advertises a Trust Center at trust.leaflink.com from its main site navigation, but the host returns
+  HTTP 403 to both plain curl and a browser user-agent (bot protection). The page is therefore recorded as published
+  but its contents could not be read, and NO certifications are asserted. Because no certification could be verified,
+  no Compliance pointer is wired — re-probe on a later pass.
+evidence:
+- source: https://www.leaflink.com/
+  kind: navigation link
+  result: Trust Center -> https://trust.leaflink.com/
+- source: https://trust.leaflink.com/
+  kind: direct fetch
+  http_status: 403
+  user_agents_tried:
+  - curl
+  - Chrome 126 desktop

@@ -1,0 +1,70 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/api/getting-started/ (docs) + openapi/leaflink-api-openapi-original.yml,
+  openapi/leaflink-marketplace-v2-openapi-original.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+  oauth2_flows: []
+  oauth: false
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication)
+    for more information.
+  sources:
+  - openapi/leaflink-api-openapi-original.yml
+- name: tokenAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Token-based authentication with required prefix "Token"
+  sources:
+  - openapi/leaflink-api-openapi-original.yml
+  - openapi/leaflink-marketplace-v2-openapi-original.yml
+docs:
+- https://developer.leaflink.com/api/getting-started/
+- https://developer.leaflink.com/legacy/v2/api/authorization/
+- https://help.leaflink.com/s/article/How-to-Create-API-Keys-and-Webhooks-in-LeafLink
+documented:
+  current_api:
+    api: LeafLink API
+    scheme: http bearer
+    format: JWT
+    header: 'Authorization: Bearer <YOUR_JWT>'
+    unauthenticated_response: 401
+    docs: https://developer.leaflink.com/api/getting-started/
+  legacy_v2:
+    api: LeafLink Marketplace V2 API
+    scheme: apiKey in header
+    header: 'Authorization: App <api_key>'
+    alternate_prefix: Token
+    note: Exactly one space separates the prefix from the key.
+    docs: https://developer.leaflink.com/legacy/v2/api/authorization/
+credential_types:
+- name: User Token
+  scope: every company the token holder has permissions for in LeafLink
+- name: App Token
+  scope: only the single company where the token was created
+credential_issuance:
+  self_service: true
+  how: A user generates an API key in the LeafLink dashboard under Settings > Developer Options; an admin must first
+    enable "Developer access" and grant the permission.
+  docs: https://help.leaflink.com/s/article/How-to-Create-API-Keys-and-Webhooks-in-LeafLink
+  support: https://developer.leaflink.com/support/
+  ownership: The user who generates the key becomes its "owner" for rate-limiting purposes.
+oauth:
+  supported: false
+  note: LeafLink uses key/JWT-based authentication only — no OAuth 2.0 or OIDC. No scopes/ artifact is emitted.
+scopes:
+  published: false
+  note: No scope or permission surface is exposed through the API; access is bounded by the token type and the company/role
+    the key was issued under.
+transport:
+  https_only: true
+  cors: false

@@ -1,0 +1,28 @@
+generated: '2026-08-01'
+method: probed
+note: Every /.well-known/ path returned 404 on every LeafLink host probed. Recorded as a negative probe result so
+  future runs do not re-derive; no WellKnown / SecurityTxt pointer is wired because no discovery document is published.
+hosts_probed:
+- https://api.leaflink.com
+- https://developer.leaflink.com
+- https://www.leaflink.com
+- https://leaflink.com
+- https://app.leaflink.com
+documents:
+- path: /.well-known/security.txt
+  status: 404
+- path: /.well-known/openid-configuration
+  status: 404
+- path: /.well-known/oauth-authorization-server
+  status: 404
+- path: /.well-known/oauth-protected-resource
+  status: 404
+- path: /.well-known/api-catalog
+  status: 404
+- path: /.well-known/ai-plugin.json
+  status: 404
+- path: /.well-known/agent-card.json
+  status: 404
+- path: /.well-known/agent.json
+  status: 404
+found: 0

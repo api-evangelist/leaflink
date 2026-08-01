@@ -1,0 +1,66 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/legacy/v2/brands/webhooks/
+docs:
+- https://developer.leaflink.com/legacy/v2/brands/webhooks/
+- https://developer.leaflink.com/legacy/v2/brands/webhooks/setup/
+- https://help.leaflink.com/s/article/How-to-Create-API-Keys-and-Webhooks-in-LeafLink
+spec_type: Webhooks
+asyncapi_published: false
+note: LeafLink documents webhooks in prose only — no AsyncAPI document is published, and no machine-readable event
+  catalog or payload schema is available. Captured verbatim from the developer hub; event payloads are not published,
+  so no schemas are asserted.
+transport: HTTPS POST to a subscriber-registered URL
+registration:
+  mechanism: LeafLink dashboard, not API
+  steps:
+  - An admin enables webhooks in Settings under "Developer access"
+  - The admin grants users permission to access the Developer Options page
+  - A user goes to Settings > Developer Options and clicks "Add Webhook"
+  - The user supplies a name and a destination URL and selects subscriptions
+  manageable:
+  - name
+  - url
+  - subscriptions
+  - disable
+subscriptions:
+- label: NEW & CHANGED ORDERS
+  resource: order
+  triggers:
+  - created
+  - updated
+  description: Receive information when an order is created or updated.
+- label: NEW & CHANGED PRODUCTS
+  resource: product
+  triggers:
+  - created
+  - updated
+  description: Receive information when a product is created or updated.
+security:
+  signature:
+    algorithm: HMAC-SHA256
+    encoding: base64
+    header: LL-Signature
+    key: a per-company webhook key
+    verification: Compute the HMAC-SHA256 of the raw request body with the company webhook key, base64-encode it,
+      and compare to the LL-Signature header value.
+    sample_languages:
+    - Python
+    - Node.js
+    - PHP
+    - Ruby
+reliability:
+  auto_disable: A webhook at a 100% failure rate for five consecutive days is automatically deactivated.
+  notification: An email is sent to the account owner on deactivation.
+  reactivation: The webhook can be reactivated after the endpoint is fixed.
+  retry_policy: null
+  retry_note: No retry schedule or backoff policy is published.
+related_operations:
+  note: Webhook events mirror these REST resources.
+  order:
+  - openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_list
+  - openapi/leaflink-marketplace-v2-openapi-original.yml#orders-received_read
+  product:
+  - openapi/leaflink-api-openapi-original.yml#products_list
+  - openapi/leaflink-api-openapi-original.yml#products_retrieve
+  - openapi/leaflink-marketplace-v2-openapi-original.yml#products_list

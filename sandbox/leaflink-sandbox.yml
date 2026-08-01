@@ -1,0 +1,46 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.leaflink.com/legacy/v2/api/ref/
+docs: https://developer.leaflink.com/legacy/v2/api/authorization/#sandbox-environments
+environments:
+- name: production
+  host: app.leaflink.com
+  base_url: https://app.leaflink.com/api/v2/
+  api: Marketplace V2
+  kind: live
+- name: sandbox
+  host: www.sandbox.leaflink.com
+  base_url: https://www.sandbox.leaflink.com/api/v2/
+  api: Marketplace V2
+  kind: test
+- name: integrations sandbox
+  host: www.leaflink-integrations.leaflink.com
+  base_url: https://www.leaflink-integrations.leaflink.com/api/v2/
+  api: Marketplace V2
+  kind: test
+  note: Second sandbox aimed at integration partners.
+- name: production
+  host: api.leaflink.com
+  base_url: https://api.leaflink.com
+  api: LeafLink API
+  kind: live
+  source: OpenAPI servers[]
+- name: staging
+  host: staging-api.leaflink.com
+  base_url: https://staging-api.leaflink.com
+  api: LeafLink API
+  kind: test
+  source: OpenAPI servers[] — described as "LeafLink API staging URL."
+separation:
+  mechanism: separate hostnames
+  key_prefixes: null
+  note: LeafLink separates test from live by host, not by a test/live key prefix. Credentials are issued per environment.
+test_values:
+  published: false
+  note: LeafLink publishes no magic test values, test cards, or seeded fixtures. Sandbox accounts are provisioned
+    by LeafLink support.
+time_simulation:
+  supported: false
+access:
+  how: Contact LeafLink support to be provisioned sandbox access and an API key.
+  url: https://developer.leaflink.com/support/

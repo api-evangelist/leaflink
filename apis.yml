@@ -1,18 +1,95 @@
 aid: leaflink
 name: LeafLink
-description: 'LeafLink is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: LeafLink is the wholesale cannabis marketplace and B2B commerce platform connecting licensed cannabis
+  brands, distributors and retailers across roughly 30 US markets. The platform bundles a wholesale marketplace,
+  order management, payments and net terms (LeafLink Financial), logistics and transportation, inventory management,
+  seed-to-sale traceability integration, compliance and licensing, advertising and market insights into one system
+  of record for regulated cannabis wholesale. LeafLink publishes a public REST API at api.leaflink.com — the current
+  dated version 2022-10-31, authenticated with JWT bearer tokens, spanning 182 paths and 269 operations across products,
+  orders, customers, inventory, payments, logistics, traceability, compliance, taxes and messaging — alongside a
+  legacy Marketplace V2 API at app.leaflink.com/api/v2 with 66 paths and 111 operations. Both are documented with
+  OpenAPI on the LeafLink Developer Hub, and the platform supports HMAC-signed webhooks for order and product events.
+image: https://www.leaflink.com/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/leaflink/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
-- Company
-apis: []
+- Cannabis
+- Wholesale
+- B2B Marketplace
+- Supply Chain
+- Payments
+- Logistics
+- Inventory
+- Compliance
+- Traceability
+- eCommerce
+- Distribution
+- Retail
+apis:
+- aid: leaflink:api
+  name: LeafLink API
+  description: The current LeafLink REST API, version 2022-10-31. 182 paths and 269 operations covering products
+    and catalog, customers, brands, inventory (CQRS commands + measurement queries), payments and invoices, logistics
+    and transportation, traceability, compliance and licensing, taxes, pricing and chats. JSON only, snake_case,
+    JWT bearer auth, date-versioned via the LeafLink-Version header.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Cannabis
+  - Wholesale
+  - Marketplace
+  - Inventory
+  - Payments
+  - Logistics
+  - Compliance
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-api-openapi-original.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: Overlay
+    url: overlays/leaflink-api-overlay.yaml
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+- aid: leaflink:marketplace-v2
+  name: LeafLink Marketplace V2 API
+  description: 'The legacy LeafLink Marketplace V2 REST API, currently at release 2.39.0. 66 paths and 111 operations
+    for brands and retailers: orders received, buyer orders, line items, order payments and event logs, products
+    and product batches, customers, customer statuses and tiers, credits, licenses, retailer inventory, strains,
+    reports and promo codes. Token/App-key auth, limit/offset paging, dynamic responses via include_children and
+    fields_include/fields_exclude.'
+  humanURL: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  baseURL: https://app.leaflink.com/api/v2
+  tags:
+  - Cannabis
+  - Wholesale
+  - Orders
+  - Products
+  - Customers
+  - Legacy
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-marketplace-v2-openapi-original.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: Overlay
+    url: overlays/leaflink-marketplace-v2-overlay.yaml
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +97,75 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/leaflink_stock/
+  url: https://www.leaflink.com/
+- type: DeveloperPortal
+  url: https://developer.leaflink.com/
+- type: Documentation
+  url: https://developer.leaflink.com/api/
+- type: APIReference
+  url: https://developer.leaflink.com/api/ref/
+- type: GettingStarted
+  url: https://developer.leaflink.com/api/getting-started/
+- type: Support
+  url: https://developer.leaflink.com/support/
+- type: HelpCenter
+  url: https://help.leaflink.com/
+- type: Blog
+  url: https://www.leaflink.com/blog/
+- type: BlogRSS
+  url: https://www.leaflink.com/blog/feed/
+- type: GitHubOrganization
+  url: https://github.com/LeafLink
+- type: Pricing
+  url: https://www.leaflink.com/pricing/
+- type: SignUp
+  url: https://app.leaflink.com/signup/
+- type: TermsOfService
+  url: https://www.leaflink.com/terms-and-conditions/
+- type: PrivacyPolicy
+  url: https://www.leaflink.com/privacy-policy/
+- type: Integrations
+  url: https://www.leaflink.com/integrations/
+- type: About
+  url: https://www.leaflink.com/about-us/
+- type: Authentication
+  url: authentication/leaflink-authentication.yml
+- type: Conventions
+  url: conventions/leaflink-conventions.yml
+- type: ErrorCatalog
+  url: errors/leaflink-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/leaflink-lifecycle.yml
+- type: ChangeLog
+  url: changelog/leaflink-changelog.yml
+- type: Sandbox
+  url: sandbox/leaflink-sandbox.yml
+- type: RateLimits
+  url: rate-limits/leaflink-rate-limits.yml
+- type: Conformance
+  url: conformance/leaflink-conformance.yml
+- type: DataModel
+  url: data-model/leaflink-data-model.yml
+- type: Packages
+  url: packages/leaflink-packages.yml
+- type: Components
+  url: components/leaflink-components.yml
+- type: Webhooks
+  url: asyncapi/leaflink-webhooks.yml
+- type: MCPServer
+  url: mcp/leaflink-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/leaflink-agentic-access.yml
+- type: LLMsTxt
+  url: llms/leaflink-llms.txt
+- type: DomainSecurity
+  url: security/leaflink-domain-security.yml
+- type: TrustCenter
+  url: https://trust.leaflink.com/
+x-enrichment:
+  date: '2026-08-01'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v1

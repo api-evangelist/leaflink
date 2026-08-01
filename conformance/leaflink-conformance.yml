@@ -1,0 +1,72 @@
+generated: '2026-08-01'
+method: derived
+source:
+- openapi/leaflink-api-openapi-original.yml
+- openapi/leaflink-marketplace-v2-openapi-original.yml
+- https://developer.leaflink.com/api/getting-started/
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: 'Two published OpenAPI documents: 3.0.3 (LeafLink API, 182 paths / 269 ops) and 3.0.0 (Marketplace V2,
+    66 paths / 111 ops).'
+- id: rest
+  conforms: true
+  evidence: Self-described as "a REST-like programmatic interface" with resource paths and standard HTTP verbs/status
+    codes.
+- id: json
+  conforms: true
+  evidence: application/json is the only content type.
+- id: http-bearer-jwt
+  conforms: true
+  evidence: components.securitySchemes.bearerAuth is http/bearer with bearerFormat JWT.
+- id: api-key-header
+  conforms: true
+  evidence: Legacy V2 uses an Authorization header apiKey scheme ("App <key>" / "Token <key>").
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 security scheme in either spec; the authorization docs state key-based auth, not OAuth.
+- id: oidc
+  conforms: false
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json response in either spec; errors are plain application/json.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header documented; field deprecations are announced in release notes only.
+- id: idempotency-key
+  conforms: false
+  evidence: No Idempotency-Key parameter in any of the 380 operations and no idempotency contract in the docs.
+- id: rate-limit-headers
+  conforms: true
+  evidence: RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset returned; 429 declared on all 269 current-API
+    operations.
+- id: pagination
+  conforms: true
+  evidence: page/page_size/ordering with a count/next/previous/results envelope (limit/offset on legacy V2).
+- id: webhooks-hmac-sha256
+  conforms: true
+  evidence: Webhook requests are signed with HMAC-SHA256 in the LL-Signature header.
+- id: asyncapi
+  conforms: false
+  evidence: Webhooks are documented in prose; no AsyncAPI document is published.
+- id: json-api
+  conforms: false
+- id: odata
+  conforms: false
+- id: scim
+  conforms: false
+- id: fhir
+  conforms: false
+- id: metrc-traceability
+  conforms: true
+  evidence: A traceability tag with 28 operations plus package_tags on line items for Metrc add-on users; seed-to-sale
+    traceability integration is a first-class product surface.
+- id: cors
+  conforms: false
+  evidence: Cross-origin requests are explicitly not permitted.
+regulatory_context:
+  industry: cannabis
+  note: LeafLink serves only licensed, government-regulated cannabis operators. Compliance surfaces in the API as
+    license and license-type resources, state scoping, and seed-to-sale traceability integration — not as a published
+    certification program. No SOC 2 / ISO 27001 / PCI DSS certification could be verified (see security/leaflink-trust-center.yml),
+    so no Compliance pointer is wired.

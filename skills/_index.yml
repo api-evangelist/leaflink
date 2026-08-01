@@ -1,0 +1,95 @@
+generated: '2026-08-01'
+method: generated
+source:
+- openapi/leaflink-api-openapi-original.yml
+- openapi/leaflink-marketplace-v2-openapi-original.yml
+- https://developer.leaflink.com/api/getting-started/
+note: Generated packaged Agent Skills, one per marquee LeafLink flow. Every operationId referenced was verified
+  to exist verbatim in the referenced OpenAPI. LeafLink publishes no AGENTS.md or first-party skill files.
+skills:
+- file: leaflink-sync-product-catalog.md
+  name: Sync a brand product catalog
+  description: Read, create and update a LeafLink brand product catalog, including images, categories and strains.
+  api: openapi/leaflink-api-openapi-original.yml
+  operations:
+  - products_list
+  - products_retrieve
+  - products_create
+  - products_partial_update
+  - product_images_list
+  - product_images_create
+  - product_categories_list
+  - product_subcategories_list
+  - product_lines_list
+  - strains_list
+  - product_listing_states_list
+- file: leaflink-process-received-orders.md
+  name: Process orders received
+  description: List, read, transition and reconcile wholesale orders received on the LeafLink Marketplace V2 API.
+  api: openapi/leaflink-marketplace-v2-openapi-original.yml
+  operations:
+  - orders-received_list
+  - orders-received_read
+  - orders-received_create
+  - orders-received_partial_update
+  - orders-received_transition_create
+  - orders-received-line-items_list
+  - line-items_create
+  - order-payments_list
+  - order-event-logs_list
+- file: leaflink-onboard-customer.md
+  name: Onboard and verify a wholesale customer
+  description: Create a LeafLink customer, attach contacts, and verify cannabis licenses and status.
+  api: openapi/leaflink-api-openapi-original.yml
+  operations:
+  - customers_list
+  - customers_retrieve
+  - customers_create
+  - customers_partial_update
+  - customer_statuses_list
+  - customer_groups_list
+  - compliance_licenses_list
+  - compliance_license_types_list
+  - contacts_list
+- file: leaflink-reconcile-inventory.md
+  name: Reconcile inventory across facilities
+  description: Read LeafLink inventory measurements, compare against an external system, and issue inventory commands.
+  api: openapi/leaflink-api-openapi-original.yml
+  operations:
+  - inventory_measurements_by_product_retrieve
+  - inventory_measurements_by_facility_retrieve
+  - inventory_commands_compare_inventory_create
+  - inventory_commands_transfer_create
+  - inventory_commands_hold_create
+  - inventory_commands_unhold_create
+  - inventory_commands_status_retrieve
+  - facilities_list
+  - batches_list
+  - batches_create
+- file: leaflink-payments-and-invoices.md
+  name: Reconcile payments and invoices
+  description: Read LeafLink sales invoices, record payments, and inspect payment contracts and tax schedules.
+  api: openapi/leaflink-api-openapi-original.yml
+  operations:
+  - sales_invoices_list
+  - sales_invoices_retrieve
+  - payments_list
+  - payments_create
+  - payments_retrieve
+  - invoice_recorded_payments_create
+  - payment_contracts_list
+  - taxes_tax_schedules_list
+- file: leaflink-dispatch-delivery.md
+  name: Dispatch a delivery and manage transportation
+  description: Create LeafLink deliveries and manage transportation orders, drivers, vehicles and distribution zones.
+  api: openapi/leaflink-api-openapi-original.yml
+  operations:
+  - deliveries_list
+  - deliveries_create
+  - deliveries_retrieve
+  - transportation_orders_list
+  - transportation_orders_create
+  - transportation_drivers_list
+  - transportation_vehicles_list
+  - transportation_partners_list
+  - distribution_zones_list

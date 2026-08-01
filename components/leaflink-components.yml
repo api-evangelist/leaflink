@@ -1,0 +1,43 @@
+generated: '2026-08-01'
+method: searched
+source: https://www.npmjs.com/org/leaflink
+note: LeafLink publishes "Stash", its first-party design system, as public npm packages. These are client-side UI
+  component libraries LeafLink built for its own product surfaces — they are not embeddable widgets for third-party
+  integration with the LeafLink API, and they are not API SDKs. Recorded as components; no SDKs pointer is derived
+  from them.
+families:
+- name: Stash
+  description: LeafLink's design system
+  repository: https://github.com/LeafLink/stash
+  packages:
+  - name: '@leaflink/stash'
+    role: core design system
+    registry: npm
+  - name: '@leaflink/stash-vue'
+    role: first-party Vue components
+    registry: npm
+  - name: '@leaflink/stash-theme'
+    role: design tokens, fonts, Tailwind theme adapter
+    registry: npm
+  - name: '@leaflink/stash-types'
+    role: shared types
+    registry: npm
+  - name: '@leaflink/stash-constants'
+    role: shared constants
+    registry: npm
+  - name: '@leaflink/stash-utils'
+    role: shared utilities
+    registry: npm
+  - name: '@leaflink/design-system'
+    role: multi-brand color tokens and Tailwind theme
+    registry: npm
+- name: Notifications
+  description: Components for integrating Knock in-app notifications
+  repository: https://github.com/LeafLink/vue-notification-feed
+  packages:
+  - name: '@leaflink/vue-notification-feed'
+    role: Vue notification feed components
+    registry: npm
+framework: Vue
+loader: npm / bundler import
+embeddable_for_third_parties: false
