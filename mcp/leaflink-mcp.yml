@@ -4,10 +4,10 @@ status: candidate
 source:
 - openapi/leaflink-api-openapi-original.yml
 - openapi/leaflink-marketplace-v2-openapi-original.yml
-note: LeafLink publishes NO official MCP server. Searched the docs, the LeafLink GitHub org, npm and the public
-  MCP registries — nothing. This is a CANDIDATE tool surface derived from real LeafLink OpenAPI operations so an
-  agent builder has a grounded starting point; every tool maps to an operationId that exists verbatim in the referenced
-  spec. No hosted endpoint exists.
+note: LeafLink publishes NO official MCP server. Searched the docs, the LeafLink GitHub org, npm and the
+  public MCP registries — nothing. This is a CANDIDATE tool surface derived from real LeafLink OpenAPI
+  operations so an agent builder has a grounded starting point; every tool maps to an operationId that
+  exists verbatim in the referenced spec. No hosted endpoint exists.
 server:
   name: leaflink
   transport: http
@@ -148,7 +148,8 @@ tools:
   source_operation: openapi/leaflink-api-openapi-original.yml#compliance_licenses_list
   read_only: true
 - name: compliance_license_types_list
-  description: Ignore type because the ViewSet class is not typed and the UnifiedApiReadOnlyModelViewSet is.
+  description: Ignore type because the ViewSet class is not typed and the UnifiedApiReadOnlyModelViewSet
+    is.
   method: GET
   path: /compliance/license_types
   source_operation: openapi/leaflink-api-openapi-original.yml#compliance_license_types_list
@@ -441,3 +442,9 @@ tools:
   path: /retailer-inventory/
   source_operation: openapi/leaflink-marketplace-v2-openapi-original.yml#retailer-inventory_list
   read_only: true
+deployment:
+  mode: none
+  verified: derived
+  tools: 70
+  checked: '2026-08-12'
+  source: catalog MCP census
