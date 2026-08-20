@@ -26,6 +26,19 @@ tags:
 - Inventory
 - Compliance
 - Traceability
+- E-Commerce
+- Distribution
+- Retail
+tags_raw:
+- Cannabis
+- Wholesale
+- B2B Marketplace
+- Supply Chain
+- Payments
+- Logistics
+- Inventory
+- Compliance
+- Traceability
 - eCommerce
 - Distribution
 - Retail
@@ -69,6 +82,13 @@ apis:
   humanURL: https://developer.leaflink.com/legacy/v2/api/getting-started/
   baseURL: https://app.leaflink.com/api/v2
   tags:
+  - Cannabis
+  - Wholesale
+  - Order
+  - Product
+  - Customers
+  - Legacy
+  tags_raw:
   - Cannabis
   - Wholesale
   - Orders
