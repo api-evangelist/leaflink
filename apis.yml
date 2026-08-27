@@ -43,61 +43,24 @@ tags_raw:
 - Distribution
 - Retail
 apis:
-- aid: leaflink:api
-  name: LeafLink API
-  description: The current LeafLink REST API, version 2022-10-31. 182 paths and 269 operations covering products
-    and catalog, customers, brands, inventory (CQRS commands + measurement queries), payments and invoices, logistics
-    and transportation, traceability, compliance and licensing, taxes, pricing and chats. JSON only, snake_case,
-    JWT bearer auth, date-versioned via the LeafLink-Version header.
+- aid: leaflink:leaflink-activeentry-api
+  name: LeafLink Active Entry API
+  description: The ActiveEntry API from LeafLink — 2 operation(s) for activeentry.
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
-  - Cannabis
-  - Wholesale
-  - Marketplace
-  - Inventory
-  - Payments
-  - Logistics
-  - Compliance
+  - ActiveEntry
   properties:
   - type: OpenAPI
-    url: openapi/leaflink-api-openapi-original.yml
+    url: openapi/leaflink-activeentry-api-openapi.yml
   - type: Documentation
     url: https://developer.leaflink.com/api/
   - type: APIReference
     url: https://developer.leaflink.com/api/ref/
   - type: GettingStarted
     url: https://developer.leaflink.com/api/getting-started/
-  - type: Overlay
-    url: overlays/leaflink-api-overlay.yaml
   - type: RateLimits
     url: rate-limits/leaflink-rate-limits.yml
-- aid: leaflink:marketplace-v2
-  name: LeafLink Marketplace V2 API
-  description: 'The legacy LeafLink Marketplace V2 REST API, currently at release 2.39.0. 66 paths and 111 operations
-    for brands and retailers: orders received, buyer orders, line items, order payments and event logs, products
-    and product batches, customers, customer statuses and tiers, credits, licenses, retailer inventory, strains,
-    reports and promo codes. Token/App-key auth, limit/offset paging, dynamic responses via include_children and
-    fields_include/fields_exclude.'
-  humanURL: https://developer.leaflink.com/legacy/v2/api/getting-started/
-  baseURL: https://app.leaflink.com/api/v2
-  tags:
-  - Cannabis
-  - Wholesale
-  - Order
-  - Product
-  - Customers
-  - Legacy
-  tags_raw:
-  - Cannabis
-  - Wholesale
-  - Orders
-  - Products
-  - Customers
-  - Legacy
-  properties:
-  - type: OpenAPI
-    url: openapi/leaflink-marketplace-v2-openapi-original.yml
   - type: Documentation
     url: https://developer.leaflink.com/legacy/v2/api/getting-started/
   - type: APIReference
@@ -106,8 +69,2454 @@ apis:
     url: https://developer.leaflink.com/legacy/v2/api/authorization/
   - type: ChangeLog
     url: https://developer.leaflink.com/legacy/v2/api/release-notes/
-  - type: Overlay
-    url: overlays/leaflink-marketplace-v2-overlay.yaml
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-activity-entries-api
+  name: LeafLink Activity Entries API
+  description: >-
+    The `CompanyActivityEntry` model represents a CRM action taken by a staff member that relates to a
+    customer, with an optional description.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - activity-entries
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-activity-entries-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-batch-api
+  name: LeafLink Batch API
+  description: The batch API from LeafLink — 2 operation(s) for batch.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - batch
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-batch-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-batch-documents-api
+  name: LeafLink Batch Documents API
+  description: The batch-documents API from LeafLink — 2 operation(s) for batch-documents.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - batch-documents
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-batch-documents-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-batches-api
+  name: LeafLink Batches API
+  description: The batches API from LeafLink — 3 operation(s) for batches.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - batches
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-batches-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-brand-api
+  name: LeafLink Brand API
+  description: The Brand API from LeafLink — 4 operation(s) for brand.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Brand
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-brand-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-brands-api
+  name: LeafLink Brands API
+  description: The brands API from LeafLink — 3 operation(s) for brands.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - brands
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-brands-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-buyer-orders-api
+  name: LeafLink Buyer Orders API
+  description: The buyer-orders API from LeafLink — 1 operation(s) for buyer-orders.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - buyer-orders
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-buyer-orders-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-buyer-product-image-api
+  name: LeafLink Buyer Product Image API
+  description: The Buyer Product Image API from LeafLink — 2 operation(s) for buyer product image.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Buyer Product Image
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-buyer-product-image-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-chats-api
+  name: LeafLink Chats API
+  description: The chats API from LeafLink — 4 operation(s) for chats.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - chats
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-chats-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-companies-api
+  name: LeafLink Companies API
+  description: The companies API from LeafLink — 2 operation(s) for companies.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - companies
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-companies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-company-api
+  name: LeafLink Company API
+  description: The Company API from LeafLink — 1 operation(s) for company.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Company
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-company-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-company-messages-api
+  name: LeafLink Company Messages API
+  description: The company_messages API from LeafLink — 2 operation(s) for company_messages.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - company_messages
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-company-messages-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-company-staff-api
+  name: LeafLink Company Staff API
+  description: The company-staff API from LeafLink — 2 operation(s) for company-staff.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - company-staff
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-company-staff-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-compliance-api
+  name: LeafLink Compliance API
+  description: The compliance API from LeafLink — 4 operation(s) for compliance.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - compliance
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-compliance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-contact-api
+  name: LeafLink Contact API
+  description: The Contact API from LeafLink — 2 operation(s) for contact.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Contact
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-contact-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-contacts-api
+  name: LeafLink Contacts API
+  description: The contacts API from LeafLink — 4 operation(s) for contacts.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-credits-api
+  name: LeafLink Credits API
+  description: >-
+    The Credit model represents credits granted by a seller company to a customer for use in future purchases.
+    Read-only.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - credits
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-credits-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-customer-api
+  name: LeafLink Customer API
+  description: The Customer API from LeafLink — 4 operation(s) for customer.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Customer
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-customer-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-customer-group-api
+  name: LeafLink Customer Group API
+  description: The Customer Group API from LeafLink — 4 operation(s) for customer group.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Customer Group
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-customer-group-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-customer-statuses-api
+  name: LeafLink Customer Statuses API
+  description: The customer_statuses API from LeafLink — 4 operation(s) for customer_statuses.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - customer_statuses
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-customer-statuses-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-customer-tiers-api
+  name: LeafLink Customer Tiers API
+  description: >-
+    The `CompanyCustomerTier` represents a set of read only objects depicting a customer's tier in relationship
+    to a company.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - customer-tiers
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-customer-tiers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-customers-api
+  name: LeafLink Customers API
+  description: The customers API from LeafLink — 7 operation(s) for customers.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - customers
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-dashboard-api
+  name: LeafLink Dashboard API
+  description: The Dashboard API from LeafLink — 1 operation(s) for dashboard.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Dashboard
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-dashboard-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-deliveries-api
+  name: LeafLink Deliveries API
+  description: The deliveries API from LeafLink — 1 operation(s) for deliveries.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - deliveries
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-deliveries-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-distribution-zones-api
+  name: LeafLink Distribution Zones API
+  description: The distribution-zones API from LeafLink — 2 operation(s) for distribution-zones.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - distribution-zones
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-distribution-zones-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-express-menus-api
+  name: LeafLink Express Menus API
+  description: The express_menus API from LeafLink — 2 operation(s) for express_menus.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - express_menus
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-express-menus-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-facilities-api
+  name: LeafLink Facilities API
+  description: The facilities API from LeafLink — 4 operation(s) for facilities.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - facilities
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-facilities-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-inventory-api
+  name: LeafLink Inventory API
+  description: The inventory API from LeafLink — 4 operation(s) for inventory.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-inventory-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-inventory-command-api
+  name: LeafLink Inventory Command API
+  description: The inventory-command API from LeafLink — 13 operation(s) for inventory-command.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - inventory-command
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-inventory-command-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-inventory-items-api
+  name: LeafLink Inventory Items API
+  description: >-
+    The `InventoryItem` model represents items of a particular inventory batch at a given facility.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - inventory-items
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-inventory-items-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-inventory-query-api
+  name: LeafLink Inventory Query API
+  description: The inventory-query API from LeafLink — 10 operation(s) for inventory-query.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - inventory-query
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-inventory-query-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-inventory-v2-api
+  name: LeafLink Inventory V2 API
+  description: The inventory-v2 API from LeafLink — 12 operation(s) for inventory-v2.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - inventory-v2
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-inventory-v2-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-invoice-recorded-payment-api
+  name: LeafLink Invoice Recorded Payment API
+  description: >-
+    The Invoice Recorded Payment API from LeafLink — 1 operation(s) for invoice recorded payment.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Invoice Recorded Payment
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-invoice-recorded-payment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-license-types-api
+  name: LeafLink License Types API
+  description: The LicenseType model represents a category of state-issued licenses.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - license-types
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-license-types-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-licenses-api
+  name: LeafLink Licenses API
+  description: The License model represents a single state-issued license held by a Company.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - licenses
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-licenses-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-line-items-api
+  name: LeafLink Line Items API
+  description: The LineItem model represents a single entry in an itemized purchase order.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - line-items
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-line-items-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-logistics-transport-api
+  name: LeafLink Logistics Transport API
+  description: The Logistics Transport API from LeafLink — 8 operation(s) for logistics transport.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Logistics Transport
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-logistics-transport-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-managed-companies-api
+  name: LeafLink Managed Companies API
+  description: The managed_companies API from LeafLink — 4 operation(s) for managed_companies.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - managed_companies
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-managed-companies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-messages-api
+  name: LeafLink Messages API
+  description: The Messages API from LeafLink — 1 operation(s) for messages.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-messages-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-notification-api
+  name: LeafLink Notification API
+  description: The notification API from LeafLink — 1 operation(s) for notification.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - notification
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-notification-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-notification-preferences-api
+  name: LeafLink Notification Preferences API
+  description: >-
+    The Notification Preferences API from LeafLink — 2 operation(s) for notification preferences.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Notification Preferences
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-notification-preferences-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-order-comments-api
+  name: LeafLink Order Comments API
+  description: The order-comments API from LeafLink — 1 operation(s) for order-comments.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - order-comments
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-order-comments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-order-event-logs-api
+  name: LeafLink Order Event Logs API
+  description: The order-event-logs API from LeafLink — 2 operation(s) for order-event-logs.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - order-event-logs
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-order-event-logs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-order-payments-api
+  name: LeafLink Order Payments API
+  description: The order-payments API from LeafLink — 3 operation(s) for order-payments.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - order-payments
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-order-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-order-sales-reps-api
+  name: LeafLink Order Sales Reps API
+  description: The order-sales-reps API from LeafLink — 2 operation(s) for order-sales-reps.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - order-sales-reps
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-order-sales-reps-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-orders-received-api
+  name: LeafLink Orders Received API
+  description: Access the order object
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - orders-received
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-orders-received-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-package-api
+  name: LeafLink Package API
+  description: The package API from LeafLink — 1 operation(s) for package.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - package
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-package-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-payment-contract-api
+  name: LeafLink Payment Contract API
+  description: The Payment Contract API from LeafLink — 2 operation(s) for payment contract.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Payment Contract
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-payment-contract-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-payments-api
+  name: LeafLink Payments API
+  description: The payments API from LeafLink — 2 operation(s) for payments.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - payments
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-poms-api
+  name: LeafLink Poms API
+  description: The poms API from LeafLink — 1 operation(s) for poms.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - poms
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-poms-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-pricing-api
+  name: LeafLink Pricing API
+  description: The Pricing API from LeafLink — 2 operation(s) for pricing.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Pricing
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-pricing-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-api
+  name: LeafLink Product API
+  description: The Product API from LeafLink — 7 operation(s) for product.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-assigned-to-buyer-api
+  name: LeafLink Product Assigned To Buyer API
+  description: >-
+    The product-assigned-to-buyer API from LeafLink — 1 operation(s) for product-assigned-to-buyer.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-assigned-to-buyer
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-assigned-to-buyer-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-assignment-products-api
+  name: LeafLink Product Assignment Products API
+  description: >-
+    The product-assignment-products API from LeafLink — 1 operation(s) for product-assignment-products.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-assignment-products
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-assignment-products-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-batches-api
+  name: LeafLink Product Batches API
+  description: Manage assignments.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-batches
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-batches-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-categories-api
+  name: LeafLink Product Categories API
+  description: The product-categories API from LeafLink — 2 operation(s) for product-categories.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-categories
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-categories-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-category-api
+  name: LeafLink Product Category API
+  description: The Product Category API from LeafLink — 2 operation(s) for product category.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Category
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-category-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-dosage-unit-api
+  name: LeafLink Product Dosage Unit API
+  description: The Product Dosage Unit API from LeafLink — 2 operation(s) for product dosage unit.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Dosage Unit
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-dosage-unit-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-grow-operation-type-api
+  name: LeafLink Product Grow Operation Type API
+  description: >-
+    The Product Grow Operation Type API from LeafLink — 1 operation(s) for product grow operation type.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Grow Operation Type
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-grow-operation-type-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-image-api
+  name: LeafLink Product Image API
+  description: The Product Image API from LeafLink — 4 operation(s) for product image.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Image
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-image-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-images-api
+  name: LeafLink Product Images API
+  description: Product images for display in the marketplace.  Each product may have up to 5 images.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-images
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-images-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-line-api
+  name: LeafLink Product Line API
+  description: The Product Line API from LeafLink — 2 operation(s) for product line.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Line
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-line-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-lines-api
+  name: LeafLink Product Lines API
+  description: The product-lines API from LeafLink — 2 operation(s) for product-lines.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-lines
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-lines-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-listing-state-api
+  name: LeafLink Product Listing State API
+  description: The Product Listing State API from LeafLink — 1 operation(s) for product listing state.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Listing State
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-listing-state-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-mvp-api
+  name: LeafLink Product MVP API
+  description: The Product MVP API from LeafLink — 4 operation(s) for product mvp.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product MVP
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-mvp-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-promotion-api
+  name: LeafLink Product Promotion API
+  description: The Product Promotion API from LeafLink — 2 operation(s) for product promotion.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Promotion
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-promotion-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-promotions-api
+  name: LeafLink Product Promotions API
+  description: The product_promotions API from LeafLink — 1 operation(s) for product_promotions.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product_promotions
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-promotions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-specification-api
+  name: LeafLink Product Specification API
+  description: The Product Specification API from LeafLink — 2 operation(s) for product specification.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Specification
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-specification-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-subcategories-api
+  name: LeafLink Product Subcategories API
+  description: The product-subcategories API from LeafLink — 2 operation(s) for product-subcategories.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - product-subcategories
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-subcategories-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-subcategory-api
+  name: LeafLink Product Subcategory API
+  description: The Product Subcategory API from LeafLink — 2 operation(s) for product subcategory.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Subcategory
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-subcategory-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-product-template-api
+  name: LeafLink Product Template API
+  description: The Product Template API from LeafLink — 2 operation(s) for product template.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Product Template
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-product-template-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-products-api
+  name: LeafLink Products API
+  description: The products API from LeafLink — 4 operation(s) for products.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - products
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-products-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-promocodes-api
+  name: LeafLink Promocodes API
+  description: The Promocode model represents a promotional discount code for a specific Brand.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - promocodes
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-promocodes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-reports-api
+  name: LeafLink Reports API
+  description: The Report model represents a report download initiated by a User
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - reports
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-retailer-inventory-api
+  name: LeafLink Retailer Inventory API
+  description: Product information for a retailer company.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - retailer-inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-retailer-inventory-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-sales-invoices-api
+  name: LeafLink Sales Invoices API
+  description: The sales_invoices API from LeafLink — 2 operation(s) for sales_invoices.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - sales_invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-sales-invoices-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-settings-api
+  name: LeafLink Settings API
+  description: The settings API from LeafLink — 2 operation(s) for settings.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - settings
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-settings-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-splitio-api
+  name: LeafLink Split IO API
+  description: The SplitIO API from LeafLink — 1 operation(s) for splitio.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - SplitIO
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-splitio-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-states-api
+  name: LeafLink States API
+  description: The States API from LeafLink — 2 operation(s) for states.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - States
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-states-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-strain-api
+  name: LeafLink Strain API
+  description: The Strain API from LeafLink — 3 operation(s) for strain.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Strain
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-strain-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-strains-api
+  name: LeafLink Strains API
+  description: The strains API from LeafLink — 2 operation(s) for strains.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - strains
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-strains-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-taxes-api
+  name: LeafLink Taxes API
+  description: The taxes API from LeafLink — 2 operation(s) for taxes.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - taxes
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-taxes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-traceability-api
+  name: LeafLink Traceability API
+  description: The traceability API from LeafLink — 22 operation(s) for traceability.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - traceability
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-traceability-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-transportation-api
+  name: LeafLink Transportation API
+  description: The transportation API from LeafLink — 5 operation(s) for transportation.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - transportation
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-transportation-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-unit-denomination-api
+  name: LeafLink Unit Denomination API
+  description: The Unit Denomination API from LeafLink — 2 operation(s) for unit denomination.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Unit Denomination
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-unit-denomination-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-unit-of-measure-api
+  name: LeafLink Unit of Measure API
+  description: The Unit of Measure API from LeafLink — 2 operation(s) for unit of measure.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Unit of Measure
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-unit-of-measure-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-vendors-api
+  name: LeafLink Vendors API
+  description: The vendors API from LeafLink — 3 operation(s) for vendors.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - vendors
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-vendors-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
   - type: FAQ
     url: https://developer.leaflink.com/legacy/v2/api/faqs/
 maintainers:
@@ -116,6 +2525,10 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/leaflink-api-overlay.yaml
+- type: Overlay
+  url: overlays/leaflink-marketplace-v2-overlay.yaml
 - type: Website
   url: https://www.leaflink.com/
 - type: DeveloperPortal
