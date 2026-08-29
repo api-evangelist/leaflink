@@ -9,6 +9,18 @@ description: LeafLink is the wholesale cannabis marketplace and B2B commerce pla
   orders, customers, inventory, payments, logistics, traceability, compliance, taxes and messaging — alongside a
   legacy Marketplace V2 API at app.leaflink.com/api/v2 with 66 paths and 111 operations. Both are documented with
   OpenAPI on the LeafLink Developer Hub, and the platform supports HMAC-signed webhooks for order and product events.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.leaflink.com/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/leaflink/refs/heads/main/apis.yml
 x-type: company
@@ -2525,6 +2537,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/leaflink-capability-edges.yml
+  name: LeafLink Business Capability Map
 - type: Overlay
   url: overlays/leaflink-api-overlay.yaml
 - type: Overlay
