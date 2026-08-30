@@ -1,0 +1,106 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Company API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Company
+paths:
+  /companies/{marketplace_slug}/stats_cashback:
+    get:
+      operationId: companies_stats_cashback_retrieve
+      description: Returns cashback statistics for a company.
+      summary: Provide potential cashback earnings for the given marketplace company slug.
+      parameters:
+      - in: path
+        name: marketplace_slug
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Company
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyCashbackStats'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    CompanyCashbackStats:
+      type: object
+      description: Serializer for CompanyStats focusing on cashback-related statistics.
+      properties:
+        buyer_cashback_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        buyer_cashback_potential_earnings:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

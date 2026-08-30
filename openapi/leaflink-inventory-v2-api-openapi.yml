@@ -1,0 +1,483 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Inventory V2 API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: inventory-v2
+paths:
+  /inventory-v2/debug/celery/tasks/{task_id}:
+    get:
+      operationId: inventory_v2_debug_celery_tasks_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/commands/{command_id}:
+    get:
+      operationId: inventory_v2_debug_commands_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      parameters:
+      - in: path
+        name: command_id
+        schema:
+          type: integer
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/compare:
+    get:
+      operationId: inventory_v2_debug_compare_retrieve
+      description: GET mirror of ``compare-inventory``; shares its logic verbatim.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v1/inventory-item-audit-logs:
+    get:
+      operationId: inventory_v2_debug_v1_inventory_item_audit_logs_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v1/inventory-items:
+    get:
+      operationId: inventory_v2_debug_v1_inventory_items_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v1/ordered-products:
+    get:
+      operationId: inventory_v2_debug_v1_ordered_products_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v1/product-audit-logs:
+    get:
+      operationId: inventory_v2_debug_v1_product_audit_logs_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v2/allocations:
+    get:
+      operationId: inventory_v2_debug_v2_allocations_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v2/commands:
+    get:
+      operationId: inventory_v2_debug_v2_commands_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v2/events:
+    get:
+      operationId: inventory_v2_debug_v2_events_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v2/measurements:
+    get:
+      operationId: inventory_v2_debug_v2_measurements_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory-v2/debug/v2/reservations:
+    get:
+      operationId: inventory_v2_debug_v2_reservations_retrieve
+      description: Read-only drift-debugging endpoints. Dev/staging/local only.
+      tags:
+      - inventory-v2
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

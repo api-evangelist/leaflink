@@ -1,0 +1,310 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Marketplace V2 Promocodes API
+  description: '# Introduction
+
+    ## HTTP Request Notes
+
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
+
+
+    Available domains
+
+
+    - `app.leaflink.com` - production environment
+
+
+    - `www.sandbox.leaflink.com` - sandbox environment
+
+
+    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
+
+
+    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
+
+
+
+    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
+
+
+    ## Dynamic Responses
+
+    Some of our API endpoints support dynamic responses. These
+
+    are responses that vary in content and/or object level payload size
+
+    according to request path or query parameters.
+
+
+    Available parameters are listed beneath endpoint definitions.
+
+    '
+  termsOfService: https://leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+  version: ''
+servers:
+- url: https://app.leaflink.com/api/v2
+security:
+- Token: []
+tags:
+- description: The Promocode model represents a promotional discount code for a specific Brand.
+  name: promocodes
+paths:
+  /promocodes/:
+    parameters: []
+    get:
+      operationId: promocodes_list
+      summary: List
+      description: View all promotional codes associated with brands under the company access scope.
+      parameters:
+      - name: company_slug
+        in: query
+        description: Filter by company_slug
+        required: false
+        schema:
+          type: string
+      - name: brand
+        in: query
+        description: Filter by brand
+        required: false
+        schema:
+          type: string
+      - name: code
+        in: query
+        description: Filter by code
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PromoCode'
+      tags:
+      - promocodes
+    post:
+      operationId: promocodes_create
+      summary: Create
+      description: Create a new promotional code, unique to brand and code.
+      requestBody:
+        $ref: '#/components/requestBodies/PromoCode'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoCode'
+      tags:
+      - promocodes
+  /promocodes/{id}/:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: promocodes__read
+      summary: Read
+      description: "View a specific promotional code to which the current user\n    has access."
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoCode'
+      tags:
+      - promocodes
+    patch:
+      operationId: promocodes__partial_update
+      summary: Update
+      description: Update a promotional code's start date and end date fields.
+      requestBody:
+        $ref: '#/components/requestBodies/PromoCode'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoCode'
+      tags:
+      - promocodes
+    delete:
+      operationId: promocodes__delete
+      summary: Delete
+      description: Remove a promotional code entirely.
+      responses:
+        '204':
+          description: ''
+      tags:
+      - promocodes
+components:
+  requestBodies:
+    PromoCode:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromoCode'
+      required: true
+  schemas:
+    PromoCode:
+      required:
+      - brand
+      - code
+      - start_date
+      - end_date
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        brand:
+          title: Brand
+          type: integer
+        code:
+          title: Code
+          type: string
+          maxLength: 100
+          minLength: 1
+        discount_type:
+          title: Discount Type
+          type: string
+          enum:
+          - '%'
+        discount_amount:
+          title: Percent discount
+          description: Percent discount for Order
+          type: string
+          format: decimal
+        start_date:
+          title: Start date
+          type: string
+          format: date-time
+        end_date:
+          title: End date
+          type: string
+          format: date-time
+  securitySchemes:
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-tagGroups:
+- name: Orders
+  tags:
+  - order-object
+  - orders-received
+  - order-payments
+  - order-sales-reps
+  - order-event-logs
+  - line-item-object
+  - line-items
+- name: Products
+  tags:
+  - product-object
+  - products
+  - product-categories
+  - product-subcategories
+  - listing-states
+  - product-images
+  - product-lines
+  - strains
+- name: Batches
+  tags:
+  - batch-object
+  - batches
+  - product-batch-object
+  - product-batches
+  - batch-document-object
+  - batch-documents
+- name: Inventory Items
+  tags:
+  - inventory-item-object
+  - inventory-items
+- name: Facilities
+  tags:
+  - facility-object
+  - facilities
+- name: Customers
+  tags:
+  - customer-object
+  - customers
+  - contacts
+  - activity-entries
+  - customer-statuses
+  - customer-tiers
+  - credits
+  - customer-tags
+- name: Company Information
+  tags:
+  - companies
+  - company-staff
+  - licenses
+  - license-types
+  - brands
+  - promocodes
+  - reports
+- name: Buyer Orders
+  tags:
+  - buyer-order-object
+  - buyer-orders
+- name: Retailer Inventory
+  tags:
+  - retailer-inventory

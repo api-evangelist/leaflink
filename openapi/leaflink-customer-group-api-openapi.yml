@@ -1,0 +1,629 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Customer Group API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Customer Group
+paths:
+  /brand_owner/customer_groups:
+    get:
+      operationId: brand_owner_customer_groups_list
+      description: List Customer Groups for a brand owner company.
+      summary: List Brand Owner Customer Groups
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+        description: Overall status of the company customer group.
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedCustomerGroupList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /brand_owner/customer_groups/{id}:
+    get:
+      operationId: brand_owner_customer_groups_retrieve
+      description: Get a single Customer Group for a brand owner company.
+      summary: Get Brand Owner Customer Group
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer group.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomerGroup'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /customer_groups:
+    get:
+      operationId: customer_groups_list
+      description: Unified API for Customer Group.
+      summary: List Customer Groups
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+        description: Overall status of the company customer group.
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedCustomerGroupList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: customer_groups_create
+      description: Unified API for Customer Group.
+      summary: Create Customer Group
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedCustomerGroupRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomerGroup'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /customer_groups/{id}:
+    get:
+      operationId: customer_groups_retrieve
+      description: Get a single Customer Group.
+      summary: Get Customer Group
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer group.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomerGroup'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: customer_groups_partial_update
+      description: Unified API for Customer Group.
+      summary: Update Customer Group
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer group.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedCustomerGroupRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomerGroup'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: customer_groups_destroy
+      description: Unified API for Customer Group.
+      summary: Delete Customer Group
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer group.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer Group
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedCustomerGroupStatusEnum:
+      enum:
+      - active
+      - archived
+      type: string
+    UnifiedCustomerGroup:
+      type: object
+      description: Serializer for Customer Group.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        name:
+          type: string
+          description: Name of the Customer Group.
+          maxLength: 256
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the Customer Group.
+          maxLength: 512
+        customers:
+          type: array
+          items:
+            type: integer
+          description: List of customer IDs associated with this customer group
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCustomerGroupStatusEnum'
+          description: Overall status of the company customer group.
+      required:
+      - created_date
+      - id
+      - modified_date
+      - name
+    UnifiedCustomerGroupRequest:
+      type: object
+      description: Serializer for Customer Group.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of the Customer Group.
+          maxLength: 256
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the Customer Group.
+          maxLength: 512
+        customers:
+          type: array
+          items:
+            type: integer
+          description: List of customer IDs associated with this customer group
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCustomerGroupStatusEnum'
+          description: Overall status of the company customer group.
+      required:
+      - name
+    PaginatedUnifiedCustomerGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedCustomerGroup'
+    PatchedUnifiedCustomerGroupRequest:
+      type: object
+      description: Serializer for Customer Group.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of the Customer Group.
+          maxLength: 256
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the Customer Group.
+          maxLength: 512
+        customers:
+          type: array
+          items:
+            type: integer
+          description: List of customer IDs associated with this customer group
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCustomerGroupStatusEnum'
+          description: Overall status of the company customer group.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

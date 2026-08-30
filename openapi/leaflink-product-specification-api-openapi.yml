@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product Specification API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Product Specification
+paths:
+  /product_specifications:
+    get:
+      operationId: product_specifications_list
+      description: List all Product Specifications
+      summary: List Product Specifications
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Specification
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductSpecificationList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /product_specifications/{id}:
+    get:
+      operationId: product_specifications_retrieve
+      description: Get a Product Specification by ID
+      summary: Get a Product Specification
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product data.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Specification
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductSpecification'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedProductSpecification:
+      type: object
+      description: Unified Product Specification serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        title:
+          type: string
+          readOnly: true
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        show_text:
+          type: boolean
+          readOnly: true
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          title: Product Data parent
+          description: Product Data Parent
+          readOnly: true
+      required:
+      - created_date
+      - id
+      - modified_date
+      - parent_id
+      - show_text
+      - slug
+      - title
+    PaginatedUnifiedProductSpecificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductSpecification'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

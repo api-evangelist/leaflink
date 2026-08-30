@@ -1,0 +1,1863 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product MVP API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Product MVP
+paths:
+  /products_mvp:
+    get:
+      operationId: products_mvp_list
+      description: List multiple Products.
+      summary: List Products
+      parameters:
+      - in: query
+        name: archived
+        schema:
+          type: boolean
+      - in: query
+        name: base_units_per_unit__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: batch_associated__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: brand
+        schema:
+          type: integer
+      - in: query
+        name: buyer
+        schema:
+          type: integer
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - in: query
+        name: company
+        schema:
+          type: integer
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: created_on__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: display_name
+        schema:
+          type: string
+      - in: query
+        name: extern_sts_ids
+        schema:
+          type: array
+          items:
+            type: number
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: external_id_key
+        schema:
+          type: string
+        description: Filter by external ID key (integration system name)
+      - in: query
+        name: external_id_unmapped
+        schema:
+          type: boolean
+      - in: query
+        name: external_id_values
+        schema:
+          type: string
+      - in: query
+        name: has_children
+        schema:
+          type: boolean
+      - in: query
+        name: id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: last_edit__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: last_edit__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: last_edit__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: last_edit__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: license
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: license__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: license__type
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: listing_state
+        schema:
+          type: string
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: parent
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: parent__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: product_line
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: reconcile_inventory
+        schema:
+          type: boolean
+      - in: query
+        name: s2s_connected
+        schema:
+          type: boolean
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: seller_internal_id
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: sku
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: strains
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: sub_category
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: sub_category__isnull
+        schema:
+          type: boolean
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductMVPList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: products_mvp_create
+      description: LeafLink API for Marketplace products.
+      summary: Create Product
+      tags:
+      - Product MVP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductMVPRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVP'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products_mvp/{id}:
+    get:
+      operationId: products_mvp_retrieve
+      description: Get a single Product.
+      summary: Get Product
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVP'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: products_mvp_partial_update
+      description: LeafLink API for Marketplace products.
+      summary: Update Product
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedProductMVPRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVP'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products_mvp/{id}/clone:
+    get:
+      operationId: products_mvp_clone_retrieve
+      description: Clone a Product.
+      summary: Clone Product
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVP'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: products_mvp_clone_create
+      description: Clone a Product.
+      summary: Clone Product
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductMVPRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVP'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products_mvp/{template_id}/add_from_template:
+    get:
+      operationId: products_mvp_add_from_template_retrieve
+      description: Add a Product from a Template.
+      summary: Add Product from Template
+      parameters:
+      - in: path
+        name: template_id
+        schema:
+          type: string
+          pattern: ^[\d]+$
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVPFromTemplate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: products_mvp_add_from_template_create
+      description: Add a Product from a Template.
+      summary: Add Product from Template
+      parameters:
+      - in: path
+        name: template_id
+        schema:
+          type: string
+          pattern: ^[\d]+$
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product MVP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductMVPRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductMVP'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedProductSpecificationItemRequest:
+      type: object
+      description: Serializer for a product data item.
+      properties:
+        id:
+          type: integer
+        decimal_value:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        max_decimal_value:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        text_value:
+          type: string
+          title: Text Value of Product Data
+          description: Text value of product data
+          maxLength: 300
+        product_specification_id:
+          type: integer
+          writeOnly: true
+          description: Product Specification ID for the product
+        unit_id:
+          type: integer
+          writeOnly: true
+          description: Product Dosage Unit ID for the product
+      required:
+      - product_specification_id
+      - unit_id
+    UnifiedSubProductMVP:
+      type: object
+      description: Unified Sub Product serializer.
+      properties:
+        id:
+          type: integer
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Retail price displayed in the LeafLink marketplace
+        unit_denomination:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedUnitDenomination'
+          readOnly: true
+          description: The of amount of individual products in one sale unit
+        unit_of_measure:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedUnitOfMeasure'
+          readOnly: true
+          description: Base unit of measure for this product
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product
+      required:
+      - created_date
+      - modified_date
+      - name
+      - retail_price
+      - unit_denomination
+      - unit_of_measure
+      - wholesale_price
+    ProductThresholdActionEnum:
+      enum:
+      - default
+      - backorder
+      - unavailable
+      - internal
+      type: string
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
+    PatchedUnifiedProductMVPRequest:
+      type: object
+      description: Unified Product serializer.
+      properties:
+        sku:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          title: Customer SKU
+          description: Stock Keeping Unit. A unique identifier for a Product, alternative to id.
+          maxLength: 255
+        seller_id:
+          type: integer
+          writeOnly: true
+          description: Company who is selling the Product
+        brand_id:
+          type: integer
+          writeOnly: true
+          description: Brand ID for the product
+        product_line_id:
+          type: integer
+          writeOnly: true
+          description: Product Line ID of product
+        name:
+          type: string
+          minLength: 1
+          title: Product
+          description: Product Name
+          maxLength: 400
+        license_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: License ID for the product
+        category_id:
+          type: integer
+          writeOnly: true
+          description: Product category ID for the product
+        sub_category_id:
+          type: integer
+          writeOnly: true
+          description: Product sub-category ID for the product
+        unit_of_measure_id:
+          type: integer
+          writeOnly: true
+          description: Base unit of measure ID for this product
+        unit_denomination_id:
+          type: integer
+          writeOnly: true
+          description: The ID of amount of individual products in one sale unit
+        listing_state:
+          allOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          description: Product listing state. Values available at the /listing-states/ endpoint.
+        description:
+          type: string
+          minLength: 1
+          description: Brand Description
+          maxLength: 7000
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Retail price displayed in the LeafLink marketplace
+        strains:
+          type: array
+          items:
+            type: integer
+            title: Strains of a product
+          title: Strains of a product
+          description: The cannabis strains associated with this product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        grow_type:
+          description: The type of grow operation for the flower product
+          oneOf:
+          - $ref: '#/components/schemas/GrowTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product
+        threshold:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdRequest'
+          description: Threshold configuration for inventory alerts
+        product_specification_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductSpecificationItemRequest'
+        varieties:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedSubProductMVPRequest'
+    ListingStateEnum:
+      enum:
+      - Available
+      - Archived
+      - Sample
+      - Backorder
+      - Internal
+      - Unavailable
+      type: string
+    UnifiedProductMVP:
+      type: object
+      description: Unified Product serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        sku:
+          type:
+          - string
+          - 'null'
+          title: Customer SKU
+          description: Stock Keeping Unit. A unique identifier for a Product, alternative to id.
+          maxLength: 255
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompany'
+          readOnly: true
+          description: Seller of the product
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+          description: Brand of the product
+        product_line:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Product Line of product
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        display_name:
+          type: string
+          readOnly: true
+          description: product name that is displayed
+        license:
+          allOf:
+          - $ref: '#/components/schemas/ComplianceLicense'
+          readOnly: true
+          description: License for the product
+        category:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedProductCategory'
+          readOnly: true
+          description: Product category for the product
+        sub_category:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The sub-category of the Product (e.g. Bulk Flower, Live Resin, etc)
+        unit_of_measure:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedUnitOfMeasure'
+          readOnly: true
+          description: Base unit of measure for this product
+        unit_denomination:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedUnitDenomination'
+          readOnly: true
+          description: The of amount of individual products in one sale unit
+        listing_state:
+          allOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          description: Product listing state. Values available at the /listing-states/ endpoint.
+        description:
+          type: string
+          description: Brand Description
+          maxLength: 7000
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Retail price displayed in the LeafLink marketplace
+        strains:
+          type: array
+          items:
+            type: integer
+            title: Strains of a product
+          title: Strains of a product
+          description: The cannabis strains associated with this product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        grow_type:
+          description: The type of grow operation for the flower product
+          oneOf:
+          - $ref: '#/components/schemas/GrowTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product
+        threshold:
+          allOf:
+          - $ref: '#/components/schemas/Threshold'
+          description: Threshold configuration for inventory alerts
+        product_specification_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductSpecificationItem'
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          title: Product Parent
+          description: Product Parent
+          readOnly: true
+        varieties:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedSubProductMVP'
+      required:
+      - brand
+      - category
+      - created_date
+      - description
+      - display_name
+      - id
+      - license
+      - listing_state
+      - modified_date
+      - name
+      - parent_id
+      - product_line
+      - retail_price
+      - seller
+      - sub_category
+      - unit_denomination
+      - unit_of_measure
+      - wholesale_price
+    UnifiedUnitOfMeasure:
+      type: object
+      description: Unified UnitOfMeasure serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        unit:
+          type: string
+          readOnly: true
+        plural:
+          type: string
+          readOnly: true
+          title: Plural Form
+        abbreviation:
+          type: string
+          readOnly: true
+          title: Unit Abbreviation
+        multiple:
+          type: boolean
+          readOnly: true
+          title: Bulk unit of measurement
+        ALLOW_FRACTIONAL:
+          type: boolean
+          readOnly: true
+          title: Allow Fractional Quantity
+        universal_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          title: Universal Unit Name
+        unconvertible:
+          type: boolean
+          readOnly: true
+          title: Unit not convertible
+        base_only:
+          type: boolean
+          readOnly: true
+          title: Base Unit of Measure Only
+          description: This Unit of Measure is meant to be attached only to SubCategories and not to Products
+      required:
+      - ALLOW_FRACTIONAL
+      - abbreviation
+      - base_only
+      - created_date
+      - id
+      - modified_date
+      - multiple
+      - plural
+      - unconvertible
+      - unit
+      - universal_name
+    Threshold:
+      type: object
+      properties:
+        regular_value:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: When Product inventory reaches below this value, take various actions
+        regular_action:
+          allOf:
+          - $ref: '#/components/schemas/ProductThresholdActionEnum'
+          default: default
+          description: Action to take when Product inventory reaches below a specified value
+        reverse_value:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: When Product inventory reaches above this value, take various actions
+        reverse_action:
+          allOf:
+          - $ref: '#/components/schemas/ProductReverseThresholdActionEnum'
+          default: default
+          description: Action to take when inventory reaches above a specified value
+    UnifiedProductCategory:
+      type: object
+      description: Unified Product category serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Category
+          description: Name of Category
+          maxLength: 40
+      required:
+      - id
+      - name
+    UnifiedSubProductMVPRequest:
+      type: object
+      description: Unified Sub Product serializer.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          title: Product
+          description: Product Name
+          maxLength: 400
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Retail price displayed in the LeafLink marketplace
+        unit_denomination_id:
+          type: integer
+          writeOnly: true
+          description: The ID of amount of individual products in one sale unit
+        unit_of_measure_id:
+          type: integer
+          writeOnly: true
+          description: Base unit of measure ID for this product
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product
+      required:
+      - name
+      - retail_price
+      - unit_denomination_id
+      - unit_of_measure_id
+      - wholesale_price
+    UnifiedProductSpecificationItem:
+      type: object
+      description: Serializer for a product data item.
+      properties:
+        id:
+          type: integer
+        decimal_value:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        max_decimal_value:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        text_value:
+          type: string
+          title: Text Value of Product Data
+          description: Text value of product data
+          maxLength: 300
+        product_specification:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedProductSpecification'
+          readOnly: true
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedProductDosageUnit'
+          readOnly: true
+      required:
+      - product_specification
+      - unit
+    StrainClassificationEnum:
+      enum:
+      - sativa
+      - indica
+      - hybrid
+      - 11-cbd
+      - high-cbd
+      - sativa-hybrid
+      - indica-hybrid
+      - 21-cbd
+      - thc
+      - na
+      type: string
+    UnifiedCompany:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+      required:
+      - id
+      - name
+    UnifiedUnitDenomination:
+      type: object
+      description: Unified UnitDenomination serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
+          readOnly: true
+          title: Unit Denomination Value
+          description: Unit Denomination Value
+        name:
+          type: string
+          readOnly: true
+          title: Name of Unit Denomination
+          description: Name of Unit Denomination
+        label:
+          type: string
+          readOnly: true
+          title: Unit Denomination label
+          description: Unit Denomination label
+        description:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          title: Description of Unit Denomination
+          description: Description of Unit Denomination
+      required:
+      - created_date
+      - description
+      - id
+      - label
+      - modified_date
+      - name
+      - value
+    UnifiedProductSpecification:
+      type: object
+      description: Unified Product Specification serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        title:
+          type: string
+          readOnly: true
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        show_text:
+          type: boolean
+          readOnly: true
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          title: Product Data parent
+          description: Product Data Parent
+          readOnly: true
+      required:
+      - created_date
+      - id
+      - modified_date
+      - parent_id
+      - show_text
+      - slug
+      - title
+    PaginatedUnifiedProductMVPList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductMVP'
+    UnifiedProductMVPFromTemplate:
+      type: object
+      description: Unified Product serializer for adding from template.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        created_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        sku:
+          type:
+          - string
+          - 'null'
+          title: Customer SKU
+          description: Stock Keeping Unit. A unique identifier for a Product, alternative to id.
+          maxLength: 255
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompany'
+          readOnly: true
+          description: Seller of the product
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+          description: Brand of the product
+        product_line:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Product Line of product
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        display_name:
+          type: string
+          readOnly: true
+          description: product name that is displayed
+        license:
+          allOf:
+          - $ref: '#/components/schemas/ComplianceLicense'
+          readOnly: true
+          description: License for the product
+        category:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedProductCategory'
+          readOnly: true
+          description: Product category for the product
+        sub_category:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The sub-category of the Product (e.g. Bulk Flower, Live Resin, etc)
+        unit_of_measure:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedUnitOfMeasure'
+          readOnly: true
+          description: Base unit of measure for this product
+        unit_denomination:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedUnitDenomination'
+          readOnly: true
+          description: The of amount of individual products in one sale unit
+        listing_state:
+          allOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          description: Product listing state. Values available at the /listing-states/ endpoint.
+        description:
+          type: string
+          description: Brand Description
+          maxLength: 7000
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Retail price displayed in the LeafLink marketplace
+        strains:
+          type: array
+          items:
+            type: integer
+            title: Strains of a product
+          title: Strains of a product
+          description: The cannabis strains associated with this product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        grow_type:
+          description: The type of grow operation for the flower product
+          oneOf:
+          - $ref: '#/components/schemas/GrowTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product
+        threshold:
+          allOf:
+          - $ref: '#/components/schemas/Threshold'
+          description: Threshold configuration for inventory alerts
+        product_specification_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductSpecificationItem'
+        parent_id:
+          type:
+          - integer
+          - 'null'
+          title: Product Parent
+          description: Product Parent
+          readOnly: true
+        varieties:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedSubProductMVP'
+      required:
+      - brand
+      - category
+      - created_date
+      - description
+      - display_name
+      - id
+      - license
+      - listing_state
+      - modified_date
+      - name
+      - parent_id
+      - product_line
+      - retail_price
+      - seller
+      - sub_category
+      - unit_denomination
+      - unit_of_measure
+      - wholesale_price
+    ProductReverseThresholdActionEnum:
+      enum:
+      - default
+      - available
+      - internal
+      type: string
+    GrowTypeEnum:
+      enum:
+      - greenhouse
+      - indoor
+      - light-deprivation
+      - sun
+      type: string
+    UnifiedProductMVPRequest:
+      type: object
+      description: Unified Product serializer.
+      properties:
+        sku:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          title: Customer SKU
+          description: Stock Keeping Unit. A unique identifier for a Product, alternative to id.
+          maxLength: 255
+        seller_id:
+          type: integer
+          writeOnly: true
+          description: Company who is selling the Product
+        brand_id:
+          type: integer
+          writeOnly: true
+          description: Brand ID for the product
+        product_line_id:
+          type: integer
+          writeOnly: true
+          description: Product Line ID of product
+        name:
+          type: string
+          minLength: 1
+          title: Product
+          description: Product Name
+          maxLength: 400
+        license_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: License ID for the product
+        category_id:
+          type: integer
+          writeOnly: true
+          description: Product category ID for the product
+        sub_category_id:
+          type: integer
+          writeOnly: true
+          description: Product sub-category ID for the product
+        unit_of_measure_id:
+          type: integer
+          writeOnly: true
+          description: Base unit of measure ID for this product
+        unit_denomination_id:
+          type: integer
+          writeOnly: true
+          description: The ID of amount of individual products in one sale unit
+        listing_state:
+          allOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          description: Product listing state. Values available at the /listing-states/ endpoint.
+        description:
+          type: string
+          minLength: 1
+          description: Brand Description
+          maxLength: 7000
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Retail price displayed in the LeafLink marketplace
+        strains:
+          type: array
+          items:
+            type: integer
+            title: Strains of a product
+          title: Strains of a product
+          description: The cannabis strains associated with this product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        grow_type:
+          description: The type of grow operation for the flower product
+          oneOf:
+          - $ref: '#/components/schemas/GrowTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product
+        threshold:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdRequest'
+          description: Threshold configuration for inventory alerts
+        product_specification_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductSpecificationItemRequest'
+        varieties:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedSubProductMVPRequest'
+      required:
+      - brand_id
+      - category_id
+      - description
+      - listing_state
+      - name
+      - retail_price
+      - seller_id
+      - unit_denomination_id
+      - unit_of_measure_id
+      - wholesale_price
+    UnifiedProductDosageUnit:
+      type: object
+      description: Unified Product Dosage Unit serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        name:
+          type: string
+          readOnly: true
+          title: Name of Unit
+          description: Name of Unit
+        unit:
+          type: string
+          readOnly: true
+          title: Dosage Unit
+          description: Dosage Unit of Measure
+        description:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Unit Description
+      required:
+      - created_date
+      - description
+      - id
+      - modified_date
+      - name
+      - unit
+    ComplianceLicense:
+      type: object
+      description: Serializer for License models via the v2 API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+          description: Type
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    BlankEnum-unified-upstream-marketplace:
+      enum:
+      - ''
+    ThresholdRequest:
+      type: object
+      properties:
+        regular_value:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: When Product inventory reaches below this value, take various actions
+        regular_action:
+          allOf:
+          - $ref: '#/components/schemas/ProductThresholdActionEnum'
+          default: default
+          description: Action to take when Product inventory reaches below a specified value
+        reverse_value:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: When Product inventory reaches above this value, take various actions
+        reverse_action:
+          allOf:
+          - $ref: '#/components/schemas/ProductReverseThresholdActionEnum'
+          default: default
+          description: Action to take when inventory reaches above a specified value
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

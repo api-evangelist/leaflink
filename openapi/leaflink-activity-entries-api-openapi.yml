@@ -1,0 +1,568 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Marketplace V2 Activity Entries API
+  description: '# Introduction
+
+    ## HTTP Request Notes
+
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
+
+
+    Available domains
+
+
+    - `app.leaflink.com` - production environment
+
+
+    - `www.sandbox.leaflink.com` - sandbox environment
+
+
+    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
+
+
+    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
+
+
+
+    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
+
+
+    ## Dynamic Responses
+
+    Some of our API endpoints support dynamic responses. These
+
+    are responses that vary in content and/or object level payload size
+
+    according to request path or query parameters.
+
+
+    Available parameters are listed beneath endpoint definitions.
+
+    '
+  termsOfService: https://leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+  version: ''
+servers:
+- url: https://app.leaflink.com/api/v2
+security:
+- Token: []
+tags:
+- description: The `CompanyActivityEntry` model represents a CRM action taken by a staff member that relates to a customer, with an optional description.
+  name: activity-entries
+paths:
+  /activity-entries/:
+    parameters: []
+    get:
+      operationId: activity-entries_list
+      summary: List
+      description: "List all `CompanyActivityEntry` objects of companies the requester has\n    CRM management access for."
+      parameters:
+      - name: date__lt
+        in: query
+        description: Filter by entered activity datetime, less than.
+        required: false
+        schema:
+          type: string
+      - name: date__lte
+        in: query
+        description: Filter by entered activity datetime, less than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: date__gt
+        in: query
+        description: Filter by entered activity datetime, greater than.
+        required: false
+        schema:
+          type: string
+      - name: date__gte
+        in: query
+        description: Filter by entered activity datetime, greater than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: entry
+        in: query
+        description: Filter by activity entry descriptions.
+        required: false
+        schema:
+          type: string
+      - name: entry__in
+        in: query
+        description: Filter by entry__in
+        required: false
+        schema:
+          type: string
+      - name: entry__startswith
+        in: query
+        description: Filter by entry__startswith
+        required: false
+        schema:
+          type: string
+      - name: modified__lt
+        in: query
+        description: Filter by the datetime the object was last modified, less than.
+        required: false
+        schema:
+          type: string
+      - name: modified__lte
+        in: query
+        description: Filter by the datetime the object was last modified, less than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: modified__gt
+        in: query
+        description: Filter by the datetime the object was last modified, greater than.
+        required: false
+        schema:
+          type: string
+      - name: modified__gte
+        in: query
+        description: Filter by the datetime the object was last modified, greater than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by id
+        required: false
+        schema:
+          type: number
+      - name: created_on__lt
+        in: query
+        description: Filter by created_on datetime, less than.
+        required: false
+        schema:
+          type: string
+      - name: created_on__lte
+        in: query
+        description: Filter by created_on datetime, less than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: created_on__gt
+        in: query
+        description: Filter by created_on datetime, greater than.
+        required: false
+        schema:
+          type: string
+      - name: created_on__gte
+        in: query
+        description: Filter by created_on datetime, greater than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: owner
+        in: query
+        description: Filter by owner ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: owner_id
+        in: query
+        description: Filter by owner ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: author
+        in: query
+        description: Filter by author ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: author_id
+        in: query
+        description: Filter by author ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: company
+        in: query
+        description: Filter by associated company ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: company_id
+        in: query
+        description: Filter by associated company ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: customer
+        in: query
+        description: Filter by associated customer ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: customer_id
+        in: query
+        description: Filter by associated customer ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: staff
+        in: query
+        description: Filter by associated staff ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: staff_id
+        in: query
+        description: Filter by associated staff ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Filter by activity type (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: brand
+        in: query
+        description: Filter by associated brand ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: brand_id
+        in: query
+        description: Filter by associated brand ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: contact
+        in: query
+        description: Filter by associated contact ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: contact_id
+        in: query
+        description: Filter by associated contact ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: company_slug
+        in: query
+        description: Filter by Company slug
+        required: false
+        schema:
+          type: string
+      - name: delete
+        in: query
+        description: Filter by deleted or non-deleted entries.
+        required: false
+        schema:
+          type: boolean
+      - name: is_deleted
+        in: query
+        description: Filter by deleted or non-deleted entries (alternative to delete parameter).
+        required: false
+        schema:
+          type: boolean
+      - name: fields_include
+        in: query
+        description: Include only specific fields in the response, separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: fields_exclude
+        in: query
+        description: Exclude specific fields in the response, separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: fields_add
+        in: query
+        description: Include additional fields in the response. Available values include `created_by` and `last_changed_by`
+        required: false
+        schema:
+          type: string
+      - name: search
+        in: query
+        description: Search by entry field
+        required: false
+        schema:
+          type: string
+      - name: ordering
+        in: query
+        description: 'Order results by field (prefix with ''-'' for descending). Available fields: customer__nickname, customer__name'
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanyActivityEntry'
+      tags:
+      - activity-entries
+    post:
+      operationId: activity-entries_create
+      summary: Create
+      description: "Create a new `CompanyActivityEntry` object for a company you have CRM\n    management access for."
+      requestBody:
+        $ref: '#/components/requestBodies/CompanyActivityEntry'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyActivityEntry'
+      tags:
+      - activity-entries
+  /activity-entries/{id}/:
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this company activity entry.
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: activity-entries_read
+      summary: Read
+      description: Get a `CompanyActivityEntry` by ID.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyActivityEntry'
+      tags:
+      - activity-entries
+    patch:
+      operationId: activity-entries_partial_update
+      summary: Update
+      description: Update an individual `CompanyActivityEntry` by ID.
+      requestBody:
+        $ref: '#/components/requestBodies/CompanyActivityEntry'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyActivityEntry'
+      tags:
+      - activity-entries
+    delete:
+      operationId: activity-entries_delete
+      summary: Delete
+      description: "Set the `delete` flag on a `CompanyActivityEntry` to true. These can\n    be filtered out in list requests."
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyActivityEntry'
+      tags:
+      - activity-entries
+components:
+  schemas:
+    CompanyActivityEntry:
+      required:
+      - type
+      - entry
+      - owner
+      - author
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        type:
+          title: Type
+          type: string
+        created_on:
+          title: Created on
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          title: Modified
+          type: string
+          format: date-time
+          readOnly: true
+        date:
+          title: Date
+          type: string
+          format: date-time
+        entry:
+          title: Message
+          description: Message
+          type: string
+          maxLength: 4000
+          minLength: 1
+        delete:
+          title: Activity deleted
+          description: Is this Activity marked as deleted?
+          type: boolean
+        owner:
+          title: Company that owns Entry
+          description: Company that owns activity entry
+          type: integer
+        author:
+          title: Activity Entry Author
+          description: Author who entered Activity
+          type: integer
+        company:
+          title: Company entry is about
+          description: Company entry is about
+          type:
+          - integer
+          - 'null'
+        customer:
+          title: Customer Company entry is about
+          description: Company entry is about
+          type:
+          - integer
+          - 'null'
+        staff:
+          title: Staff entry is focused on
+          description: Staff entry is focused on
+          type:
+          - integer
+          - 'null'
+        brand:
+          title: Brand
+          type:
+          - integer
+          - 'null'
+        contact:
+          title: Contact
+          type:
+          - integer
+          - 'null'
+  requestBodies:
+    CompanyActivityEntry:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CompanyActivityEntry'
+      required: true
+  securitySchemes:
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-tagGroups:
+- name: Orders
+  tags:
+  - order-object
+  - orders-received
+  - order-payments
+  - order-sales-reps
+  - order-event-logs
+  - line-item-object
+  - line-items
+- name: Products
+  tags:
+  - product-object
+  - products
+  - product-categories
+  - product-subcategories
+  - listing-states
+  - product-images
+  - product-lines
+  - strains
+- name: Batches
+  tags:
+  - batch-object
+  - batches
+  - product-batch-object
+  - product-batches
+  - batch-document-object
+  - batch-documents
+- name: Inventory Items
+  tags:
+  - inventory-item-object
+  - inventory-items
+- name: Facilities
+  tags:
+  - facility-object
+  - facilities
+- name: Customers
+  tags:
+  - customer-object
+  - customers
+  - contacts
+  - activity-entries
+  - customer-statuses
+  - customer-tiers
+  - credits
+  - customer-tags
+- name: Company Information
+  tags:
+  - companies
+  - company-staff
+  - licenses
+  - license-types
+  - brands
+  - promocodes
+  - reports
+- name: Buyer Orders
+  tags:
+  - buyer-order-object
+  - buyer-orders
+- name: Retailer Inventory
+  tags:
+  - retailer-inventory

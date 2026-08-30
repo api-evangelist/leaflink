@@ -1,0 +1,358 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Active Entry API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: ActiveEntry
+paths:
+  /customers/active_entries:
+    get:
+      operationId: customers_active_entries_list
+      description: List multiple Company Active Entries.
+      summary: List Company Active Entries
+      parameters:
+      - in: query
+        name: author
+        schema:
+          type: integer
+      - in: query
+        name: author_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: brand
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: brand_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: company
+        schema:
+          type: integer
+      - in: query
+        name: company_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: contact
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: contact_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: created_on__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: customer
+        schema:
+          type: integer
+      - in: query
+        name: customer_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: date__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: delete
+        schema:
+          type: boolean
+      - in: query
+        name: entry
+        schema:
+          type: string
+      - in: query
+        name: entry__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: entry__startswith
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: integer
+      - in: query
+        name: is_deleted
+        schema:
+          type: boolean
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+          format: date-time
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: owner
+        schema:
+          type: integer
+      - in: query
+        name: owner_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: staff
+        schema:
+          type: integer
+      - in: query
+        name: staff_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: type
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - ActiveEntry
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A list of serialized active entries
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /customers/active_entries/{id}:
+    get:
+      operationId: customers_active_entries_retrieve
+      description: Get a single Company Active Entry.
+      summary: Get Active Entry
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company activity entry.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - ActiveEntry
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A serialized active entry
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

@@ -1,0 +1,229 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Inventory API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: inventory
+paths:
+  /inventory/commands/compare-inventory:
+    post:
+      operationId: inventory_commands_compare_inventory_create
+      description: 'POST /inventory/commands/compare-inventory
+
+
+        Staff-only endpoint for drift investigation. Compares V1 vs V2
+
+        inventory state for a given scope. At least one of seller_id,
+
+        product_id, facility_id, or batch_id is required. Read-only —
+
+        writes no events.
+
+
+        Seller requests default to summary mode and return a seller-level
+
+        accuracy verdict plus all drifted product summaries. Diagnostic mode
+
+        returns the legacy JSON array, restricted to scopes that have drifted
+
+        (V1 vs V2 delta exceeds DRIFT_THRESHOLD on on_hand or reserved).
+
+
+        Each entry carries a ``known_issues`` list naming recognised V1
+
+        bugs that explain the drift. Pass ``ignore_known_issues=true``
+
+        to exclude entries that match any known issue. Pass
+
+        ``ignore_product_ids=[...]`` to exclude specific products from
+
+        the scan.'
+      tags:
+      - inventory
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/initialize-history:
+    post:
+      operationId: inventory_commands_initialize_history_create
+      description: 'POST /inventory/commands/initialize-history
+
+
+        Staff-only endpoint to trigger proactive V2 item history initialization
+
+        for a seller''s entire product catalog.
+
+
+        Body: {"seller_id": <int>}'
+      tags:
+      - inventory
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/initialize-product-streams:
+    post:
+      operationId: inventory_commands_initialize_product_streams_create
+      description: 'POST /inventory/commands/initialize-product-streams
+
+
+        Initialize all inventory streams for a product. View fetches Django data via
+
+        _get_legacy_streams_for_product and passes to command service.'
+      tags:
+      - inventory
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/initialize-streams-for-seller:
+    post:
+      operationId: inventory_commands_initialize_streams_for_seller_create
+      description: 'POST /inventory/commands/initialize-streams
+
+
+        Staff-only endpoint to trigger proactive V2 stream initialization
+
+        for a seller''s entire product catalog. Dispatches a background Celery
+
+        task on the low-priority initialization queue.
+
+
+        Body: {"seller_id": <int>}'
+      tags:
+      - inventory
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

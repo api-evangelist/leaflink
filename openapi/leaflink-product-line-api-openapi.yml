@@ -1,0 +1,559 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product Line API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Product Line
+paths:
+  /product_lines:
+    get:
+      operationId: product_lines_list
+      description: List multiple Product Lines.
+      summary: List Product Lines
+      parameters:
+      - in: query
+        name: brand
+        schema:
+          type: integer
+      - in: query
+        name: company
+        schema:
+          type: integer
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Line
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductLineList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: product_lines_create
+      description: LeafLink API for Marketplace product lines.
+      summary: Create Product Line
+      tags:
+      - Product Line
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductLineCreateRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductLineCreate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /product_lines/{id}:
+    get:
+      operationId: product_lines_retrieve
+      description: Get a single Product Line.
+      summary: Get Product Line
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product line.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Line
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductLine'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: product_lines_partial_update
+      description: LeafLink API for Marketplace product lines.
+      summary: Update Product Line
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product line.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Line
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedProductLineCreateRequest'
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductLineCreate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: product_lines_destroy
+      description: LeafLink API for Marketplace product lines.
+      summary: Delete Product Line
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product line.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Line
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedProductLine:
+      type: object
+      description: Base Unified ProductLine serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        name:
+          type: string
+          title: Product Line
+          description: Name of Product Line
+          maxLength: 100
+        display_name:
+          type: string
+          readOnly: true
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+          description: Brand of the product line
+        menu_position:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product Line Menu Position
+          description: The position of ordering
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductLineProduct'
+          readOnly: true
+          description: Products associated with the product line
+      required:
+      - brand
+      - created_date
+      - display_name
+      - id
+      - modified_date
+      - name
+      - products
+    PaginatedUnifiedProductLineList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductLine'
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
+    UnifiedProductLineCreateRequest:
+      type: object
+      description: Serializer for creating product lines.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Product Line
+          description: Name of Product Line
+          maxLength: 100
+        brand_id:
+          type: integer
+          writeOnly: true
+          description: Brand ID for the product line
+        menu_position:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product Line Menu Position
+          description: The position of ordering
+        product_ids:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+          description: List of product IDs associated with this product line
+      required:
+      - brand_id
+      - name
+    UnifiedProductLineProduct:
+      type: object
+      description: Serializer for a product in a product line.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          title: Product
+          description: Product Name
+      required:
+      - id
+      - name
+    UnifiedProductLineCreate:
+      type: object
+      description: Serializer for creating product lines.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        name:
+          type: string
+          title: Product Line
+          description: Name of Product Line
+          maxLength: 100
+        display_name:
+          type: string
+          readOnly: true
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+          description: Brand of the product line
+        menu_position:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product Line Menu Position
+          description: The position of ordering
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductLineProduct'
+          readOnly: true
+          description: Products associated with the product line
+      required:
+      - brand
+      - created_date
+      - display_name
+      - id
+      - modified_date
+      - name
+      - products
+    PatchedUnifiedProductLineCreateRequest:
+      type: object
+      description: Serializer for creating product lines.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Product Line
+          description: Name of Product Line
+          maxLength: 100
+        brand_id:
+          type: integer
+          writeOnly: true
+          description: Brand ID for the product line
+        menu_position:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product Line Menu Position
+          description: The position of ordering
+        product_ids:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+          description: List of product IDs associated with this product line
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

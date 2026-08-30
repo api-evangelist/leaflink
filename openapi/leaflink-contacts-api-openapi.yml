@@ -1,0 +1,831 @@
+openapi: 3.2.0
+info:
+  title: Leaflink Contacts API
+  contact:
+    email: support@leaflink.com
+  version: '1.0'
+  description: 'Operations tagged contacts across 2 of this provider''s published API definitions: leaflink-api-openapi-original.yml, leaflink-marketplace-v2-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+- url: https://app.leaflink.com/api/v2
+tags:
+- name: contacts
+paths:
+  /contacts:
+    post:
+      operationId: contacts_create
+      description: LeafLink API for Marketplace contacts.
+      tags:
+      - contacts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedContactRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedContact'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /contacts/{id}:
+    put:
+      operationId: contacts_update
+      description: LeafLink API for Marketplace contacts.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - contacts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedContactRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedContact'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: contacts_partial_update
+      description: LeafLink API for Marketplace contacts.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - contacts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedContactRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedContact'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: contacts_destroy
+      description: Perform a 'DELETE' on a contact. It will mark the specified contact as Deleted.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - contacts
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /contacts/:
+    parameters: []
+    get:
+      operationId: contacts_list
+      summary: List
+      description: 'List all contacts for all active companies where the user has the MANAGE_CRM permission.
+
+        Can be filtered by id, creation date, last modified date, first name, and last name.
+
+        The contact''s associated `CompanyCustomer`s can be retrieved at `/api/v2/contacts/{id}/customers/?`'
+      parameters:
+      - name: modified__lt
+        in: query
+        description: Filter by modified__lt
+        required: false
+        schema:
+          type: string
+      - name: modified__lte
+        in: query
+        description: Filter by modified__lte
+        required: false
+        schema:
+          type: string
+      - name: modified__gt
+        in: query
+        description: Filter by modified__gt
+        required: false
+        schema:
+          type: string
+      - name: modified__gte
+        in: query
+        description: Filter by modified__gte
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by the exact id of the contact
+        required: false
+        schema:
+          type: number
+      - name: last_name
+        in: query
+        description: Filter by the last name of a contact.
+        required: false
+        schema:
+          type: string
+      - name: last_name__in
+        in: query
+        description: Filter by last_name__in
+        required: false
+        schema:
+          type: string
+      - name: last_name__startswith
+        in: query
+        description: Filter by last_name__startswith
+        required: false
+        schema:
+          type: string
+      - name: created_on__lt
+        in: query
+        description: Filter by created_on datetime, less than.
+        required: false
+        schema:
+          type: string
+      - name: created_on__lte
+        in: query
+        description: Filter by created_on datetime, less than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: created_on__gt
+        in: query
+        description: Filter by created_on datetime, greater than.
+        required: false
+        schema:
+          type: string
+      - name: created_on__gte
+        in: query
+        description: Filter by created_on datetime, greater than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: company_slug
+        in: query
+        description: Filter by owner Company slug.
+        required: false
+        schema:
+          type: string
+      - name: first_name
+        in: query
+        description: Filter by the first name of a contact.
+        required: false
+        schema:
+          type: string
+      - name: first_name__in
+        in: query
+        description: Filter by first_name__in
+        required: false
+        schema:
+          type: string
+      - name: first_name__startswith
+        in: query
+        description: Filter by first_name__startswith
+        required: false
+        schema:
+          type: string
+      - name: owner
+        in: query
+        description: Filter by one or multiple company ids, separated by commas.
+        required: false
+        schema:
+          type: number
+      - name: delete
+        in: query
+        description: Filter by contact deletion status
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+      tags:
+      - contacts
+      security:
+      - Token: []
+    post:
+      operationId: contacts_create
+      summary: Create
+      description: Create a new contact.
+      requestBody:
+        $ref: '#/components/requestBodies/Contact'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+      tags:
+      - contacts
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+  /contacts/{id}/:
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this contact.
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: contacts_read
+      summary: Read
+      description: Retrieve an individual contact by ID.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+      tags:
+      - contacts
+      security:
+      - Token: []
+    patch:
+      operationId: contacts_partial_update
+      summary: Update
+      description: Update an existing contact by ID.
+      requestBody:
+        $ref: '#/components/requestBodies/Contact'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+      tags:
+      - contacts
+      security:
+      - Token: []
+    delete:
+      operationId: contacts_delete
+      summary: Delete
+      description: Set the `delete` flag to True on a contact by ID. Deleted objects can be filtered out in lists with query parameters.
+      responses:
+        '204':
+          description: ''
+      tags:
+      - contacts
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+components:
+  schemas:
+    UnifiedContactRequest:
+      type: object
+      description: Unified Contact serializer
+      properties:
+        owner:
+          type: integer
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        secondary_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Secondary email address
+          maxLength: 255
+        role:
+          type:
+          - string
+          - 'null'
+          title: Position
+          description: Position or role at company
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the contact
+          maxLength: 1500
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        secondary_phone:
+          type:
+          - string
+          - 'null'
+          description: Secondary Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        secondary_phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        delete:
+          type: boolean
+          title: Contact deleted
+          description: Is this Contact marked as deleted?
+      required:
+      - first_name
+      - owner
+    UnifiedContact:
+      type: object
+      description: Unified Contact serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        owner:
+          type: integer
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        secondary_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Secondary email address
+          maxLength: 255
+        role:
+          type:
+          - string
+          - 'null'
+          title: Position
+          description: Position or role at company
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the contact
+          maxLength: 1500
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        secondary_phone:
+          type:
+          - string
+          - 'null'
+          description: Secondary Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        secondary_phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        delete:
+          type: boolean
+          title: Contact deleted
+          description: Is this Contact marked as deleted?
+      required:
+      - created_date
+      - first_name
+      - id
+      - modified_date
+      - owner
+    PatchedUnifiedContactRequest:
+      type: object
+      description: Unified Contact serializer
+      properties:
+        owner:
+          type: integer
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        secondary_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Secondary email address
+          maxLength: 255
+        role:
+          type:
+          - string
+          - 'null'
+          title: Position
+          description: Position or role at company
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the contact
+          maxLength: 1500
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        secondary_phone:
+          type:
+          - string
+          - 'null'
+          description: Secondary Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        secondary_phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        delete:
+          type: boolean
+          title: Contact deleted
+          description: Is this Contact marked as deleted?
+    Contact:
+      required:
+      - owner
+      - first_name
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        created_on:
+          title: Created on
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          title: Modified
+          type: string
+          format: date-time
+          readOnly: true
+        owner:
+          title: Owner
+          type: integer
+        first_name:
+          title: First name
+          type: string
+          maxLength: 30
+          minLength: 1
+        last_name:
+          title: Last name
+          type: string
+          maxLength: 30
+        email:
+          title: Email address
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 255
+        secondary_email:
+          title: Secondary email address
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 255
+        role:
+          title: Position
+          description: Position or role at company
+          type:
+          - string
+          - 'null'
+          maxLength: 400
+        description:
+          title: Description
+          description: An overview of the contact
+          type:
+          - string
+          - 'null'
+          maxLength: 1500
+        phone:
+          title: Phone
+          description: Phone Number of Brand
+          type:
+          - string
+          - 'null'
+          maxLength: 400
+        phone_extension:
+          title: Phone Extension
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        secondary_phone:
+          title: Secondary Phone
+          description: Secondary Phone Number of Brand
+          type:
+          - string
+          - 'null'
+          maxLength: 400
+        secondary_phone_extension:
+          title: Secondary Phone Extension
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        delete:
+          title: Contact deleted
+          description: Is this Contact marked as deleted?
+          type: boolean
+  requestBodies:
+    Contact:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Contact'
+      required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- leaflink-api-openapi-original.yml
+- leaflink-marketplace-v2-openapi-original.yml

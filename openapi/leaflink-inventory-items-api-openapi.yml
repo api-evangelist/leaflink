@@ -1,0 +1,360 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Marketplace V2 Inventory Items API
+  description: '# Introduction
+
+    ## HTTP Request Notes
+
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
+
+
+    Available domains
+
+
+    - `app.leaflink.com` - production environment
+
+
+    - `www.sandbox.leaflink.com` - sandbox environment
+
+
+    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
+
+
+    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
+
+
+
+    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
+
+
+    ## Dynamic Responses
+
+    Some of our API endpoints support dynamic responses. These
+
+    are responses that vary in content and/or object level payload size
+
+    according to request path or query parameters.
+
+
+    Available parameters are listed beneath endpoint definitions.
+
+    '
+  termsOfService: https://leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+  version: ''
+servers:
+- url: https://app.leaflink.com/api/v2
+security:
+- Token: []
+tags:
+- name: inventory-items
+  x-displayName: Inventory Items
+  description: The `InventoryItem` model represents items of a particular inventory batch at a given facility.
+paths:
+  /inventory/items/:
+    parameters: []
+    get:
+      operationId: inventory-items_list
+      summary: List
+      description: "List all inventory items. By default this returns non-archived items - you can query for archived items by \nincluding the \"include_archived\" query parameter.\n\n__⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.\n"
+      parameters:
+      - name: include_archived
+        in: query
+        description: Filter by archived status
+        required: false
+        schema:
+          type: boolean
+      - name: product
+        in: query
+        description: Filter by product ID
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InventoryItem'
+      tags:
+      - inventory-items
+    post:
+      operationId: inventory-items_create
+      summary: Create
+      description: 'Create an inventory item.
+
+
+        __NOTE__: If a non-archived inventory item is found with the same product and facility but no batch,
+
+        it will be marked as "archived" and a new inventory item will be created. As a result, subsequent GET
+
+        requests will no longer return the old inventory item. As mentioned in the GET method description, you can query
+
+        for archived items by including the "include_archived" query parameter.
+
+
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
+
+        '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryItemCreate'
+        required: true
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItem'
+      tags:
+      - inventory-items
+  /inventory/items/{id}/:
+    get:
+      operationId: inventory-items_read
+      summary: Read
+      description: 'Get inventory item by ID.
+
+
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
+
+        '
+      parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this inventory item.
+        required: true
+        schema:
+          type: integer
+      - name: include_archived
+        in: query
+        description: Filter by the archived status. (False by default.)
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItem'
+      tags:
+      - inventory-items
+    patch:
+      operationId: inventory-items_partial_update
+      summary: Update
+      description: 'Update an existing inventory item by ID.
+
+
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
+
+        '
+      parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this inventory item.
+        required: true
+        schema:
+          type: integer
+      - name: include_archived
+        in: query
+        description: Filter by the archived status. (False by default.)
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryItemUpdate'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItem'
+      tags:
+      - inventory-items
+components:
+  schemas:
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique id generated by LeafLink.
+        facility:
+          type: integer
+          description: ID of the associated facility.
+        inventory:
+          type: integer
+          description: ID of the associated inventory.
+        product:
+          type: integer
+          description: ID of the associated product.
+        quantity:
+          type: number
+          format: decimal
+          description: Number of inventory items available.
+        quantity_in_product_uom:
+          type: string
+          format: decimal
+          description: Number of inventory items available in unit of measure.
+        reserved_qty:
+          type: string
+          format: decimal
+          description: Number of reserved inventory items.
+        reserved_qty_in_product_uom:
+          type: string
+          format: decimal
+          description: Number of reserved inventory items in unit of measure.
+        batch:
+          type: integer
+          description: ID of the associated batch.
+        is_archived:
+          type: boolean
+          description: Indicated whether the inventory item is active.
+    InventoryItemUpdate:
+      type: object
+      properties:
+        is_archived:
+          type: boolean
+          description: Indicated whether the inventory item is active.
+        quantity:
+          type: number
+          format: decimal
+          description: Number of inventory items available.
+    InventoryItemCreate:
+      required:
+      - batch
+      - is_archived
+      - facility
+      - product
+      - quantity
+      type: object
+      properties:
+        batch:
+          type: integer
+          description: ID of the associated batch.
+        is_archived:
+          type: boolean
+          description: Indicated whether the inventory item is archived.
+        facility:
+          type: integer
+          description: ID of the associated facility.
+        product:
+          type: integer
+          description: ID of the associated product.
+        quantity:
+          type: number
+          format: decimal
+          description: Number of inventory items available.
+  securitySchemes:
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-tagGroups:
+- name: Orders
+  tags:
+  - order-object
+  - orders-received
+  - order-payments
+  - order-sales-reps
+  - order-event-logs
+  - line-item-object
+  - line-items
+- name: Products
+  tags:
+  - product-object
+  - products
+  - product-categories
+  - product-subcategories
+  - listing-states
+  - product-images
+  - product-lines
+  - strains
+- name: Batches
+  tags:
+  - batch-object
+  - batches
+  - product-batch-object
+  - product-batches
+  - batch-document-object
+  - batch-documents
+- name: Inventory Items
+  tags:
+  - inventory-item-object
+  - inventory-items
+- name: Facilities
+  tags:
+  - facility-object
+  - facilities
+- name: Customers
+  tags:
+  - customer-object
+  - customers
+  - contacts
+  - activity-entries
+  - customer-statuses
+  - customer-tiers
+  - credits
+  - customer-tags
+- name: Company Information
+  tags:
+  - companies
+  - company-staff
+  - licenses
+  - license-types
+  - brands
+  - promocodes
+  - reports
+- name: Buyer Orders
+  tags:
+  - buyer-order-object
+  - buyer-orders
+- name: Retailer Inventory
+  tags:
+  - retailer-inventory

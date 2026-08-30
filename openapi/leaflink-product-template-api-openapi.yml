@@ -1,0 +1,946 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product Template API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Product Template
+paths:
+  /product_templates:
+    get:
+      operationId: product_templates_list
+      description: List multiple product templates.
+      summary: List Product Templates
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        required: true
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: order_by
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -name
+            - name
+        description: Sort by the field
+        explode: false
+        style: form
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Template
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductTemplateList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: product_templates_create
+      description: Create a new product template.
+      summary: Create Product Template
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductTemplateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductTemplate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /product_templates/{id}:
+    get:
+      operationId: product_templates_retrieve
+      description: Retrieve a single product template.
+      summary: Retrieve Product Template
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product template.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Template
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductTemplate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: product_templates_partial_update
+      description: Update an existing product template.
+      summary: Update Product Template
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product template.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedProductTemplateRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductTemplate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: product_templates_destroy
+      description: Delete an existing product template.
+      summary: Delete Product Template
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product template.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Template
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    ListingStateEnum:
+      enum:
+      - Available
+      - Archived
+      - Sample
+      - Backorder
+      - Internal
+      - Unavailable
+      type: string
+    ThresholdActionEnum:
+      enum:
+      - default
+      - backorder
+      - unavailable
+      - internal
+      type: string
+    UnifiedProductTemplate:
+      type: object
+      description: 'Base serializer class to rename created_on and modified fields to
+
+        follow new naming standard of created_date and modified_date'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        template_name:
+          type: string
+          description: Template Name
+          maxLength: 400
+        listing_state:
+          oneOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        inventory_management:
+          title: Product Inventory Management
+          description: The state that determines how inventory is handled for the Product
+          oneOf:
+          - $ref: '#/components/schemas/InventoryManagementEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        unit_of_measure:
+          type:
+          - integer
+          - 'null'
+          description: Unit of measure
+        sell_in_unit_of_measure:
+          type:
+          - integer
+          - 'null'
+          description: Unit of measure that buyers see
+        sell_in_multiples:
+          type: boolean
+          default: false
+        unit_multiplier:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          description: How many individual units are sold when checking out by Unit of Measure
+        unit_denomination:
+          type:
+          - integer
+          - 'null'
+          description: The denomination of unit for the Product.
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product template
+        retail_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Manufacturer's Suggested Retail Price (MSRP)
+        wholesale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Max Wholesale Price
+        sale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Sale Price
+        minimum_order:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Minimum Units per Order
+        maximum_order:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Maximum Units per Order
+        description:
+          type:
+          - string
+          - 'null'
+          description: Brand Description
+          maxLength: 7000
+        category:
+          type:
+          - integer
+          - 'null'
+        sub_category:
+          type:
+          - integer
+          - 'null'
+          description: The sub-category of the Product (e.g. Bulk Flower, Live Resin, etc)
+        seller:
+          type: integer
+          title: Manufacturer
+          description: Company who is selling the Product
+        brand:
+          type:
+          - integer
+          - 'null'
+          description: Brand of product
+        product_line:
+          type:
+          - integer
+          - 'null'
+          description: Product Line of product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        license:
+          type:
+          - integer
+          - 'null'
+        SHOW_QUANTITY:
+          type:
+          - boolean
+          - 'null'
+          title: Show Product quantity
+          description: Show Product Quantity
+        AVAILABLE_FOR_SAMPLES:
+          type:
+          - boolean
+          - 'null'
+          description: This product is available for samples
+        threshold_value:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product threshold value
+          description: When Product inventory reaches below this value, take various actions
+        threshold_action:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdActionEnum'
+          title: Product threshold action
+          description: Action to take when Product inventory reaches below a specified value
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        allow_fractional_quantities:
+          type:
+          - boolean
+          - 'null'
+          description: This product quantity can contain decimal places
+        extern_income_acct_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          title: External Income Account ID
+          description: The ID number for an external income account
+        cost:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          readOnly: true
+          description: Maximum Units per Order
+      required:
+      - cost
+      - created_date
+      - extern_income_acct_id
+      - id
+      - modified_date
+      - seller
+      - template_name
+    UnifiedProductTemplateRequest:
+      type: object
+      description: 'Base serializer class to rename created_on and modified fields to
+
+        follow new naming standard of created_date and modified_date'
+      properties:
+        template_name:
+          type: string
+          minLength: 1
+          description: Template Name
+          maxLength: 400
+        listing_state:
+          oneOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        inventory_management:
+          title: Product Inventory Management
+          description: The state that determines how inventory is handled for the Product
+          oneOf:
+          - $ref: '#/components/schemas/InventoryManagementEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        unit_of_measure:
+          type:
+          - integer
+          - 'null'
+          description: Unit of measure
+        sell_in_unit_of_measure:
+          type:
+          - integer
+          - 'null'
+          description: Unit of measure that buyers see
+        sell_in_multiples:
+          type: boolean
+          default: false
+        unit_multiplier:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          description: How many individual units are sold when checking out by Unit of Measure
+        unit_denomination:
+          type:
+          - integer
+          - 'null'
+          description: The denomination of unit for the Product.
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product template
+        retail_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Manufacturer's Suggested Retail Price (MSRP)
+        wholesale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Max Wholesale Price
+        sale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Sale Price
+        minimum_order:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Minimum Units per Order
+        maximum_order:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Maximum Units per Order
+        description:
+          type:
+          - string
+          - 'null'
+          description: Brand Description
+          maxLength: 7000
+        category:
+          type:
+          - integer
+          - 'null'
+        sub_category:
+          type:
+          - integer
+          - 'null'
+          description: The sub-category of the Product (e.g. Bulk Flower, Live Resin, etc)
+        seller:
+          type: integer
+          title: Manufacturer
+          description: Company who is selling the Product
+        brand:
+          type:
+          - integer
+          - 'null'
+          description: Brand of product
+        product_line:
+          type:
+          - integer
+          - 'null'
+          description: Product Line of product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        license:
+          type:
+          - integer
+          - 'null'
+        SHOW_QUANTITY:
+          type:
+          - boolean
+          - 'null'
+          title: Show Product quantity
+          description: Show Product Quantity
+        AVAILABLE_FOR_SAMPLES:
+          type:
+          - boolean
+          - 'null'
+          description: This product is available for samples
+        threshold_value:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product threshold value
+          description: When Product inventory reaches below this value, take various actions
+        threshold_action:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdActionEnum'
+          title: Product threshold action
+          description: Action to take when Product inventory reaches below a specified value
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        allow_fractional_quantities:
+          type:
+          - boolean
+          - 'null'
+          description: This product quantity can contain decimal places
+      required:
+      - seller
+      - template_name
+    StrainClassificationEnum:
+      enum:
+      - sativa
+      - indica
+      - hybrid
+      - 11-cbd
+      - high-cbd
+      - sativa-hybrid
+      - indica-hybrid
+      - 21-cbd
+      - thc
+      - na
+      type: string
+    NullEnum-unified-upstream-marketplace:
+      enum:
+      - null
+    PatchedUnifiedProductTemplateRequest:
+      type: object
+      description: 'Base serializer class to rename created_on and modified fields to
+
+        follow new naming standard of created_date and modified_date'
+      properties:
+        template_name:
+          type: string
+          minLength: 1
+          description: Template Name
+          maxLength: 400
+        listing_state:
+          oneOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        inventory_management:
+          title: Product Inventory Management
+          description: The state that determines how inventory is handled for the Product
+          oneOf:
+          - $ref: '#/components/schemas/InventoryManagementEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+        unit_of_measure:
+          type:
+          - integer
+          - 'null'
+          description: Unit of measure
+        sell_in_unit_of_measure:
+          type:
+          - integer
+          - 'null'
+          description: Unit of measure that buyers see
+        sell_in_multiples:
+          type: boolean
+          default: false
+        unit_multiplier:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          description: How many individual units are sold when checking out by Unit of Measure
+        unit_denomination:
+          type:
+          - integer
+          - 'null'
+          description: The denomination of unit for the Product.
+        base_units_per_unit:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,15})?$
+          description: Number of base units in one unit of this product template
+        retail_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Manufacturer's Suggested Retail Price (MSRP)
+        wholesale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Max Wholesale Price
+        sale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Sale Price
+        minimum_order:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Minimum Units per Order
+        maximum_order:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Maximum Units per Order
+        description:
+          type:
+          - string
+          - 'null'
+          description: Brand Description
+          maxLength: 7000
+        category:
+          type:
+          - integer
+          - 'null'
+        sub_category:
+          type:
+          - integer
+          - 'null'
+          description: The sub-category of the Product (e.g. Bulk Flower, Live Resin, etc)
+        seller:
+          type: integer
+          title: Manufacturer
+          description: Company who is selling the Product
+        brand:
+          type:
+          - integer
+          - 'null'
+          description: Brand of product
+        product_line:
+          type:
+          - integer
+          - 'null'
+          description: Product Line of product
+        strain_classification:
+          oneOf:
+          - $ref: '#/components/schemas/StrainClassificationEnum'
+          - $ref: '#/components/schemas/BlankEnum-unified-upstream-marketplace'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        license:
+          type:
+          - integer
+          - 'null'
+        SHOW_QUANTITY:
+          type:
+          - boolean
+          - 'null'
+          title: Show Product quantity
+          description: Show Product Quantity
+        AVAILABLE_FOR_SAMPLES:
+          type:
+          - boolean
+          - 'null'
+          description: This product is available for samples
+        threshold_value:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product threshold value
+          description: When Product inventory reaches below this value, take various actions
+        threshold_action:
+          allOf:
+          - $ref: '#/components/schemas/ThresholdActionEnum'
+          title: Product threshold action
+          description: Action to take when Product inventory reaches below a specified value
+        is_medical_line_item:
+          type: boolean
+          description: Is this a medical line item?
+        allow_fractional_quantities:
+          type:
+          - boolean
+          - 'null'
+          description: This product quantity can contain decimal places
+    PaginatedUnifiedProductTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductTemplate'
+    BlankEnum-unified-upstream-marketplace:
+      enum:
+      - ''
+    InventoryManagementEnum:
+      enum:
+      - inherited
+      - managed
+      - unlimited
+      type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

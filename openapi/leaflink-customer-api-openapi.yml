@@ -1,0 +1,717 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Customer API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Customer
+paths:
+  /customer_statuses:
+    get:
+      operationId: customer_statuses_list
+      description: List multiple Company Customer Status.
+      summary: List Company Customer Status
+      parameters:
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: description
+        schema:
+          type: string
+      - in: query
+        name: hex_color
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: integer
+      - in: query
+        name: is_stock
+        schema:
+          type: boolean
+      - in: query
+        name: order
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: owner
+        schema:
+          type: integer
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: state
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A list of serialized Company Customer Status
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /customer_statuses/{id}:
+    get:
+      operationId: customer_statuses_retrieve
+      description: Get a single Company Customer Status.
+      summary: Get Company Customer Status
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer status.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A serialized Company Customer Status
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /customers:
+    get:
+      operationId: customers_list
+      description: List multiple Customers.
+      summary: List Customers
+      parameters:
+      - in: query
+        name: address
+        schema:
+          type: string
+      - in: query
+        name: address__in
+        schema:
+          type: string
+      - in: query
+        name: address__startswith
+        schema:
+          type: string
+      - in: query
+        name: archived
+        schema:
+          type: boolean
+      - in: query
+        name: brand
+        schema:
+          type: string
+      - in: query
+        name: brand__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: brand__startswith
+        schema:
+          type: string
+      - in: query
+        name: business_identifier
+        schema:
+          type: string
+      - in: query
+        name: business_identifier__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: business_identifier__startswith
+        schema:
+          type: string
+      - in: query
+        name: business_license_name
+        schema:
+          type: string
+      - in: query
+        name: business_license_name__in
+        schema:
+          type: string
+      - in: query
+        name: business_license_name__startswith
+        schema:
+          type: string
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: created_on__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: dba
+        schema:
+          type: string
+      - in: query
+        name: dba__in
+        schema:
+          type: string
+      - in: query
+        name: dba__startswith
+        schema:
+          type: string
+      - in: query
+        name: delinquent
+        schema:
+          type: boolean
+      - in: query
+        name: discount_percent__gt
+        schema:
+          type: number
+      - in: query
+        name: discount_percent__gte
+        schema:
+          type: number
+      - in: query
+        name: discount_percent__lt
+        schema:
+          type: number
+      - in: query
+        name: discount_percent__lte
+        schema:
+          type: number
+      - in: query
+        name: ein
+        schema:
+          type: string
+      - in: query
+        name: ein__in
+        schema:
+          type: string
+      - in: query
+        name: ein__startswith
+        schema:
+          type: string
+      - in: query
+        name: email
+        schema:
+          type: string
+      - in: query
+        name: email__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: email__startswith
+        schema:
+          type: string
+      - in: query
+        name: ext_acct_id
+        schema:
+          type: string
+      - in: query
+        name: ext_acct_id__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: ext_acct_id__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: ext_acct_id__startswith
+        schema:
+          type: string
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - in: query
+        name: external_id__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: external_id__startswith
+        schema:
+          type: string
+      - in: query
+        name: external_id_key
+        schema:
+          type: string
+        description: Filter by external ID key (integration system name)
+      - in: query
+        name: external_id_unmapped
+        schema:
+          type: boolean
+      - in: query
+        name: external_id_values
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: id__in
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: is_archived
+        schema:
+          type: boolean
+      - in: query
+        name: leaflink_source
+        schema:
+          type: boolean
+      - in: query
+        name: license_inactive
+        schema:
+          type: boolean
+      - in: query
+        name: license_number
+        schema:
+          type: string
+      - in: query
+        name: license_type
+        schema:
+          type: string
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: name__in
+        schema:
+          type: string
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+      - in: query
+        name: next_contact_date__gt
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: next_contact_date__gte
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: next_contact_date__lt
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: next_contact_date__lte
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: nickname
+        schema:
+          type: string
+      - in: query
+        name: nickname__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: nickname__startswith
+        schema:
+          type: string
+      - in: query
+        name: old_license_number
+        schema:
+          type: string
+      - in: query
+        name: old_license_number__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: old_license_number__startswith
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: owner
+        schema:
+          type: integer
+      - in: query
+        name: owner__slug
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: partner
+        schema:
+          type: integer
+      - in: query
+        name: payment_term
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: phone
+        schema:
+          type: string
+      - in: query
+        name: phone__in
+        schema:
+          type: string
+      - in: query
+        name: phone__startswith
+        schema:
+          type: string
+      - in: query
+        name: price_schedule
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service_zone
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: state
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: tier
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: website
+        schema:
+          type: string
+      - in: query
+        name: website__in
+        schema:
+          type: string
+      - in: query
+        name: website__startswith
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A list of serialized customers
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /customers/{id}:
+    get:
+      operationId: customers_retrieve
+      description: Get a single Customer.
+      summary: Get Customer
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Customer
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A serialized customer
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

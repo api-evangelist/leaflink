@@ -1,0 +1,1381 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Inventory Command API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: inventory-command
+paths:
+  /inventory/commands/{id}/status:
+    get:
+      operationId: inventory_commands_status_retrieve
+      description: Return the execution status of a previously submitted inventory command.
+      summary: Get command status
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-command
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandStatusResponse'
+          description: Command status (Pending | Success | Failed)
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '404':
+          description: Command not found
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/archive:
+    post:
+      operationId: inventory_commands_archive_create
+      description: Queue an archive command (remove from active circulation). Returns 202 with command_id.
+      summary: Submit archive command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchiveRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/destroy:
+    post:
+      operationId: inventory_commands_destroy_create
+      description: Queue a destroy command (remove inventory). Returns 202 with command_id.
+      summary: Submit destroy command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DestroyRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/fulfillment:
+    post:
+      operationId: inventory_commands_fulfillment_create
+      description: Queue a fulfillment command (ship inventory for an order). Returns 202 with command_id.
+      summary: Submit fulfillment command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FulfillmentRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/hold:
+    post:
+      operationId: inventory_commands_hold_create
+      description: Queue a hold command (place inventory on hold). Returns 202 with command_id.
+      summary: Submit hold command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HoldRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/putaway:
+    post:
+      operationId: inventory_commands_putaway_create
+      description: Queue a putaway command (add inventory to a facility). Returns 202 with command_id for status polling.
+      summary: Submit putaway command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutawayRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/rebuild-projections:
+    post:
+      operationId: inventory_commands_rebuild_projections_create
+      description: Look up event streams matching the supplied seller_ids, product_ids, facility_ids, and/or batch_ids filters and queue an update_projection_task for each (stream × registered projection).
+      summary: Rebuild projections for matching streams
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RebuildProjectionsRequestRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RebuildProjectionsResponse'
+          description: Streams resolved and projection-update tasks queued
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/reconcile:
+    post:
+      operationId: inventory_commands_reconcile_create
+      description: Queue a reconcile command (set inventory to a quantity). Returns 202 with command_id.
+      summary: Submit reconcile command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconcileRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/transfer:
+    post:
+      operationId: inventory_commands_transfer_create
+      description: Queue a transfer command (move inventory between items). Returns 202 with command_id.
+      summary: Submit transfer command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/unarchive:
+    post:
+      operationId: inventory_commands_unarchive_create
+      description: Queue an unarchive command (return to active circulation). Returns 202 with command_id.
+      summary: Submit unarchive command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnarchiveRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/unfulfillment:
+    post:
+      operationId: inventory_commands_unfulfillment_create
+      description: Queue an unfulfillment command (reverse shipment). Returns 202 with command_id.
+      summary: Submit unfulfillment command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnfulfillmentRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/unhold:
+    post:
+      operationId: inventory_commands_unhold_create
+      description: Queue an unhold command (release from hold). Returns 202 with command_id.
+      summary: Submit unhold command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnholdRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/commands/unreserve:
+    post:
+      operationId: inventory_commands_unreserve_create
+      description: Queue an unreserve command (release reserved inventory). Returns 202 with command_id.
+      summary: Submit unreserve command
+      tags:
+      - inventory-command
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnreserveRequestRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandAcceptedResponse'
+          description: Command accepted
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Validation error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    RebuildProjectionsStream:
+      type: object
+      description: Single stream identifier in the rebuild-projections response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+      required:
+      - batch_id
+      - facility_id
+      - product_id
+    UnreserveRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unreserve.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        order_id:
+          type: integer
+          minimum: 1
+        order_product_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - created_by
+      - order_id
+      - order_product_id
+      - product_id
+      - quantity
+    RebuildProjectionsRequestRequest:
+      type: object
+      description: 'Request body for POST .../commands/rebuild-projections.
+
+
+        Accepts any combination of seller_ids, product_ids, facility_ids, and
+
+        batch_ids. At least one filter list must be non-empty. seller_ids are
+
+        expanded to their products at the view layer (Django ORM) before stream
+
+        lookup.'
+      properties:
+        seller_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        product_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        facility_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        batch_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+    ArchiveRequestRequest:
+      type: object
+      description: Request body for POST .../commands/archive.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    UnfulfillmentRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unfulfillment.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        order_id:
+          type: integer
+          minimum: 1
+        order_product_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - created_by
+      - order_id
+      - order_product_id
+      - product_id
+      - quantity
+    RebuildProjectionsResponse:
+      type: object
+      description: Response body for POST .../commands/rebuild-projections.
+      properties:
+        stream_count:
+          type: integer
+        tasks_queued:
+          type: integer
+        streams:
+          type: array
+          items:
+            $ref: '#/components/schemas/RebuildProjectionsStream'
+      required:
+      - stream_count
+      - streams
+      - tasks_queued
+    UnholdRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unhold.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    ReconcileRequestRequest:
+      type: object
+      description: Request body for POST .../commands/reconcile.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        to_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - reason
+      - to_quantity
+    UnarchiveRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unarchive.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    FulfillmentRequestRequest:
+      type: object
+      description: Request body for POST .../commands/fulfillment.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        order_id:
+          type: integer
+          minimum: 1
+        order_product_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - created_by
+      - order_id
+      - order_product_id
+      - product_id
+      - quantity
+    CommandAcceptedResponse:
+      type: object
+      description: Response body for 202 Accepted when a command is queued.
+      properties:
+        command_id:
+          type: integer
+          description: Persisted command ID for status polling
+      required:
+      - command_id
+    TransferRequestRequest:
+      type: object
+      description: Request body for POST .../commands/transfer.
+      properties:
+        from_product_id:
+          type: integer
+          minimum: 1
+        from_facility_id:
+          type: integer
+          minimum: 1
+        from_batch_id:
+          type: integer
+          minimum: 1
+        to_product_id:
+          type: integer
+          minimum: 1
+        to_facility_id:
+          type: integer
+          minimum: 1
+        to_batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - created_by
+      - from_batch_id
+      - from_facility_id
+      - from_product_id
+      - quantity
+      - to_batch_id
+      - to_facility_id
+      - to_product_id
+    PutawayRequestRequest:
+      type: object
+      description: Request body for POST .../commands/putaway.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        created_by:
+          type: integer
+          minimum: 0
+          description: User ID the command is on behalf of (e.g. company staff).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+    HoldRequestRequest:
+      type: object
+      description: Request body for POST .../commands/hold.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    DestroyRequestRequest:
+      type: object
+      description: Request body for POST .../commands/destroy.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    CommandStatusResponse:
+      type: object
+      description: Response body for GET .../commands/<id>/status.
+      properties:
+        command_id:
+          type: integer
+        task_id:
+          type:
+          - string
+          - 'null'
+        result_status:
+          allOf:
+          - $ref: '#/components/schemas/ResultStatusEnum'
+          description: Pending | Success | Failed
+        result_metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Error/details when Failed
+        result_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        command_type:
+          type: string
+          description: Command type name
+      required:
+      - command_id
+      - command_type
+      - result_metadata
+      - result_on
+      - result_status
+      - task_id
+    ResultStatusEnum:
+      enum:
+      - Pending
+      - Success
+      - Failed
+      type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

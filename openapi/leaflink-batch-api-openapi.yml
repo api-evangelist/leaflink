@@ -1,0 +1,733 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Batch API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: batch
+paths:
+  /batches:
+    get:
+      operationId: batches_list
+      description: List batches for the company. Optional query param include=meta adds a top-level meta object with company-wide batch counts (not affected by list filters or sorting). Naming is inspired by JSON:API optional expansions; meta is not a related resource include.
+      summary: List Batches
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: include
+        schema:
+          type: string
+        description: Comma-separated optional expansions. Use 'meta' to include aggregate counts for the company (active, inactive, low-inventory placeholder).
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: product_type
+        schema:
+          type: string
+        description: Filter by product category name.
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: 'When unassigned=false or omitted: case-insensitive match on batch number, SKU, supplier, linked product name, or linked product strain name. When unassigned=true: forwarded to traceability package search (METRC: facility name, license number, label suffix). Alias query param: q.'
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by batch status (e.g. active, inactive).
+      - in: query
+        name: unassigned
+        schema:
+          type: boolean
+        description: Filter by unassigned or assigned batches.
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - batch
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchListPaginatedResponse'
+          description: Paginated list of batches; meta present when include=meta.
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: 'Invalid list parameters (e.g. page size over 100 when unassigned=true), failure loading unassigned candidates from traceability, or a domain error from the batch layer surfaced as 400. Response body: {"detail": string}.'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: batches_create
+      description: Create from batch number only; trace-backed or minimal.
+      summary: Create a Batch
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedBatch'
+          description: The batch created
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: 'Create/update validation or persistence error (not duplicate number or missing batch). Body: {"detail": string}.'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '409':
+          description: 'A batch with this number already exists for the company. Body: {"detail": string} (includes the conflicting number).'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /batches/{id}:
+    get:
+      operationId: batches_retrieve
+      description: Get a single batch by ID.
+      summary: Retrieve a Batch
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of the batch.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - batch
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedBatch'
+          description: The batch
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: 'Create/update validation or persistence error (not duplicate number or missing batch). Body: {"detail": string}.'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '404':
+          description: 'No batch exists for this id in the current company. Body: {"detail": string} (default message is generic).'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    put:
+      operationId: batches_update
+      description: Update an existing batch (PUT, full replace of editable fields).
+      summary: Update a Batch
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of the batch.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedBatch'
+          description: The batch updated
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: 'Create/update validation or persistence error (not duplicate number or missing batch). Body: {"detail": string}.'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '404':
+          description: 'No batch exists for this id in the current company. Body: {"detail": string} (default message is generic).'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    SourceTypeEnum:
+      enum:
+      - production_batch
+      - source_label
+      type: string
+    Terpene:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
+    PricingStrategyInputRequest:
+      type: object
+      description: Serializer for pricing strategy input (nested in batch update).
+      properties:
+        product_id:
+          type: integer
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        customer_group_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - price
+      - product_id
+    TerpeneRequest:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+          minLength: 1
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
+    BatchMetaPayload:
+      type: object
+      properties:
+        active_batch_count:
+          type: integer
+        inactive_batch_count:
+          type: integer
+        low_inventory_batch_count:
+          type: integer
+      required:
+      - active_batch_count
+      - inactive_batch_count
+      - low_inventory_batch_count
+    BatchListPaginatedResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedBatch'
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/BatchMetaPayload'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    BatchUpdateRequest:
+      type: object
+      description: Serializer for updating a batch (PUT, full replace). id and company_id are injected by the view.
+      properties:
+        id:
+          type: integer
+        company_id:
+          type: integer
+        number:
+          type: string
+          minLength: 1
+          maxLength: 100
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
+        harvest_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        terpenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TerpeneRequest'
+        is_assigned:
+          type: boolean
+        append_thc:
+          type: boolean
+        supplier:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        pricing_strategies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricingStrategyInputRequest'
+        product_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - append_thc
+      - company_id
+      - id
+      - is_assigned
+      - status
+      - terpenes
+    UnifiedBatch:
+      type: object
+      description: Serializer for Batch - read/response only.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        company_id:
+          type: integer
+          readOnly: true
+        number:
+          type: string
+          readOnly: true
+          maxLength: 100
+        source:
+          type: string
+          readOnly: true
+          maxLength: 100
+        source_type:
+          type: string
+          readOnly: true
+          maxLength: 32
+        supplier:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        harvest_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        status:
+          type: string
+          maxLength: 20
+        append_thc:
+          type: boolean
+          default: false
+        terpenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Terpene'
+        is_assigned:
+          type: boolean
+          default: false
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        unit_of_measure:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        lab_test_unit_of_measure:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        item_name:
+          type:
+          - string
+          - 'null'
+        item_category:
+          type:
+          - string
+          - 'null'
+        total_thc:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbd:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        lab_result_file_id:
+          type:
+          - integer
+          - 'null'
+        display_sku:
+          type: string
+          readOnly: true
+      required:
+      - company_id
+      - created_on
+      - display_sku
+      - id
+      - modified
+      - number
+      - source
+      - source_type
+      - status
+    BatchCreateRequest:
+      type: object
+      description: Serializer for creating a batch. company_id is injected by the view.
+      properties:
+        company_id:
+          type: integer
+        number:
+          type: string
+          minLength: 1
+          maxLength: 100
+        source_type:
+          allOf:
+          - $ref: '#/components/schemas/SourceTypeEnum'
+          default: production_batch
+        product_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - company_id
+      - number
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

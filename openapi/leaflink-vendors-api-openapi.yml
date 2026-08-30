@@ -1,0 +1,873 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Vendors API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: vendors
+paths:
+  /vendor/{id}:
+    get:
+      operationId: vendor_retrieve
+      description: Get a single vendor company profile. The licenses field contains only (non-archived) licenses.
+      summary: Get Vendor Company Profile
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - vendors
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedVendorCompany'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /vendors/recommended:
+    get:
+      operationId: vendors_recommended_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - vendors
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedRecommendedCompanyList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /vendors/recommended/{id}:
+    get:
+      operationId: vendors_recommended_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - vendors
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedRecommendedCompany'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedRecommendedCompany:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        sponsorship:
+          allOf:
+          - $ref: '#/components/schemas/Sponsorship'
+          readOnly: true
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+      - name
+      - sponsorship
+    NestedLicense:
+      type: object
+      description: License serializer to use as a nested value.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          type: string
+        classification:
+          type: string
+      required:
+      - classification
+      - id
+      - number
+      - type
+    SponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+      required:
+      - click_url
+      - id
+      - impression_url
+    NestedOrderSeller:
+      type: object
+      description: Serializer for seller info on a buyer order.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        enable_seller_menu:
+          type: boolean
+          title: Seller opted into vendor menu
+          description: This seller company has enabled the vendor menu for their company
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedLicense'
+          readOnly: true
+      required:
+      - id
+      - licenses
+      - name
+    BuyerOrder:
+      type: object
+      description: Order serializer (buyer side).
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: <uuid> Order number generated by LeafLink
+        short_id:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/BuyerOrderStatusEnum'
+          readOnly: true
+          description: Order status
+        type:
+          type: string
+          readOnly: true
+          description: Classification of the license-type associated to the order
+        buyer:
+          $ref: '#/components/schemas/NestedCompany'
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/NestedOrderSeller'
+          readOnly: true
+        source:
+          type: string
+          readOnly: true
+        created_by:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        last_edited_on:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time that the order was last modified
+        currency:
+          type: string
+          readOnly: true
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedOrderedProduct'
+          readOnly: true
+        subtotal:
+          type: number
+          format: decimal
+          description: Money amount rounded to two decimal places
+          readOnly: true
+        shipping_charge:
+          type: number
+          format: decimal
+          description: Money amount rounded to two decimal places
+          readOnly: true
+        discount:
+          type: number
+          format: decimal
+          description: Money amount rounded to two decimal places
+          readOnly: true
+        tax:
+          type: number
+          format: decimal
+          description: Tax amount applied to the order
+          readOnly: true
+        total:
+          type: number
+          format: decimal
+          description: The total amount of the order
+          readOnly: true
+        payable_to:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        payment_term:
+          type: string
+          readOnly: true
+        payment_due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the Payment is due
+        ship_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the Order is shipped
+        shipping_details:
+          type:
+          - string
+          - 'null'
+          description: Shipping details for an Order
+          maxLength: 2000
+        is_delivered:
+          type: boolean
+          readOnly: true
+        delivered_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+          title: Order Notes
+          description: Additional notes for an Order
+          maxLength: 2000
+        sales_reps:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        delivery_address:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - buyer
+      - created_by
+      - created_on
+      - currency
+      - delivery_address
+      - discount
+      - id
+      - is_delivered
+      - last_edited_on
+      - line_items
+      - payable_to
+      - payment_term
+      - sales_reps
+      - seller
+      - shipping_charge
+      - short_id
+      - source
+      - status
+      - subtotal
+      - tax
+      - total
+      - type
+    UnifiedVendorCompany:
+      type: object
+      description: Unified API Vendor Company Serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        address:
+          type: string
+        brands:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedVendorBrand'
+        city:
+          type: string
+        description:
+          type: string
+          description: An overview of the company
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComplianceLicense'
+          description: Active (non-archived) licenses only. Archived licenses are excluded.
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Company
+          maxLength: 400
+        website:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: company's website
+          maxLength: 400
+        address_1:
+          type: string
+        address_2:
+          type: string
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerOrder'
+        tagline:
+          type:
+          - string
+          - 'null'
+          description: Company tagline
+          maxLength: 500
+      required:
+      - address
+      - address_1
+      - address_2
+      - brands
+      - city
+      - id
+      - licenses
+      - name
+      - orders
+    NestedProduct:
+      type: object
+      description: Product serializer to use as a nested value.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sku:
+          type:
+          - string
+          - 'null'
+          title: Customer SKU
+          description: Stock Keeping Unit. A unique identifier for a Product, alternative to id.
+          maxLength: 255
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        brand:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        unit_of_measure:
+          type: string
+        unit_denomination:
+          type: string
+        base_unit_of_measure:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        base_units_per_unit:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        sold_in_multiples:
+          type: boolean
+          readOnly: true
+        units_per_case:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/ProductCategory'
+        sub_category:
+          $ref: '#/components/schemas/ProductSubCategory'
+        is_ancillary:
+          type: boolean
+      required:
+      - base_unit_of_measure
+      - base_units_per_unit
+      - brand
+      - category
+      - id
+      - is_ancillary
+      - name
+      - sold_in_multiples
+      - sub_category
+      - units_per_case
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
+    PaginatedUnifiedRecommendedCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedRecommendedCompany'
+    ComplianceLicense:
+      type: object
+      description: Serializer for License models via the v2 API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+          description: Type
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    BuyerOrderStatusEnum:
+      enum:
+      - submitted
+      - accepted
+      - fulfilled
+      - shipped
+      - delivered
+      - rejected
+      - cancelled
+      - backorder
+      - complete
+      - combined
+      - draft
+      type: string
+    UnifiedVendorBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Image of the Brand's logo
+      required:
+      - id
+      - name
+    ProductCategory:
+      type: object
+      description: Product category serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Category
+          description: Name of Category
+          maxLength: 40
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+          title: Body
+          description: Brand Description
+          maxLength: 400
+      required:
+      - description
+      - id
+      - name
+      - slug
+    NestedOrderedProduct:
+      type: object
+      description: Ordered Product serializer to use as a nested value.
+      properties:
+        product:
+          $ref: '#/components/schemas/NestedProduct'
+        quantity:
+          type: number
+          format: double
+          readOnly: true
+        sold_by:
+          type: string
+          readOnly: true
+        price:
+          type: number
+          format: double
+          readOnly: true
+        total:
+          type: number
+          format: decimal
+          description: Money amount rounded to two decimal places
+        discount_info:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          description: Information about discounts that were applied to this product.
+      required:
+      - price
+      - product
+      - quantity
+      - sold_by
+      - total
+    Sponsorship:
+      type: object
+      description: Serializer for ll.ads.data_models.Sponsorship
+      properties:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
+          type: string
+      required:
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
+    NestedCompany:
+      type: object
+      description: Company serializer to use as a nested value.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        address:
+          type: string
+          readOnly: true
+        unit_number:
+          type: string
+          readOnly: true
+        city:
+          type: string
+          readOnly: true
+        state:
+          type: string
+          readOnly: true
+        zip:
+          type: string
+          readOnly: true
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Company
+          maxLength: 400
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedLicense'
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - address
+      - city
+      - id
+      - licenses
+      - name
+      - state
+      - unit_number
+      - zip
+    ProductSubCategory:
+      type: object
+      description: Product subcategory serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Sub-Category
+          maxLength: 40
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+          title: Body
+          description: Description of Sub-Category
+          maxLength: 400
+        category:
+          type: integer
+          description: The parent category of this sub-category
+      required:
+      - category
+      - id
+      - name
+      - slug
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

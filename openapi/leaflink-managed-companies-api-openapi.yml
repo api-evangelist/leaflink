@@ -1,0 +1,497 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Managed Companies API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: managed_companies
+paths:
+  /managed_companies:
+    get:
+      operationId: managed_companies_list
+      description: Managed Companies collection view. Companies you are the admin of
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - managed_companies
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /managed_companies/{id}:
+    get:
+      operationId: managed_companies_retrieve
+      description: Managed Companies collection view. Companies you are the admin of
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - managed_companies
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /managed_companies/{id}/licenses:
+    get:
+      operationId: managed_companies_licenses_list
+      description: Licenses for a company
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - managed_companies
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLicenseList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /managed_companies/{marketplace_slug}:
+    get:
+      operationId: managed_companies_retrieve_2
+      description: Managed Companies collection view. Companies you are the admin of
+      parameters:
+      - in: path
+        name: marketplace_slug
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - managed_companies
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    LegalEntity:
+      type: object
+      description: Serializer for LegalEntity
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+        street_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        zipcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        state:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        lexis_nexis_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_title:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+      required:
+      - name
+    License:
+      type: object
+      description: Licenses Serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type: string
+          maxLength: 100
+        state:
+          $ref: '#/components/schemas/State'
+        verification_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the license was verified by Leaflink. Not the date the license was verified by Cannabiz API.
+        verification_status:
+          $ref: '#/components/schemas/VerificationStatusEnum'
+        issued_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/LicenseTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - id
+      - number
+      - state
+    NullEnum:
+      enum:
+      - null
+    PaginatedCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+    PaginatedLicenseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/License'
+    BlankEnum:
+      enum:
+      - ''
+    LicenseTypeEnum:
+      enum:
+      - medical
+      - combined
+      - ancillary_2
+      - ancillary
+      - adult_use
+      - cannabis
+      - medical_transporter
+      - ancillary_logisitics
+      type: string
+    Company:
+      type: object
+      description: Used to validate the company creation request.
+      properties:
+        id:
+          type: string
+          format: uuid
+        dba:
+          type: string
+          maxLength: 200
+        legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        has_linked_bank_account:
+          type: boolean
+          readOnly: true
+      required:
+      - dba
+      - has_linked_bank_account
+    State:
+      type: object
+      description: State Serializer
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
+    VerificationStatusEnum:
+      enum:
+      - active
+      - pending
+      - applied
+      - expired
+      - inactive
+      - not_found
+      - invalid_format
+      - not_verified
+      type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

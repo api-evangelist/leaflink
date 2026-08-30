@@ -1,0 +1,4402 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Traceability API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: traceability
+paths:
+  /traceability/actions/refresh_products_packages:
+    patch:
+      operationId: traceability_actions_refresh_products_packages_partial_update
+      description: Reconcile inventory for products, utilizes marketplace celery tasks + traceability service data.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTraceabilityRefreshProductsPackagesRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/actions/refresh_resources:
+    get:
+      operationId: traceability_actions_refresh_resources_retrieve
+      description: Perform refresh for specified resource types and optional datetime.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+        description: Resource refresh end date
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+        description: Resource refresh start date
+      - in: query
+        name: types
+        schema:
+          type: string
+        description: Comma-separated list of resource types to refresh
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/companies:
+    post:
+      operationId: traceability_companies_create
+      description: Create a new company in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyCreateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyWriteSuccessResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/companies/{id}:
+    get:
+      operationId: traceability_companies_retrieve
+      description: Get company by ID.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of requested company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityCompany'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: traceability_companies_partial_update
+      description: Update a company in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of requested company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompanyUpdateRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyWriteSuccessResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/company_customers:
+    get:
+      operationId: traceability_company_customers_list
+      description: Get company customers.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedTraceabilityCompanyCustomerList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/company_customers/{id}:
+    get:
+      operationId: traceability_company_customers_retrieve
+      description: Get company customer by ID.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedTraceabilityCompanyCustomer'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/company_licenses/:
+    post:
+      operationId: traceability_company_licenses_create
+      description: Get company licenses
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LicenseApiKeyRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityLicenses'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/company_setting/{id}:
+    delete:
+      operationId: traceability_company_setting_destroy
+      description: Delete a company's integration.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of integration to modify
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/drivers:
+    get:
+      operationId: traceability_drivers_list
+      description: Get all drivers for company
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityDriverList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: traceability_drivers_create
+      description: Create a new driver in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TraceabilityDriverCreateUpdateInputRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityDriver'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/drivers/{external_id}:
+    patch:
+      operationId: traceability_drivers_partial_update
+      description: Update a driver in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        description: Vendor external ID of object to be updated
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTraceabilityDriverCreateUpdateInputRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityDriver'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/items:
+    get:
+      operationId: traceability_items_list
+      description: Get all items from the traceability service for a company.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: include_strain_data
+        schema:
+          type: boolean
+        description: Boolean to indicate whether strain data should be included
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityItemList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/orders_by_package_labels:
+    get:
+      operationId: traceability_orders_by_package_labels_list
+      description: Unified API Orders by Package Labels.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedTraceabilityPackageOrdersList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/orders_by_package_labels/{id}:
+    get:
+      operationId: traceability_orders_by_package_labels_retrieve
+      description: Unified API Orders by Package Labels.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attached package.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedTraceabilityPackageOrders'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/packages:
+    get:
+      operationId: traceability_packages_list
+      description: Get company packages
+      parameters:
+      - in: query
+        name: assigned
+        schema:
+          type: boolean
+        description: Filter by Traceability.common_packages that are assigned/unassigned products
+      - in: query
+        name: cbd_max
+        schema:
+          type: number
+          format: double
+        description: Filter by Traceability.common_packages with a CBD value less than or equal to the given value
+      - in: query
+        name: cbd_min
+        schema:
+          type: number
+          format: double
+        description: Filter by Traceability.common_packages with a CBD value greater than or equal to the given value
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: hide_attached_packages
+        schema:
+          type: boolean
+        description: Filter out any Traceability.common_package that has already been assigned to an order line-item
+      - in: query
+        name: include_source_packages
+        schema:
+          type: boolean
+        description: Indicate whether to include a list of source_package_labels in the response
+      - in: query
+        name: is_production_batch
+        schema:
+          type: boolean
+        description: Filter Traceability.common_packages for packages that are production batches
+      - in: query
+        name: item
+        schema:
+          type: string
+        description: Filter by Traceability.metrc_package.item_id (accepts comma-separated list)
+      - in: query
+        name: lab_testing_status
+        schema:
+          type: string
+        description: Filter by Traceability.common_package.metrc_package.lab_testing_status (accepts comma-separated list)
+      - in: query
+        name: label
+        schema:
+          type: string
+        description: Filter by Traceability.common_package.label (accepts comma-separated list)
+      - in: query
+        name: license_number
+        schema:
+          type: string
+        description: Filter by Traceability.common_package.license_number (accepts comma-separated list)
+      - in: query
+        name: location
+        schema:
+          type: string
+        description: Filter by Traceability.common_package.location_id (accepts comma-separated list)
+      - in: query
+        name: manifest_number
+        schema:
+          type: string
+        description: Filter Traceability.common_package by packages associated with manifest
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: packaged_date
+        schema:
+          type: string
+        description: Filter by Traceability.metrc_package.packaged_date (accepts comma-separated list)
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number for pagination (1-indexed)
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Number of results per page, hard-cap of 25 enforced, default 25
+      - in: query
+        name: product_ids
+        schema:
+          type: string
+        description: Filter Traceability.common_package by product_ids assigned to packages (accepts comma-separated list)
+      - in: query
+        name: production_batch_numbers
+        schema:
+          type: string
+        description: Filter Traceability.common_packages for specific production batches
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - in: query
+        name: source_package
+        schema:
+          type: string
+        description: Filter Traceability.common_package by packages that are children of the given label
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by Traceability.common_package.status field
+      - in: query
+        name: template_id
+        schema:
+          type: string
+        description: Filter Traceability.common_package by packages assigned to template
+      - in: query
+        name: thc_max
+        schema:
+          type: number
+          format: double
+        description: Filter by Traceability.common_packages with a THC value less than or equal to the given value
+      - in: query
+        name: thc_min
+        schema:
+          type: number
+          format: double
+        description: Filter by Traceability.common_packages with a THC value greater than or equal to the given value
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityPackageList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/refresh_requests:
+    get:
+      operationId: traceability_refresh_requests_list
+      description: Get all refresh_requests from the traceability service for a company.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: refresh_date
+        schema:
+          type: string
+          format: date
+        description: Filter results by refresh_request.created_at
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter results by comma-separated list of refresh statuses
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityRefreshRequestList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/templates:
+    get:
+      operationId: traceability_templates_list
+      description: Get templates from the traceability service for company.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: ll_order_id
+        schema:
+          type: integer
+        description: Filter results by associated LL order ID
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number for pagination (1-indexed)
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Number of results per page, hard-cap of 25 enforced, default 25
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - in: query
+        name: ship_date
+        schema:
+          type: string
+          format: date-time
+        description: Filter results by ship date
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityTemplateList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: traceability_templates_create
+      description: Create a new Template in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateWriteSuccessResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/templates/{id}:
+    get:
+      operationId: traceability_templates_retrieve
+      description: Get template by ID for company.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of requested template
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityTemplateDetail'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: traceability_templates_partial_update
+      description: Update a template in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: ID of requested template
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTemplateUpdateRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateWriteSuccessResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/transfer_companies:
+    get:
+      operationId: traceability_transfer_companies_list
+      description: Get origin/destination companies of a transfer + their associated license
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: from_shipper
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.shipper_facility_name|shipper_facility_license_number fields contain value
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: to_recipient
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.recipient_facility_name|recipient_facility_license_number fields contain value
+      - in: query
+        name: transfer_type
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.type field
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransferCompanyList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/transfers:
+    get:
+      operationId: traceability_transfers_list
+      description: 'Get traceability transfer data. Note: resource_type fields will not be present in the payloads. They are just needed to help define polymorphic fields.'
+      parameters:
+      - in: query
+        name: arrival_date
+        schema:
+          type: string
+          format: date
+        description: Filter by Traceability.transfer.arrival_date field
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: company_ids
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.company.external_id (marketplace.company.id) field
+      - in: query
+        name: exclude_received
+        schema:
+          type: boolean
+        description: Filter by Traceability.transfer.received_datetime field not None
+      - in: query
+        name: exclude_voided
+        schema:
+          type: boolean
+        description: Filter by Traceability.transfer.status field not VOIDED
+      - in: query
+        name: external_ids
+        schema:
+          type: string
+        description: Filter by Traceability.<model>.external_id field
+      - in: query
+        name: from_shipper
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.shipper_facility_name|shipper_facility_license_number fields contain value
+      - in: query
+        name: has_attached_orders
+        schema:
+          type: boolean
+        description: Filter by transfers that are associated with orders in LL
+      - in: query
+        name: ids
+        schema:
+          type: string
+        description: Traceability.<model>.id field
+      - in: query
+        name: include_package_data
+        schema:
+          type: boolean
+        description: Include delivery packages in response
+      - in: query
+        name: max_count
+        schema:
+          type: integer
+        description: Limit db count queries to {max_count} (performance optimization opt-in).
+      - in: query
+        name: metrc_ids
+        schema:
+          type: string
+        description: Filter by Traceability.<model>.metrc_id field
+      - in: query
+        name: order_ids
+        schema:
+          type: string
+        description: Filter transfers by Traceability.order_transfer.order_id list field
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number for pagination (1-indexed)
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Number of results per page, hard-cap of 25 enforced, default 25
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - in: query
+        name: ship_date
+        schema:
+          type: string
+          format: date-time
+        description: Filter results by ship date
+      - in: query
+        name: sort_by
+        schema:
+          type: string
+        description: Sort results by given field
+      - in: query
+        name: to_recipient
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.recipient_facility_name|recipient_facility_license_number fields contain value
+      - in: query
+        name: traceability_transfer_external_ids
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.metrc_id field
+      - in: query
+        name: transfer_status
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.status field
+      - in: query
+        name: transfer_type
+        schema:
+          type: string
+        description: Filter by Traceability.transfer.type field
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityTransferList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: traceability_transfers_create
+      description: Create a new manifest in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferCreateInputRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolymorphicCreateUpdateTransferResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/transfers/{id}:
+    patch:
+      operationId: traceability_transfers_partial_update
+      description: Update a transfer in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+        description: External ID of requested transfer
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransferUpdateInputRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolymorphicCreateUpdateTransferResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/vehicles:
+    get:
+      operationId: traceability_vehicles_list
+      description: Get all vehicles
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTraceabilityVehicleList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: traceability_vehicles_create
+      description: Create a new vehicle in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TraceabilityVehicleCreateUpdateInputRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityVehicle'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /traceability/vehicles/{external_id}:
+    patch:
+      operationId: traceability_vehicles_partial_update
+      description: Update a vehicle in the traceability service.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: external_id
+        schema:
+          type: string
+        description: Vendor external ID of object to be updated
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - traceability
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTraceabilityVehicleCreateUpdateInputRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceabilityVehicle'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    PaginatedTraceabilityDriverList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityDriver'
+    PolymorphicVehicleVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcVehicle'
+      - $ref: '#/components/schemas/BiotrackVehicle'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcVehicleFields: '#/components/schemas/MetrcVehicle'
+          BiotrackVehicleFields: '#/components/schemas/BiotrackVehicle'
+    PatchedTransferUpdateInputRequest:
+      type: object
+      properties:
+        ll_order_id:
+          type: integer
+        ll_order_number:
+          type: string
+          minLength: 1
+        buyer_external_id:
+          type: string
+          minLength: 1
+        turn_by_turn_directions:
+          type: string
+          minLength: 1
+        estimated_arrival_datetime:
+          type: string
+          minLength: 1
+        estimated_departure_datetime:
+          type: string
+          minLength: 1
+        driver_id:
+          type: integer
+        vehicle_id:
+          type: integer
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferCreateUpdatePackageRequest'
+        type:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          minLength: 1
+    CompanyCreateRequest:
+      type: object
+      properties:
+        enable_seed_to_sale:
+          type: boolean
+        enable_hide_attached_packages:
+          type: boolean
+        enable_license_verification:
+          type:
+          - boolean
+          - 'null'
+        enable_search_by_product_id:
+          type: boolean
+        api_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyApiKeyRequest'
+        included_location_ids:
+          type: array
+          items:
+            type: integer
+        excluded_lab_test_states:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      required:
+      - api_configs
+      - enable_hide_attached_packages
+      - enable_seed_to_sale
+      - excluded_lab_test_states
+    PaginatedTraceabilityTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityTemplate'
+    TraceabilityPackage:
+      type: object
+      description: Traceability package fields from the Traceability.common_package and Traceability.metrc_package tables.
+      properties:
+        id:
+          type: integer
+          description: ID of the package in the Traceability Service
+        external_id:
+          type: string
+          description: ID of the package in the vendor's system
+        label:
+          type: string
+        license_number:
+          type: string
+        status:
+          type: string
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        vendor_type:
+          type: string
+          description: Name of vendor's system (Biotrack, Metrc, ...
+        vendor_fields:
+          $ref: '#/components/schemas/MetrcPackage'
+        location_id:
+          type: integer
+        location:
+          $ref: '#/components/schemas/TraceabilityLocation'
+        in_transit:
+          type:
+          - boolean
+          - 'null'
+        is_testing_sample:
+          type:
+          - boolean
+          - 'null'
+        lab_test_unit_of_measure:
+          type:
+          - string
+          - 'null'
+        lab_testing_status:
+          type:
+          - string
+          - 'null'
+        ll_product_ids:
+          type: array
+          items:
+            type: integer
+        result_cbd:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbda:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thc:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thca:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+      required:
+      - external_id
+      - id
+      - in_transit
+      - is_testing_sample
+      - lab_test_unit_of_measure
+      - lab_testing_status
+      - label
+      - license_number
+      - ll_product_ids
+      - location
+      - location_id
+      - quantity
+      - result_cbd
+      - result_cbda
+      - result_thc
+      - result_thca
+      - status
+      - vendor_fields
+      - vendor_type
+    PolymorphicDeliveryPackageVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcDeliveryPackage'
+      - $ref: '#/components/schemas/BiotrackDeliveryPackage'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcDeliveryPackageFields: '#/components/schemas/MetrcDeliveryPackage'
+          BiotrackDeliveryPackageFields: '#/components/schemas/BiotrackDeliveryPackage'
+    PatchedTemplateUpdateRequest:
+      type: object
+      properties:
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        ll_order_id:
+          type:
+          - integer
+          - 'null'
+        package_labels:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            minLength: 1
+        packages:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              minLength: 1
+        driver_id:
+          type:
+          - integer
+          - 'null'
+        vehicle_id:
+          type:
+          - integer
+          - 'null'
+        turn_by_turn_directions:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+    TraceabilityDelivery:
+      type: object
+      description: 'Serializer for traceability Deliveries. Uses CommonDelivery + vendor-specific data.
+
+
+        Metrc will return one instance and BioTrack will have none as there is no use-case for delivery data at the time.'
+      properties:
+        company_id:
+          type: string
+        license_number:
+          type: string
+        delivery_package_count:
+          type: integer
+        recipient_facility_license_number:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - integer
+          - 'null'
+        reference_id:
+          type: string
+        transfer_external_id:
+          type: string
+        vendor_type:
+          type: string
+        actual_departure_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actual_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        vendor_fields:
+          $ref: '#/components/schemas/MetrcDelivery'
+      required:
+      - company_id
+      - delivery_package_count
+      - license_number
+      - recipient_facility_license_number
+      - reference_id
+      - transfer_external_id
+      - vendor_fields
+      - vendor_type
+    TraceabilityCompany:
+      type: object
+      properties:
+        enable_seed_to_sale:
+          type: boolean
+        enable_lab_test_result_sync:
+          type: boolean
+        enable_transfer_manifest:
+          type: boolean
+        enable_sales_data:
+          type: boolean
+        enable_hide_attached_packages:
+          type: boolean
+        enable_license_verification:
+          type:
+          - boolean
+          - 'null'
+        enable_search_by_product_id:
+          type: boolean
+        integration_type:
+          type:
+          - string
+          - 'null'
+        is_live:
+          type: boolean
+        excluded_lab_test_states:
+          type: array
+          items:
+            type: string
+        included_locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityCompanyIncludedLocation'
+        integration_ids:
+          type: array
+          items:
+            type: integer
+        api_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalCompanyAPIConfig'
+      required:
+      - api_configs
+      - enable_hide_attached_packages
+      - enable_lab_test_result_sync
+      - enable_sales_data
+      - enable_seed_to_sale
+      - enable_transfer_manifest
+      - excluded_lab_test_states
+      - included_locations
+      - integration_ids
+      - integration_type
+      - is_live
+    PaginatedUnifiedTraceabilityPackageOrdersList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedTraceabilityPackageOrders'
+    PatchedTraceabilityVehicleCreateUpdateInputRequest:
+      type: object
+      properties:
+        license_plate_number:
+          type: string
+          minLength: 1
+        make:
+          type: string
+          minLength: 1
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        color:
+          type: string
+          minLength: 1
+        vin:
+          type: string
+          minLength: 1
+        year:
+          type: string
+          minLength: 1
+    MetrcVehicle:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+      required:
+      - resource_type
+    TraceabilityVehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        company_id:
+          type: integer
+        external_id:
+          type: string
+        vendor_type:
+          type: string
+        license_number:
+          type: string
+        resource_type:
+          type: string
+          readOnly: true
+        make:
+          type: string
+        model:
+          type: string
+        license_plate_number:
+          type: string
+        is_active:
+          type: boolean
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicVehicleVendorFields'
+      required:
+      - company_id
+      - external_id
+      - id
+      - is_active
+      - license_number
+      - license_plate_number
+      - make
+      - model
+      - resource_type
+      - vendor_fields
+      - vendor_type
+    PolymorphicTransferVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcTransfer'
+      - $ref: '#/components/schemas/BiotrackTransfer'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcTransferFields: '#/components/schemas/MetrcTransfer'
+          BiotrackTransferFields: '#/components/schemas/BiotrackTransfer'
+    LicenseApiKeyRequest:
+      type: object
+      properties:
+        api_key:
+          type: string
+          minLength: 1
+      required:
+      - api_key
+    BiotrackDriver:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        birth_date:
+          type: string
+          format: date
+        hire_date:
+          type: string
+          format: date
+        email:
+          type: string
+        state_issued:
+          type:
+          - string
+          - 'null'
+        transaction_id:
+          type: integer
+      required:
+      - birth_date
+      - email
+      - hire_date
+      - resource_type
+      - state_issued
+      - transaction_id
+    TraceabilityItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        metrc_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        ingredients:
+          type: string
+        category_name:
+          type: string
+        category_type:
+          type: string
+        quantity_type:
+          type: string
+        unit_of_measure_name:
+          type: string
+        serving_size:
+          type: string
+        used:
+          type: boolean
+        imported_from_package:
+          type:
+          - boolean
+          - 'null'
+        strain_name:
+          type:
+          - string
+          - 'null'
+        strain:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityStrain'
+        metrc_strain_id:
+          type:
+          - integer
+          - 'null'
+        doses:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        unit_cbd_percent:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        unit_cbd_content:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        unit_cbd_content_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        unit_thc_percent:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        unit_thc_content:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        unit_thc_content_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        unit_volume:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        unit_volume_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        unit_weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,3})?$
+        unit_weight_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        unit_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        unit_quantity_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+      required:
+      - category_name
+      - category_type
+      - description
+      - doses
+      - id
+      - imported_from_package
+      - ingredients
+      - metrc_id
+      - metrc_strain_id
+      - name
+      - quantity_type
+      - serving_size
+      - strain
+      - strain_name
+      - unit_cbd_content
+      - unit_cbd_content_unit_of_measure_name
+      - unit_cbd_percent
+      - unit_of_measure_name
+      - unit_quantity
+      - unit_quantity_unit_of_measure_name
+      - unit_thc_content
+      - unit_thc_content_unit_of_measure_name
+      - unit_thc_percent
+      - unit_volume
+      - unit_volume_unit_of_measure_name
+      - unit_weight
+      - unit_weight_unit_of_measure_name
+      - used
+    PaginatedUnifiedTraceabilityCompanyCustomerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedTraceabilityCompanyCustomer'
+    TraceabilityCompanyIncludedLocation:
+      type: object
+      properties:
+        id:
+          type: integer
+        external_id:
+          type: string
+        license_number:
+          type: string
+        name:
+          type: string
+      required:
+      - external_id
+      - id
+      - license_number
+      - name
+    PolymorphicDriverVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcDriver'
+      - $ref: '#/components/schemas/BiotrackDriver'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcDriverFields: '#/components/schemas/MetrcDriver'
+          BiotrackDriverFields: '#/components/schemas/BiotrackDriver'
+    InternalCompanyLicense:
+      type: object
+      description: Serializer for the Company License model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_license_id:
+          type: integer
+          readOnly: true
+        number:
+          type: string
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/InternalLicenseTypeResponse'
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+        expiration_date:
+          type: string
+          format: date
+          readOnly: true
+        public:
+          type: boolean
+          description: Decides whether retailers are allowed to see this license
+        archived:
+          type: boolean
+        document:
+          type: string
+          format: uri
+      required:
+      - company_license_id
+      - document
+      - expiration_date
+      - id
+      - issue_date
+      - number
+      - type
+    MetrcPackage:
+      type: object
+      description: Metrc package fields from the Traceability.metrc_package table.
+      properties:
+        common_package_id:
+          type: integer
+        external_last_modified_at:
+          type: string
+          format: date-time
+        item_id:
+          type: integer
+        item:
+          $ref: '#/components/schemas/TraceabilityItem'
+        has_lab_test_document:
+          type: boolean
+        item_from_facility_license_number:
+          type: string
+        item_from_facility_name:
+          type: string
+        note:
+          type: string
+        packaged_date:
+          type: string
+          format: date
+        production_batch_number:
+          type:
+          - string
+          - 'null'
+        received_date_time:
+          type:
+          - string
+          - 'null'
+        received_from_facility_license_number:
+          type:
+          - string
+          - 'null'
+        received_from_facility_name:
+          type:
+          - string
+          - 'null'
+        received_from_manifest_number:
+          type:
+          - string
+          - 'null'
+        result_cbc:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbg:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbga:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbn:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_delta10:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_delta8:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thcv:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thcva:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_total_thc:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        source_package_labels:
+          type: array
+          items:
+            type: string
+        source_production_batch_numbers:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        unit_of_measure:
+          type:
+          - string
+          - 'null'
+        use_item_level_lab_result:
+          type: boolean
+          default: false
+      required:
+      - common_package_id
+      - external_last_modified_at
+      - has_lab_test_document
+      - item
+      - item_from_facility_license_number
+      - item_from_facility_name
+      - item_id
+      - note
+      - packaged_date
+      - production_batch_number
+      - received_date_time
+      - received_from_facility_license_number
+      - received_from_facility_name
+      - received_from_manifest_number
+      - result_cbc
+      - result_cbg
+      - result_cbga
+      - result_cbn
+      - result_delta10
+      - result_delta8
+      - result_thcv
+      - result_thcva
+      - result_total_thc
+      - source_package_labels
+      - source_production_batch_numbers
+      - type
+      - unit_of_measure
+    BiotrackTransfer:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+      required:
+      - resource_type
+    PaginatedTraceabilityItemList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityItem'
+    TemplateCreateRequest:
+      type: object
+      properties:
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        ll_order_id:
+          type:
+          - integer
+          - 'null'
+        package_labels:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            minLength: 1
+        packages:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              minLength: 1
+        driver_id:
+          type:
+          - integer
+          - 'null'
+        vehicle_id:
+          type:
+          - integer
+          - 'null'
+        turn_by_turn_directions:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        destination_company_id:
+          type:
+          - integer
+          - 'null'
+        destination_license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+      required:
+      - destination_company_id
+    MetrcDriver:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        common_driver_id:
+          type: integer
+        drivers_license_number:
+          type: string
+        employee_id:
+          type: string
+      required:
+      - common_driver_id
+      - drivers_license_number
+      - employee_id
+      - resource_type
+    CompanyWriteSuccessResponse:
+      type: object
+      properties:
+        company_id:
+          type: integer
+      required:
+      - company_id
+    PatchedTraceabilityRefreshProductsPackagesRequest:
+      type: object
+      properties:
+        product_ids:
+          type: array
+          items:
+            type: integer
+    PolymorphicCreateUpdateTransferResponse:
+      oneOf:
+      - $ref: '#/components/schemas/TraceabilityTransfer'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          TraceabilityTransfer: '#/components/schemas/TraceabilityTransfer'
+    LightCompany:
+      type: object
+      description: Company serializer contains only basic fields.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+    BiotrackVehicle:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        color:
+          type: string
+        vin:
+          type: string
+        year:
+          type: string
+        transaction_id:
+          type: integer
+      required:
+      - color
+      - name
+      - resource_type
+      - transaction_id
+      - vin
+      - year
+    TraceabilityOrder:
+      type: object
+      properties:
+        order_number:
+          type: string
+        order_seller_number:
+          type: string
+          readOnly: true
+        seller:
+          $ref: '#/components/schemas/LightCompany'
+      required:
+      - order_number
+      - order_seller_number
+      - seller
+    PaginatedTraceabilityRefreshRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityRefreshRequest'
+    TransferCompany:
+      type: object
+      description: Name + license_number combination of a shipper or recipient from the Traceability.transfer table.
+      properties:
+        name:
+          type: string
+        license_number:
+          type: string
+      required:
+      - license_number
+      - name
+    UnifiedTraceabilityPackageOrders:
+      type: object
+      properties:
+        short_id:
+          type: string
+        order_number:
+          type: string
+        is_post:
+          type: boolean
+      required:
+      - is_post
+      - order_number
+      - short_id
+    TraceabilityStrain:
+      type: object
+      properties:
+        company_id:
+          type: integer
+        metrc_id:
+          type: integer
+        license_number:
+          type: string
+        name:
+          type: string
+        is_active:
+          type: boolean
+        indica_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        sativa_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        thc_level:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        cbd_level:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        testing_status:
+          type:
+          - string
+          - 'null'
+      required:
+      - cbd_level
+      - company_id
+      - indica_percentage
+      - is_active
+      - license_number
+      - metrc_id
+      - name
+      - sativa_percentage
+      - testing_status
+      - thc_level
+    TraceabilityTemplate:
+      type: object
+      properties:
+        actual_arrival_datetime:
+          type:
+          - string
+          - 'null'
+        actual_departure_datetime:
+          type:
+          - string
+          - 'null'
+        company_id:
+          type: integer
+        delivery_count:
+          type: integer
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+        id:
+          type: integer
+        last_modified_datetime:
+          type:
+          - string
+          - 'null'
+        license_number:
+          type: string
+        manifest_number:
+          type: string
+        metrc_delivery_id:
+          type: integer
+        metrc_id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+        package_count:
+          type: integer
+        received_datetime:
+          type:
+          - string
+          - 'null'
+        recipient_facility_license_number:
+          type:
+          - string
+          - 'null'
+        recipient_facility_name:
+          type:
+          - string
+          - 'null'
+        shipment_license_type:
+          type:
+          - string
+          - 'null'
+        shipment_transaction_type:
+          type:
+          - string
+          - 'null'
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+        shipper_facility_license_number:
+          type: string
+        shipper_facility_name:
+          type: string
+        driver:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityDriver'
+        vehicle:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityVehicle'
+        turn_by_turn_directions:
+          type:
+          - string
+          - 'null'
+      required:
+      - actual_arrival_datetime
+      - actual_departure_datetime
+      - company_id
+      - delivery_count
+      - estimated_arrival_datetime
+      - estimated_departure_datetime
+      - id
+      - last_modified_datetime
+      - license_number
+      - manifest_number
+      - metrc_delivery_id
+      - metrc_id
+      - name
+      - package_count
+      - received_datetime
+      - recipient_facility_license_number
+      - recipient_facility_name
+      - shipment_license_type
+      - shipment_transaction_type
+      - shipment_type_name
+      - shipper_facility_license_number
+      - shipper_facility_name
+    TraceabilityLicense:
+      type: object
+      properties:
+        number:
+          type: string
+        type:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+      required:
+      - end_date
+      - number
+      - start_date
+      - type
+    InternalCompanyAPIConfig:
+      type: object
+      description: Internal serializer for traceability API config.
+      properties:
+        integration_id:
+          type: integer
+        api_key:
+          type: string
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        ubi:
+          type: string
+          readOnly: true
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalCompanyLicense'
+          readOnly: true
+      required:
+      - api_key
+      - integration_id
+      - licenses
+      - ubi
+      - username
+    TraceabilityLocation:
+      type: object
+      description: Location object from the Traceability.common_location and Traceability.(vendor)_location tables.
+      properties:
+        id:
+          type: integer
+          description: ID of the location in the Traceability Service
+        company_id:
+          type: integer
+          description: ID of the company in the Traceability Service
+        external_id:
+          type: string
+          description: ID of the location in the vendor's system
+        vendor_type:
+          type: string
+        label:
+          type: string
+        license_number:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        is_excluded:
+          type: boolean
+          default: false
+        vendor_fields:
+          $ref: '#/components/schemas/MetrcLocation'
+      required:
+      - company_id
+      - external_id
+      - id
+      - label
+      - license_number
+      - name
+      - status
+      - vendor_fields
+      - vendor_type
+    TemplateWriteSuccessResponse:
+      type: object
+      properties:
+        template_id:
+          type: integer
+      required:
+      - template_id
+    CompanyApiKeyRequest:
+      type: object
+      properties:
+        integration_id:
+          type:
+          - integer
+          - 'null'
+        api_key:
+          type: string
+          minLength: 1
+        license_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - api_key
+      - license_ids
+    PaginatedTraceabilityTransferList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of items matching the query
+        max_count:
+          type:
+          - integer
+          - 'null'
+          description: Maximum count limit, if applicable
+        next:
+          type:
+          - string
+          - 'null'
+          description: URL to the next page of results
+        prev:
+          type:
+          - string
+          - 'null'
+          description: URL to the previous page of results
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityTransfer'
+      required:
+      - count
+      - results
+    MetrcDelivery:
+      type: object
+      description: Metrc-specific transfer fields serializer.
+      properties:
+        delivery_received_package_count:
+          type: integer
+        received_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        estimated_departure_date_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        estimated_arrival_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        recipient_facility_name:
+          type:
+          - string
+          - 'null'
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+        rejected_packages_returned:
+          type:
+          - boolean
+          - 'null'
+        gross_weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        gross_weight_unit_of_weight_name:
+          type:
+          - string
+          - 'null'
+      required:
+      - delivery_received_package_count
+      - gross_weight
+      - gross_weight_unit_of_weight_name
+      - recipient_facility_name
+      - rejected_packages_returned
+      - shipment_type_name
+    MetrcDeliveryPackage:
+      type: object
+      description: Metrc-specific DeliveryPackage fields serializer.
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        item_metrc_id:
+          type: integer
+        product_category_name:
+          type:
+          - string
+          - 'null'
+        item_name:
+          type:
+          - string
+          - 'null'
+        item_unit_volume:
+          type:
+          - integer
+          - 'null'
+        item_unit_volume_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        item_unit_weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        item_unit_weight_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        item_serving_size:
+          type:
+          - string
+          - 'null'
+        item_unit_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        item_unit_quantity_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        source_package_label:
+          type: string
+        product_name:
+          type:
+          - string
+          - 'null'
+        production_batch_number:
+          type:
+          - integer
+          - 'null'
+        shipped_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        gross_unit_of_weight_name:
+          type:
+          - string
+          - 'null'
+        received_unit_of_measure_name:
+          type:
+          - string
+          - 'null'
+        is_wholesale:
+          type:
+          - boolean
+          - 'null'
+        shipper_wholesale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        receiver_wholesale_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+      required:
+      - gross_unit_of_weight_name
+      - is_wholesale
+      - item_metrc_id
+      - item_name
+      - item_serving_size
+      - item_unit_quantity
+      - item_unit_quantity_unit_of_measure_name
+      - item_unit_volume
+      - item_unit_volume_unit_of_measure_name
+      - item_unit_weight
+      - item_unit_weight_unit_of_measure_name
+      - product_category_name
+      - product_name
+      - production_batch_number
+      - received_unit_of_measure_name
+      - receiver_wholesale_price
+      - resource_type
+      - shipped_unit_of_measure_name
+      - shipper_wholesale_price
+      - source_package_label
+    TraceabilityDeliveryPackage:
+      type: object
+      description: Serializer for traceability DeliveryPackages.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+        company_id:
+          type: string
+        license_number:
+          type: string
+        package_label:
+          type: string
+        shipment_package_state:
+          type:
+          - string
+          - 'null'
+        shipped_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        received_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        delivery_reference_id:
+          type: string
+        package_external_id:
+          type: string
+        transfer_external_id:
+          type: string
+        vendor_type:
+          type: string
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicDeliveryPackageVendorFields'
+      required:
+      - company_id
+      - delivery_reference_id
+      - license_number
+      - package_external_id
+      - package_label
+      - received_quantity
+      - shipment_package_state
+      - shipped_quantity
+      - transfer_external_id
+      - vendor_fields
+      - vendor_type
+    TraceabilityDriverCreateUpdateInputRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        drivers_license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        birth_date:
+          type: string
+          format: date
+        hire_date:
+          type: string
+          format: date
+        email:
+          type: string
+          minLength: 1
+        state_issued:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+      required:
+      - birth_date
+      - drivers_license_number
+      - email
+      - hire_date
+      - name
+      - state_issued
+    TraceabilityTransfer:
+      type: object
+      description: Serializer for traceability transfers. Composed of CommonTransfer + vendor-specific transfer data.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+        company_id:
+          type: string
+        license_number:
+          type: string
+        manifest_number:
+          type: string
+        package_count:
+          type: integer
+        delivery_count:
+          type: integer
+        type:
+          type: string
+        status:
+          type: string
+        shipper_facility_license_number:
+          type:
+          - string
+          - 'null'
+        shipper_facility_name:
+          type:
+          - string
+          - 'null'
+        recipient_facility_license_number:
+          type:
+          - string
+          - 'null'
+        actual_departure_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actual_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_modified_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invoice_number:
+          type:
+          - string
+          - 'null'
+        ll_order_ids:
+          type: array
+          items:
+            type: integer
+        driver_external_id:
+          type:
+          - string
+          - 'null'
+        vehicle_external_id:
+          type:
+          - string
+          - 'null'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityOrder'
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityTransferBuyer'
+        resource_type:
+          type: string
+          readOnly: true
+        external_id:
+          type: string
+        vendor_type:
+          type: string
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicTransferVendorFields'
+        deliveries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityDelivery'
+        delivery_packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityDeliveryPackage'
+      required:
+      - buyer
+      - company_id
+      - deliveries
+      - delivery_count
+      - delivery_packages
+      - external_id
+      - license_number
+      - manifest_number
+      - package_count
+      - resource_type
+      - status
+      - type
+      - vendor_fields
+      - vendor_type
+    TransferCreateInputRequest:
+      type: object
+      properties:
+        ll_order_id:
+          type: integer
+        ll_order_number:
+          type: string
+          minLength: 1
+        buyer_external_id:
+          type: string
+          minLength: 1
+        turn_by_turn_directions:
+          type: string
+          minLength: 1
+        estimated_arrival_datetime:
+          type: string
+          minLength: 1
+        estimated_departure_datetime:
+          type: string
+          minLength: 1
+        driver_id:
+          type: integer
+        vehicle_id:
+          type: integer
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferCreateUpdatePackageRequest'
+      required:
+      - buyer_external_id
+      - driver_id
+      - estimated_arrival_datetime
+      - estimated_departure_datetime
+      - ll_order_id
+      - ll_order_number
+      - packages
+      - turn_by_turn_directions
+      - vehicle_id
+    TraceabilityTransferBuyer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+      required:
+      - name
+    PaginatedTraceabilityPackageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityPackage'
+    TransferCreateUpdatePackageRequest:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+      required:
+      - label
+    TraceabilityVehicleCreateUpdateInputRequest:
+      type: object
+      properties:
+        license_plate_number:
+          type: string
+          minLength: 1
+        make:
+          type: string
+          minLength: 1
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        color:
+          type: string
+          minLength: 1
+        vin:
+          type: string
+          minLength: 1
+        year:
+          type: string
+          minLength: 1
+      required:
+      - color
+      - license_plate_number
+      - make
+      - model
+      - name
+      - vin
+      - year
+    MetrcTransfer:
+      type: object
+      description: Metrc-specific transfer fields serializer.
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        metrc_delivery_id:
+          type: integer
+        recipient_facility_name:
+          type:
+          - string
+          - 'null'
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+        shipment_license_type:
+          type:
+          - string
+          - 'null'
+        shipment_transaction_type:
+          type:
+          - string
+          - 'null'
+        received_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - resource_type
+    TypeCodeEnum:
+      enum:
+      - ADU
+      - ANC
+      - CAN
+      - COM
+      - MED
+      - REC
+      type: string
+    BiotrackDeliveryPackage:
+      type: object
+      description: BioTrack-specific DeliveryPackage fields serializer.
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        common_delivery_package_id:
+          type: integer
+        description:
+          type:
+          - string
+          - 'null'
+        session_time:
+          type: integer
+        stop_number:
+          type: integer
+        transaction_id:
+          type: integer
+      required:
+      - common_delivery_package_id
+      - description
+      - resource_type
+      - session_time
+      - stop_number
+      - transaction_id
+    PatchedTraceabilityDriverCreateUpdateInputRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        drivers_license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        birth_date:
+          type: string
+          format: date
+        hire_date:
+          type: string
+          format: date
+        email:
+          type: string
+          minLength: 1
+        state_issued:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+    PaginatedTraceabilityVehicleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityVehicle'
+    InternalLicenseTypeResponse:
+      type: object
+      description: Internal serializer for LicenseTypes filtered by state.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          description: License Type
+          maxLength: 100
+        display_type:
+          type: string
+          description: Type for display in the Leaflink frontend
+          maxLength: 100
+        type_code:
+          allOf:
+          - $ref: '#/components/schemas/TypeCodeEnum'
+          description: License Type shorthand code.
+        classification:
+          type: string
+          title: License Classification Type
+          description: License Classification Type
+          maxLength: 100
+        has_medical_line_items:
+          type: boolean
+          description: This license type can sell medical line items.
+        state:
+          type: string
+          readOnly: true
+      required:
+      - classification
+      - display_type
+      - id
+      - state
+      - type
+    TraceabilityTemplateDetail:
+      type: object
+      properties:
+        actual_arrival_datetime:
+          type:
+          - string
+          - 'null'
+        actual_departure_datetime:
+          type:
+          - string
+          - 'null'
+        company_id:
+          type: integer
+        delivery_count:
+          type: integer
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+        id:
+          type: integer
+        last_modified_datetime:
+          type:
+          - string
+          - 'null'
+        license_number:
+          type: string
+        manifest_number:
+          type: string
+        metrc_delivery_id:
+          type: integer
+        metrc_id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+        package_count:
+          type: integer
+        received_datetime:
+          type:
+          - string
+          - 'null'
+        recipient_facility_license_number:
+          type:
+          - string
+          - 'null'
+        recipient_facility_name:
+          type:
+          - string
+          - 'null'
+        shipment_license_type:
+          type:
+          - string
+          - 'null'
+        shipment_transaction_type:
+          type:
+          - string
+          - 'null'
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+        shipper_facility_license_number:
+          type: string
+        shipper_facility_name:
+          type: string
+        driver:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityDriver'
+        vehicle:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityVehicle'
+        turn_by_turn_directions:
+          type:
+          - string
+          - 'null'
+      required:
+      - actual_arrival_datetime
+      - actual_departure_datetime
+      - company_id
+      - delivery_count
+      - driver
+      - estimated_arrival_datetime
+      - estimated_departure_datetime
+      - id
+      - last_modified_datetime
+      - license_number
+      - manifest_number
+      - metrc_delivery_id
+      - metrc_id
+      - name
+      - package_count
+      - received_datetime
+      - recipient_facility_license_number
+      - recipient_facility_name
+      - shipment_license_type
+      - shipment_transaction_type
+      - shipment_type_name
+      - shipper_facility_license_number
+      - shipper_facility_name
+      - turn_by_turn_directions
+      - vehicle
+    TraceabilityDriver:
+      type: object
+      properties:
+        id:
+          type: integer
+        company_id:
+          type: integer
+        external_id:
+          type: string
+        vendor_type:
+          type: string
+        license_number:
+          type: string
+        resource_type:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        drivers_license_number:
+          type:
+          - string
+          - 'null'
+        is_active:
+          type: boolean
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicDriverVendorFields'
+      required:
+      - company_id
+      - drivers_license_number
+      - external_id
+      - id
+      - is_active
+      - license_number
+      - name
+      - resource_type
+      - vendor_fields
+      - vendor_type
+    UnifiedTraceabilityCompanyCustomer:
+      type: object
+      description: Traceability Company Customer Serializer - returns very limited information
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        license_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        partner_id:
+          type: integer
+      required:
+      - display_name
+      - id
+      - license_number
+      - partner_id
+    PaginatedTransferCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferCompany'
+    MetrcLocation:
+      type: object
+      description: Metrc specific location fields from the Traceability.metrc_location table.
+      properties:
+        common_location_id:
+          type: integer
+          description: ID of the common_location in the Traceability Service
+        metrc_type_id:
+          type: integer
+        type_name:
+          type: string
+        for_harvests:
+          type: boolean
+          default: false
+        for_packages:
+          type: boolean
+          default: false
+        for_plant_batches:
+          type: boolean
+          default: false
+        for_plants:
+          type: boolean
+          default: false
+      required:
+      - common_location_id
+      - metrc_type_id
+      - type_name
+    TraceabilityRefreshRequest:
+      type: object
+      properties:
+        created_at:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+        id:
+          type: integer
+        refresh_type:
+          type: string
+        resource_types:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+      required:
+      - created_at
+      - errors
+      - id
+      - refresh_type
+      - resource_types
+      - status
+    PatchedCompanyUpdateRequest:
+      type: object
+      properties:
+        enable_seed_to_sale:
+          type: boolean
+        enable_hide_attached_packages:
+          type: boolean
+        enable_license_verification:
+          type:
+          - boolean
+          - 'null'
+        enable_search_by_product_id:
+          type: boolean
+        api_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyApiKeyRequest'
+        included_location_ids:
+          type: array
+          items:
+            type: integer
+        excluded_lab_test_states:
+          type: array
+          items:
+            type: string
+            minLength: 1
+    TraceabilityLicenses:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityLicense'
+      required:
+      - errors
+      - licenses
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

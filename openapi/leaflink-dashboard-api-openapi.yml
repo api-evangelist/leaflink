@@ -1,0 +1,504 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Dashboard API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Dashboard
+paths:
+  /content/sponsored:
+    get:
+      operationId: content_sponsored_retrieve
+      description: General purpose Sponsorship Content
+      summary: Sponsorships
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: placement
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - buyer-dash-hero-1
+            - buyer-dash-hero-2
+            - buyer-dash-hero-3
+            - buyer-dash-hero-4
+            - buyer-dash-hero-5
+            - buyer-dash-hero-6
+            - buyer-dash-hero-7
+            - buyer-dash-hero-8
+            - buyer-dashboard-hero-banner-1
+            - buyer-dashboard-hero-banner-2
+            - buyer-dashboard-hero-banner-3
+            - buyer-dashboard-hero-banner-4
+            - buyer-dashboard-hero-banner-5
+            - buyer-dashboard-hero-banner-6
+            - buyer-dashboard-hero-banner-7
+            - buyer-dashboard-hero-banner-8
+            - deals-page-1
+            - deals-page-2
+            - deals-page-3
+            - deals-page-4
+            - discovery-left
+            - discovery-right
+            - order-submit-1
+            - order-submit-2
+            - order-submit-3
+            - order-submit-4
+            - product-spotlight-carousel
+            - recommended-brands-recently-purchased
+            - recommended-products-cart
+            - recommended-products-order
+            - recommended-products-pdm-alternative
+            - recommended-products-pdp-alternative
+            - recommended-products-shop-brands
+            - recommended-products-shop-discover-products
+            - recommended-products-shop-products
+            - recommended-products-top-purchased
+            - seller-dash-hero-1
+            - seller-dash-hero-2
+            - seller-dash-hero-3
+            - seller-dash-hero-4
+            - seller-dash-hero-5
+            - seller-dash-hero-6
+            - seller-dash-hero-7
+            - seller-dash-hero-8
+            - shop-brands-featured-brand
+            - shop-brands-featured-brand-2
+            - shop-brands-featured-brand-3
+            - shop-brands-featured-brand-4
+            - shop-brands-featured-brand-5
+            - shop-brands-sidebar-3
+            - shop-brands-sidebar-4
+            - shop-brands-sidebar-bottom
+            - shop-brands-sidebar-top
+            - shop-brands-skyscraper-1
+            - shop-brands-skyscraper-2
+            - shop-brands-skyscraper-3
+            - shop-brands-skyscraper-4
+            - shop-products-1
+            - shop-products-2
+            - shop-products-3
+            - shop-products-4
+            - shop-products-5
+        description: The ID of an ad location (can be repeated)
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Dashboard
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SponsorshipsContent'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    Badge:
+      type: object
+      description: Serializer for Badges.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 32
+        self_identify:
+          type: boolean
+          description: This badge can be added or removed by an external user.
+      required:
+      - code
+      - id
+      - name
+    BrandResource:
+      type: object
+      description: Serializer for Brand resource.
+      properties:
+        resource_id:
+          type: integer
+        resource_name:
+          type: string
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the brand
+        image:
+          type: string
+          format: uri
+        owner:
+          $ref: '#/components/schemas/CompanyResource'
+        product_categories:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/Badge'
+          readOnly: true
+        social_equity_programs:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        sponsored:
+          type: boolean
+          readOnly: true
+        tagline:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        company_s2s_integration_type:
+          type: string
+      required:
+      - badges
+      - company_s2s_integration_type
+      - image
+      - name
+      - owner
+      - product_categories
+      - resource_id
+      - resource_name
+      - social_equity_programs
+      - sponsored
+      - tagline
+    _SponsorshipsContent:
+      type: object
+      properties:
+        sponsorships:
+          $ref: '#/components/schemas/SponsorshipPayload'
+      required:
+      - sponsorships
+    SponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+      required:
+      - click_url
+      - id
+      - impression_url
+    SponsorshipContent:
+      type: object
+      description: Serializer for an individual sponsorship result.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+      required:
+      - sponsorship
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
+    SponsorshipsContent:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/_SponsorshipsContent'
+      required:
+      - content
+    SponsorshipPayload:
+      type: object
+      description: "Serializer for sponsorship content.\n\n\"sponsorships\": {\n    \"banners\": [\n        {\"sponsorship\": {}},\n        {\"sponsorship\": {}},\n        …\n    ],\n    \"listing\": [\n        {\"resource\": {}, \"sponsorship\": {}},\n        {\"resource\": {}, \"sponsorship\": {}},\n        …\n    ],\n    \"skyscrapers\": [\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...},\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...}\n    ]\n}"
+      properties:
+        banners:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipContent'
+        listing:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipResource'
+        skyscrapers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkyscraperSponsorshipContent'
+      required:
+      - banners
+      - listing
+      - skyscrapers
+    SkyscraperBrand:
+      type: object
+      description: Serializer for Brand resource.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        image_url:
+          type: string
+          format: uri
+        company_name:
+          type: string
+        company_id:
+          type: string
+        enable_vendor_menu:
+          type: boolean
+      required:
+      - company_id
+      - company_name
+      - enable_vendor_menu
+      - id
+      - image_url
+      - name
+    Sponsorship:
+      type: object
+      description: Serializer for ll.ads.data_models.Sponsorship
+      properties:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
+          type: string
+      required:
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
+    CompanyResource:
+      type: object
+      description: Serializer for Company resource.
+      properties:
+        resource_id:
+          type: integer
+        resource_name:
+          type: string
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        enable_vendor_menu:
+          type: boolean
+          readOnly: true
+      required:
+      - enable_vendor_menu
+      - name
+      - resource_id
+      - resource_name
+    SponsorshipResource:
+      type: object
+      description: Serializer for an individual sponsorship with Brand details.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+        resource:
+          $ref: '#/components/schemas/BrandResource'
+      required:
+      - resource
+      - sponsorship
+    SkyscraperSponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SkyscraperSponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+        display_price:
+          type: string
+        image_url:
+          type: string
+          format: uri
+        name:
+          type: string
+      required:
+      - click_url
+      - display_price
+      - id
+      - image_url
+      - impression_url
+      - name
+    SkyscraperSponsorshipContent:
+      type: object
+      description: Serializer for an individual Skyscraper style sponsorship result.
+      properties:
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        creative_id:
+          type: string
+        custom_text:
+          type: string
+        page_load_id:
+          type: string
+        placement_name:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkyscraperSponsorshipItem'
+          readOnly: true
+        provider_id:
+          type: string
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        banner:
+          type: object
+          additionalProperties: {}
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/SkyscraperBrand'
+      required:
+      - ad_id
+      - banner
+      - brand
+      - campaign_id
+      - creative
+      - creative_id
+      - custom_text
+      - page_load_id
+      - placement_name
+      - products
+      - provider_id
+      - target_company_id
+      - target_user_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

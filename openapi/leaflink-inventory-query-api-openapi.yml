@@ -1,0 +1,938 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Inventory Query API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: inventory-query
+paths:
+  /inventory/buyers/{buyer_id}/allocations:
+    get:
+      operationId: inventory_buyers_allocations_list
+      description: Return all inventory allocations associated with the given buyer.
+      summary: List allocations for a buyer
+      parameters:
+      - in: path
+        name: buyer_id
+        schema:
+          type: integer
+        description: The buyer ID to retrieve allocations for
+        required: true
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Allocation'
+          description: List of allocation items
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/groups/{group_id}/allocations:
+    get:
+      operationId: inventory_groups_allocations_list
+      description: Return all inventory allocations associated with the given customer group.
+      summary: List allocations for a group
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: group_id
+        schema:
+          type: integer
+        description: The customer group ID to retrieve allocations for
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Allocation'
+          description: List of allocation items
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-batch:
+    get:
+      operationId: inventory_measurements_by_batch_retrieve
+      description: Inventory measurements grouped by batch. Optional filter by batch_id.
+      summary: List measurements by batch
+      parameters:
+      - in: query
+        name: batch_id
+        schema:
+          type: string
+        description: Comma-separated batch IDs to filter by
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BatchMeasurementResponse'
+          description: List of measurements per batch
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-facility:
+    get:
+      operationId: inventory_measurements_by_facility_retrieve
+      description: Inventory measurements grouped by facility. Optional filter by facility_id.
+      summary: List measurements by facility
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: facility_id
+        schema:
+          type: string
+        description: Comma-separated facility IDs to filter by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacilityMeasurementResponse'
+          description: List of measurements per facility
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-facility-and-batch:
+    get:
+      operationId: inventory_measurements_by_facility_and_batch_retrieve
+      description: Inventory measurements grouped by facility and batch. Optional filter by facility_id, batch_id.
+      summary: List measurements by facility and batch
+      parameters:
+      - in: query
+        name: batch_id
+        schema:
+          type: string
+        description: Comma-separated batch IDs to filter by
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: facility_id
+        schema:
+          type: string
+        description: Comma-separated facility IDs to filter by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacilityBatchMeasurementResponse'
+          description: List of measurements per facility and batch
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-product:
+    get:
+      operationId: inventory_measurements_by_product_retrieve
+      description: Inventory measurements grouped by product. Optional filter by product_id.
+      summary: List measurements by product
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: product_id
+        schema:
+          type: string
+        description: Comma-separated product IDs to filter by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductMeasurementResponse'
+          description: List of measurements per product
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-product-and-batch:
+    get:
+      operationId: inventory_measurements_by_product_and_batch_retrieve
+      description: Inventory measurements grouped by product and batch. Optional filter by product_id, batch_id.
+      summary: List measurements by product and batch
+      parameters:
+      - in: query
+        name: batch_id
+        schema:
+          type: string
+        description: Comma-separated batch IDs to filter by
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: product_id
+        schema:
+          type: string
+        description: Comma-separated product IDs to filter by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductBatchMeasurementResponse'
+          description: List of measurements per product and batch
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-product-and-facility:
+    get:
+      operationId: inventory_measurements_by_product_and_facility_retrieve
+      description: Inventory measurements grouped by product and facility. Optional filter by product_id, facility_id.
+      summary: List measurements by product and facility
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: facility_id
+        schema:
+          type: string
+        description: Comma-separated facility IDs to filter by
+      - in: query
+        name: product_id
+        schema:
+          type: string
+        description: Comma-separated product IDs to filter by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductFacilityMeasurementResponse'
+          description: List of measurements per product and facility
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/measurements/by-product-facility-and-batch:
+    get:
+      operationId: inventory_measurements_by_product_facility_and_batch_retrieve
+      description: Inventory measurements grouped by product, facility, and batch. Optional filter by product_id, facility_id, batch_id.
+      summary: List measurements by product, facility, and batch
+      parameters:
+      - in: query
+        name: batch_id
+        schema:
+          type: string
+        description: Comma-separated batch IDs to filter by
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: facility_id
+        schema:
+          type: string
+        description: Comma-separated facility IDs to filter by
+      - in: query
+        name: product_id
+        schema:
+          type: string
+        description: Comma-separated product IDs to filter by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductFacilityBatchMeasurementResponse'
+          description: List of measurements per product, facility, and batch
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /inventory/orders/{order_id}/reservations:
+    get:
+      operationId: inventory_orders_reservations_list
+      description: Return all inventory reservations associated with the given order.
+      summary: List reservations for an order
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: order_id
+        schema:
+          type: integer
+        description: The order ID to retrieve reservations for
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - inventory-query
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+          description: List of reservation items
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    FacilityMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-facility.
+      properties:
+        facility_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - facility_id
+      - measurements
+      - updated_at
+    MeasurementData:
+      type: object
+      description: Nested measurement quantities; field names match MeasurementData.
+      properties:
+        on_hand_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        available_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reserved_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        allocated_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        held_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        archived_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+      required:
+      - allocated_quantity
+      - archived_quantity
+      - available_quantity
+      - held_quantity
+      - on_hand_quantity
+      - reserved_quantity
+    FacilityBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-facility-and-batch.
+      properties:
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - facility_id
+      - measurements
+      - updated_at
+    ProductFacilityMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-and-facility.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - facility_id
+      - measurements
+      - product_id
+      - updated_at
+    Reservation:
+      type: object
+      description: Serializes a ``ReservationItem`` for the API response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        allocated_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        fulfilled_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        order_id:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - allocated_quantity
+      - batch_id
+      - created_at
+      - facility_id
+      - fulfilled_quantity
+      - order_id
+      - product_id
+      - quantity
+    Allocation:
+      type: object
+      description: Serializes an ``AllocationItem`` for the API response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        group_ids:
+          type: array
+          items:
+            type: integer
+        buyer_ids:
+          type: array
+          items:
+            type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - buyer_ids
+      - created_at
+      - facility_id
+      - group_ids
+      - product_id
+      - quantity
+    BatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-batch.
+      properties:
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - updated_at
+    ProductBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-and-batch.
+      properties:
+        product_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - product_id
+      - updated_at
+    ProductFacilityBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-facility-and-batch.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - facility_id
+      - measurements
+      - product_id
+      - updated_at
+    ProductMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product.
+      properties:
+        product_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - measurements
+      - product_id
+      - updated_at
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

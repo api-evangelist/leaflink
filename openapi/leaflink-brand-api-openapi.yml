@@ -1,0 +1,755 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Brand API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Brand
+paths:
+  /brands:
+    get:
+      operationId: brands_list
+      description: List multiple Brands.
+      summary: List Brands
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Brand
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A list of brands associated with the user's companies
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /brands/{id}:
+    get:
+      operationId: brands_retrieve
+      description: Get a single Brand.
+      summary: Get Brand
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this brand.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Brand
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A serialized brand
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /brands/recommended:
+    get:
+      operationId: brands_recommended_list
+      description: List recommended recently purchased Brands.
+      summary: List Recently Purchased Brands
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Brand
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedRecommendedBrandList'
+          description: A list of recommended, recently purchased, brands
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /content/brands/listing:
+    get:
+      operationId: content_brands_listing_list
+      description: List brands and sponsorships for the Shop Brands page.
+      summary: Shop Brands
+      parameters:
+      - in: query
+        name: ancillary_type
+        schema:
+          type: string
+          enum:
+          - all
+          - preferred
+      - in: query
+        name: badge
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter by badge code
+        explode: true
+        style: form
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter by category slug (multiple values supported)
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: has_ordered_from
+        schema:
+          type: boolean
+        description: Filter by brands that were ordered from previously
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: payment_method
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - direct_pay
+            - flex_pay
+            - payment_on_sell_through
+        explode: true
+        style: form
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Brand
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBrandListingContentList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    Badge:
+      type: object
+      description: Serializer for Badges.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 32
+        self_identify:
+          type: boolean
+          description: This badge can be added or removed by an external user.
+      required:
+      - code
+      - id
+      - name
+    BrandResource:
+      type: object
+      description: Serializer for Brand resource.
+      properties:
+        resource_id:
+          type: integer
+        resource_name:
+          type: string
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the brand
+        image:
+          type: string
+          format: uri
+        owner:
+          $ref: '#/components/schemas/CompanyResource'
+        product_categories:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/Badge'
+          readOnly: true
+        social_equity_programs:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        sponsored:
+          type: boolean
+          readOnly: true
+        tagline:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        company_s2s_integration_type:
+          type: string
+      required:
+      - badges
+      - company_s2s_integration_type
+      - image
+      - name
+      - owner
+      - product_categories
+      - resource_id
+      - resource_name
+      - social_equity_programs
+      - sponsored
+      - tagline
+    SponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+      required:
+      - click_url
+      - id
+      - impression_url
+    UnifiedRecommendedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+      - name
+      - sponsorship
+    SponsorshipContent:
+      type: object
+      description: Serializer for an individual sponsorship result.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+      required:
+      - sponsorship
+    BrandListingContent:
+      type: object
+      properties:
+        sponsorships:
+          $ref: '#/components/schemas/SponsorshipPayload'
+        collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandResource'
+      required:
+      - collection
+      - sponsorships
+    SponsorshipPayload:
+      type: object
+      description: "Serializer for sponsorship content.\n\n\"sponsorships\": {\n    \"banners\": [\n        {\"sponsorship\": {}},\n        {\"sponsorship\": {}},\n        …\n    ],\n    \"listing\": [\n        {\"resource\": {}, \"sponsorship\": {}},\n        {\"resource\": {}, \"sponsorship\": {}},\n        …\n    ],\n    \"skyscrapers\": [\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...},\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...}\n    ]\n}"
+      properties:
+        banners:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipContent'
+        listing:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipResource'
+        skyscrapers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkyscraperSponsorshipContent'
+      required:
+      - banners
+      - listing
+      - skyscrapers
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
+    SkyscraperBrand:
+      type: object
+      description: Serializer for Brand resource.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        image_url:
+          type: string
+          format: uri
+        company_name:
+          type: string
+        company_id:
+          type: string
+        enable_vendor_menu:
+          type: boolean
+      required:
+      - company_id
+      - company_name
+      - enable_vendor_menu
+      - id
+      - image_url
+      - name
+    PaginatedBrandListingContentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        content:
+          $ref: '#/components/schemas/BrandListingContent'
+    Sponsorship:
+      type: object
+      description: Serializer for ll.ads.data_models.Sponsorship
+      properties:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
+          type: string
+      required:
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
+    PaginatedUnifiedRecommendedBrandList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedRecommendedBrand'
+    CompanyResource:
+      type: object
+      description: Serializer for Company resource.
+      properties:
+        resource_id:
+          type: integer
+        resource_name:
+          type: string
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        enable_vendor_menu:
+          type: boolean
+          readOnly: true
+      required:
+      - enable_vendor_menu
+      - name
+      - resource_id
+      - resource_name
+    SponsorshipResource:
+      type: object
+      description: Serializer for an individual sponsorship with Brand details.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+        resource:
+          $ref: '#/components/schemas/BrandResource'
+      required:
+      - resource
+      - sponsorship
+    SkyscraperSponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SkyscraperSponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+        display_price:
+          type: string
+        image_url:
+          type: string
+          format: uri
+        name:
+          type: string
+      required:
+      - click_url
+      - display_price
+      - id
+      - image_url
+      - impression_url
+      - name
+    SkyscraperSponsorshipContent:
+      type: object
+      description: Serializer for an individual Skyscraper style sponsorship result.
+      properties:
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        creative_id:
+          type: string
+        custom_text:
+          type: string
+        page_load_id:
+          type: string
+        placement_name:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkyscraperSponsorshipItem'
+          readOnly: true
+        provider_id:
+          type: string
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        banner:
+          type: object
+          additionalProperties: {}
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/SkyscraperBrand'
+      required:
+      - ad_id
+      - banner
+      - brand
+      - campaign_id
+      - creative
+      - creative_id
+      - custom_text
+      - page_load_id
+      - placement_name
+      - products
+      - provider_id
+      - target_company_id
+      - target_user_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

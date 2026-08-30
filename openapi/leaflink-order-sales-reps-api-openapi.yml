@@ -1,0 +1,258 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Marketplace V2 Order Sales Reps API
+  description: '# Introduction
+
+    ## HTTP Request Notes
+
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
+
+
+    Available domains
+
+
+    - `app.leaflink.com` - production environment
+
+
+    - `www.sandbox.leaflink.com` - sandbox environment
+
+
+    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
+
+
+    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
+
+
+
+    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
+
+
+    ## Dynamic Responses
+
+    Some of our API endpoints support dynamic responses. These
+
+    are responses that vary in content and/or object level payload size
+
+    according to request path or query parameters.
+
+
+    Available parameters are listed beneath endpoint definitions.
+
+    '
+  termsOfService: https://leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+  version: ''
+servers:
+- url: https://app.leaflink.com/api/v2
+security:
+- Token: []
+tags:
+- name: order-sales-reps
+paths:
+  /order-sales-reps/:
+    parameters: []
+    get:
+      operationId: order-sales-reps_list
+      summary: List
+      description: List all OrderSalesReps under the company access scope.  For legacy auth, includes companies where the user has the `Can Manage Orders Received` permission.
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderSalesRepSerialzer'
+      tags:
+      - order-sales-reps
+    post:
+      operationId: order-sales-reps_create
+      summary: Create
+      description: Create a new OrderSalesRep.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderSalesRepSerialzer'
+        required: true
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderSalesRepSerialzer'
+      tags:
+      - order-sales-reps
+  /order-sales-reps/{id}/:
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this order sales rep.
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: order-sales-reps_read
+      summary: Read
+      description: Retrieve an individual OrderSalesRep by ID.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderSalesRepSerialzer'
+      tags:
+      - order-sales-reps
+    delete:
+      operationId: order-sales-reps_delete
+      summary: Delete
+      description: Remove OrderSalesRep object by ID.
+      responses:
+        '204':
+          description: ''
+      tags:
+      - order-sales-reps
+components:
+  schemas:
+    OrderSalesRepSerialzer:
+      required:
+      - order
+      - rep
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        order:
+          title: Order
+          type: string
+          format: uuid
+        rep:
+          title: Rep
+          type: integer
+        created_on:
+          title: Created on
+          type: string
+          format: date-time
+          readOnly: true
+  securitySchemes:
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-tagGroups:
+- name: Orders
+  tags:
+  - order-object
+  - orders-received
+  - order-payments
+  - order-sales-reps
+  - order-event-logs
+  - line-item-object
+  - line-items
+- name: Products
+  tags:
+  - product-object
+  - products
+  - product-categories
+  - product-subcategories
+  - listing-states
+  - product-images
+  - product-lines
+  - strains
+- name: Batches
+  tags:
+  - batch-object
+  - batches
+  - product-batch-object
+  - product-batches
+  - batch-document-object
+  - batch-documents
+- name: Inventory Items
+  tags:
+  - inventory-item-object
+  - inventory-items
+- name: Facilities
+  tags:
+  - facility-object
+  - facilities
+- name: Customers
+  tags:
+  - customer-object
+  - customers
+  - contacts
+  - activity-entries
+  - customer-statuses
+  - customer-tiers
+  - credits
+  - customer-tags
+- name: Company Information
+  tags:
+  - companies
+  - company-staff
+  - licenses
+  - license-types
+  - brands
+  - promocodes
+  - reports
+- name: Buyer Orders
+  tags:
+  - buyer-order-object
+  - buyer-orders
+- name: Retailer Inventory
+  tags:
+  - retailer-inventory

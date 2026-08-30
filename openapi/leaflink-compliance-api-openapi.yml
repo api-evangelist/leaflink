@@ -1,0 +1,634 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Compliance API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: compliance
+paths:
+  /compliance/license_types:
+    get:
+      operationId: compliance_license_types_list
+      description: Ignore type because the ViewSet class is not typed and the UnifiedApiReadOnlyModelViewSet is.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: is_buyer_license
+        schema:
+          type: boolean
+        description: Return buyer license types
+      - in: query
+        name: is_seller_license
+        schema:
+          type: boolean
+        description: Return seller license types
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: used_by_company
+        schema:
+          type: boolean
+        description: Only return license types that are used by the provide company, otherwise return all for the company's state
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - compliance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLicenseTypeInternalResponseList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /compliance/license_types/{id}:
+    get:
+      operationId: compliance_license_types_retrieve
+      description: Ignore type because the ViewSet class is not typed and the UnifiedApiReadOnlyModelViewSet is.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this license type.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - compliance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicenseTypeInternalResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /compliance/licenses:
+    get:
+      operationId: compliance_licenses_list
+      description: Unified API to list company licenses
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - compliance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyLicenseList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: compliance_licenses_create
+      description: Create new licenses from a list of licenses directly from a seed-to-sale vendor.
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LicenseCreateUpdateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicensesCreateUpdateResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /compliance/licenses/{id}:
+    get:
+      operationId: compliance_licenses_retrieve
+      description: Unified API to list company licenses
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this license.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - compliance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedLicenseCreateUpdateRequest'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    LicenseTypeInternalResponse:
+      type: object
+      description: Serializer for LicenseType models via the internal API
+      properties:
+        active_for_registration:
+          type: boolean
+          description: This license type is available for current registrations.
+        classification:
+          type: string
+          title: License Classification Type
+          description: License Classification Type
+          maxLength: 100
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description or Notes
+          maxLength: 5000
+        display_type:
+          type: string
+          description: Type for display in the Leaflink frontend
+          maxLength: 100
+        has_medical_line_items:
+          type: boolean
+          description: This license type can sell medical line items.
+        id:
+          type: integer
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        post_2018_CA:
+          type: boolean
+          description: post-2018 CA license.
+        pre_2018_CA:
+          type: boolean
+          description: pre-2018 CA license.
+        require_ein:
+          type: boolean
+          description: EIN is required to register under this license type.
+        state_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        type:
+          type: string
+          description: License Type
+          maxLength: 100
+      required:
+      - classification
+      - created_on
+      - display_type
+      - id
+      - modified
+      - state_id
+      - type
+    CompanyLicenseType:
+      type: object
+      description: Unified serializer for LicenseType models.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          description: License Type
+          maxLength: 100
+        display_type:
+          type: string
+          description: Type for display in the Leaflink frontend
+          maxLength: 100
+        classification:
+          type: string
+          title: License Classification Type
+          description: License Classification Type
+          maxLength: 100
+        state:
+          type:
+          - integer
+          - 'null'
+        require_ein:
+          type: boolean
+          description: EIN is required to register under this license type.
+        has_medical_line_items:
+          type: boolean
+          description: This license type can sell medical line items.
+        active_for_registration:
+          type: boolean
+          description: This license type is available for current registrations.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description or Notes
+          maxLength: 5000
+        pre_2018_CA:
+          type: boolean
+          description: pre-2018 CA license.
+        post_2018_CA:
+          type: boolean
+          description: post-2018 CA license.
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        state_abbr:
+          type: string
+          readOnly: true
+      required:
+      - classification
+      - created_on
+      - display_type
+      - id
+      - modified
+      - state_abbr
+      - type
+    PaginatedLicenseTypeInternalResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LicenseTypeInternalResponse'
+    LicensesCreateUpdateResponse:
+      type: object
+      description: Serializer for returning a list of created or updated license IDs.
+      properties:
+        license_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - license_ids
+    LicenseCreateUpdateRequest:
+      type: object
+      properties:
+        number:
+          type: string
+          minLength: 1
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type: string
+          format: date
+        type_id:
+          type: integer
+      required:
+      - end_date
+      - number
+      - start_date
+      - type_id
+    CompanyLicense:
+      type: object
+      description: Unified serializer for License models.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          $ref: '#/components/schemas/CompanyLicenseType'
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    UnifiedLicenseCreateUpdateRequest:
+      type: object
+      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
+      properties:
+        number:
+          type: string
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+        expiration_date:
+          type: string
+          format: date
+          readOnly: true
+        type:
+          type: integer
+          readOnly: true
+      required:
+      - expiration_date
+      - issue_date
+      - number
+      - type
+    PaginatedCompanyLicenseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyLicense'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

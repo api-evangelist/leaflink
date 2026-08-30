@@ -1,0 +1,1047 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Payment Contract API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Payment Contract
+paths:
+  /payment_contracts:
+    get:
+      operationId: payment_contracts_list
+      description: List multiple payment contracts.
+      summary: List Payment Contracts
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Payment Contract
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContractList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: payment_contracts_create
+      description: Create a payment contract.
+      summary: Create a Payment Contract
+      tags:
+      - Payment Contract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /payment_contracts/{contract_id}:
+    get:
+      operationId: payment_contracts_retrieve
+      description: Get a single payment contracts.
+      summary: Get a Payment Contract
+      parameters:
+      - in: path
+        name: contract_id
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Payment Contract
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    put:
+      operationId: payment_contracts_update
+      description: Replace a single payment contracts.
+      summary: Replace a Payment Contract
+      parameters:
+      - in: path
+        name: contract_id
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Payment Contract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: payment_contracts_partial_update
+      description: Update a single payment contract.
+      summary: Update a Payment Contract
+      parameters:
+      - in: path
+        name: contract_id
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Payment Contract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContractRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: payment_contracts_destroy
+      description: Delete a single payment contract.
+      summary: Delete a Payment Contract
+      parameters:
+      - in: path
+        name: contract_id
+        schema:
+          type: string
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Payment Contract
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    NullEnum:
+      enum:
+      - null
+    DefaultFlexiblePaymentStrategyEnum:
+      enum:
+      - factored
+      - reverse_factored
+      type: string
+    PatchedContractRequest:
+      type: object
+      description: Serializer for Contract
+      properties:
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        seller_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+          minLength: 1
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+    CollectionDayPreferenceEnum:
+      enum:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      type: string
+    ContractRequest:
+      type: object
+      description: Serializer for Contract
+      properties:
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        seller_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+          minLength: 1
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - buyer_id
+      - seller_id
+    BlankEnum:
+      enum:
+      - ''
+    Type7a8Enum:
+      enum:
+      - seller
+      - buyer
+      type: string
+    License:
+      type: object
+      description: Licenses Serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type: string
+          maxLength: 100
+        state:
+          $ref: '#/components/schemas/State'
+        verification_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the license was verified by Leaflink. Not the date the license was verified by Cannabiz API.
+        verification_status:
+          $ref: '#/components/schemas/VerificationStatusEnum'
+        issued_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/LicenseTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - id
+      - number
+      - state
+    LegalEntity:
+      type: object
+      description: Serializer for LegalEntity
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+        street_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        zipcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        state:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        lexis_nexis_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_title:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+      required:
+      - name
+    ContractStats:
+      type: object
+      description: Serializer for CompanyStats
+      properties:
+        first_completed_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        most_recent_eligible_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        most_recent_assigned_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        eligible_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        eligible_invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+        funded_invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+        funded_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        funded_invoice_percentage:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+    PreferredPaymentProgramEnum:
+      enum:
+      - do_not_process
+      - flexible
+      - direct
+      type: string
+    LicenseTypeEnum:
+      enum:
+      - medical
+      - combined
+      - ancillary_2
+      - ancillary
+      - adult_use
+      - cannabis
+      - medical_transporter
+      - ancillary_logisitics
+      type: string
+    Seller:
+      type: object
+      description: Used to serialize seller data (a seller is a company where `type` = `seller`)
+      properties:
+        id:
+          type: string
+          format: uuid
+        dba:
+          type: string
+          maxLength: 200
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        street_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        state:
+          type:
+          - string
+          - 'null'
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/License'
+        zipcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        country:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        marketplace_id:
+          type: integer
+        marketplace_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        marketplace_dashboard_url:
+          type: string
+          readOnly: true
+        has_signed_terms_and_conditions:
+          type: string
+          readOnly: true
+        in_direct_enabled_state:
+          type: string
+          readOnly: true
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/Type7a8Enum'
+          - $ref: '#/components/schemas/NullEnum'
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        b2b_enabled:
+          type: boolean
+        flexible_enabled:
+          type: boolean
+        image:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        timezone:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        excluded_from_automated_payments:
+          type: boolean
+        preferred_payment_program:
+          oneOf:
+          - $ref: '#/components/schemas/PreferredPaymentProgramEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        brands:
+          type: string
+          readOnly: true
+        marketplace_customers_url:
+          type: string
+          readOnly: true
+        direct_payment_processing_rate:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -100
+          exclusiveMaximum: 100
+        default_flexible_payment_strategy:
+          oneOf:
+          - $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        default_flexible_payment_term:
+          type: string
+          readOnly: true
+        collection_day_preference:
+          oneOf:
+          - $ref: '#/components/schemas/CollectionDayPreferenceEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        excluded_from_funding_on_t:
+          type: boolean
+      required:
+      - brands
+      - created_on
+      - dba
+      - default_flexible_payment_term
+      - has_signed_terms_and_conditions
+      - in_direct_enabled_state
+      - marketplace_customers_url
+      - marketplace_dashboard_url
+      - modified
+      - type
+    VerificationStatusEnum:
+      enum:
+      - active
+      - pending
+      - applied
+      - expired
+      - inactive
+      - not_found
+      - invalid_format
+      - not_verified
+      type: string
+    Contract:
+      type: object
+      description: Serializer for Contract
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/Buyer'
+          readOnly: true
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        contract_stats:
+          allOf:
+          - $ref: '#/components/schemas/ContractStats'
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - buyer
+      - contract_stats
+      - created_on
+      - id
+      - modified
+      - seller
+    DefaultPaymentProgramEnum:
+      enum:
+      - do_not_process
+      - flexible
+      - direct
+      - factoring
+      - b2b
+      type: string
+    StatusEnum:
+      enum:
+      - not_onboarded
+      - onboarded
+      - paused
+      - offboarded
+      type: string
+    PaginatedContractList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contract'
+    State:
+      type: object
+      description: State Serializer
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
+    Buyer:
+      type: object
+      description: Used to serialize buyer data (a buyer is a company where `type` = `buyer`)
+      properties:
+        id:
+          type: string
+          format: uuid
+        dba:
+          type: string
+          maxLength: 200
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        street_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        state:
+          type:
+          - string
+          - 'null'
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/License'
+        zipcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        country:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        marketplace_id:
+          type: integer
+        marketplace_slug:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        marketplace_dashboard_url:
+          type: string
+          readOnly: true
+        has_signed_terms_and_conditions:
+          type: string
+          readOnly: true
+        in_direct_enabled_state:
+          type: string
+          readOnly: true
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/Type7a8Enum'
+          - $ref: '#/components/schemas/NullEnum'
+        url:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        b2b_enabled:
+          type: boolean
+        flexible_enabled:
+          type: boolean
+        image:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        timezone:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        excluded_from_automated_payments:
+          type: boolean
+        preferred_payment_program:
+          oneOf:
+          - $ref: '#/components/schemas/PreferredPaymentProgramEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        default_flexible_payment_strategy:
+          oneOf:
+          - $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        default_flexible_payment_term:
+          type: string
+          readOnly: true
+        available_terms:
+          type: string
+          readOnly: true
+        exempted_from_term_validation:
+          type: boolean
+        collection_day_preference:
+          oneOf:
+          - $ref: '#/components/schemas/CollectionDayPreferenceEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        excluded_from_funding_on_t:
+          type: boolean
+        cashback_rewards_enabled:
+          type: boolean
+      required:
+      - available_terms
+      - created_on
+      - dba
+      - default_flexible_payment_term
+      - has_signed_terms_and_conditions
+      - in_direct_enabled_state
+      - marketplace_dashboard_url
+      - modified
+      - type
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

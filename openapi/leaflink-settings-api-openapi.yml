@@ -1,0 +1,334 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Settings API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: settings
+paths:
+  /settings/companies/buyer_notifications:
+    get:
+      operationId: settings_companies_buyer_notifications_list
+      description: Get buyer notification settings.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - settings
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBuyerNotificationSettingList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: settings_companies_buyer_notifications_create
+      description: Update buyer notification settings.
+      tags:
+      - settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyerNotificationSettingRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerNotificationSetting'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /settings/companies/buyer_notifications/{id}:
+    get:
+      operationId: settings_companies_buyer_notifications_retrieve
+      description: Unified API Buyer Notification Settings.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - settings
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyerNotificationSetting'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        display_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+        id:
+          type:
+          - integer
+          - 'null'
+    BuyerNotificationSetting:
+      type: object
+      description: Buyer Notification Setting Serializer for managing email notifications.
+      properties:
+        order_accepted:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+        order_rejected:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+        order_fulfilled:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+        order_shipped:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+        order_complete:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+        order_detail_changed:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+        flower_available:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+    PaginatedBuyerNotificationSettingList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerNotificationSetting'
+    BuyerNotificationSettingEventRequest:
+      type: object
+      properties:
+        users:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UserRequest'
+    UserRequest:
+      type: object
+      properties:
+        display_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          minLength: 1
+        id:
+          type:
+          - integer
+          - 'null'
+    BuyerNotificationSettingEvent:
+      type: object
+      properties:
+        users:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/User'
+    BuyerNotificationSettingRequest:
+      type: object
+      description: Buyer Notification Setting Serializer for managing email notifications.
+      properties:
+        order_accepted:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_rejected:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_fulfilled:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_shipped:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_complete:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_detail_changed:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        flower_available:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

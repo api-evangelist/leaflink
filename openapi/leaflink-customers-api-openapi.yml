@@ -1,0 +1,2880 @@
+openapi: 3.2.0
+info:
+  title: Leaflink Customers API
+  contact:
+    email: support@leaflink.com
+  version: '1.0'
+  description: 'Operations tagged customers across 2 of this provider''s published API definitions: leaflink-api-openapi-original.yml, leaflink-marketplace-v2-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+- url: https://app.leaflink.com/api/v2
+tags:
+- name: customers
+paths:
+  /customers:
+    post:
+      operationId: customers_create
+      description: LeafLink API for Marketplace customers.
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedCustomerRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomer'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customers/{id}:
+    put:
+      operationId: customers_update
+      description: LeafLink API for Marketplace customers.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedCustomerRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomer'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: customers_partial_update
+      description: LeafLink API for Marketplace customers.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedCustomerRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCustomer'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: customers_destroy
+      description: For delete request
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customers/{id}/corporate_address:
+    post:
+      operationId: customers_corporate_address_create
+      description: Action route for interfacing with the corporate address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedAddressRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedAddress'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: customers_corporate_address_partial_update
+      description: Action route for interfacing with the corporate address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedAddressRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedAddress'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: customers_corporate_address_destroy
+      description: Action route for interfacing with the corporate address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customers/{id}/delivery_address:
+    post:
+      operationId: customers_delivery_address_create
+      description: Action route for interfacing with the delivery address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedAddressRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedAddress'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: customers_delivery_address_partial_update
+      description: Action route for interfacing with the delivery address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedAddressRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedAddress'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: customers_delivery_address_destroy
+      description: Action route for interfacing with the delivery address
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customers/active_entries/{id}:
+    delete:
+      operationId: customers_active_entries_destroy
+      description: Delete an Active Entry for a company
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company activity entry.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customers
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customers/:
+    parameters: []
+    get:
+      operationId: customers_list
+      summary: List customers
+      description: List customers for all active companies where the user is a member of.
+      parameters:
+      - name: fields_include
+        in: query
+        description: Include only specific fields in the response, separated by commas.
+        schema:
+          type: string
+      - name: fields_exclude
+        in: query
+        description: Exclude specific fields in the response, separated by commas.
+        schema:
+          type: string
+      - name: include_children
+        in: query
+        description: Include additional fields in the response. Available values include `tags`, `service_zone`, `managers`, `contacts`, and `license_type`
+        schema:
+          type: string
+      - name: nickname
+        in: query
+        description: Filter by the customer's nickname.
+        required: false
+        schema:
+          type: string
+      - name: nickname__in
+        in: query
+        description: Filter by nickname__in
+        required: false
+        schema:
+          type: string
+      - name: nickname__startswith
+        in: query
+        description: Filter by nickname__startswith
+        required: false
+        schema:
+          type: string
+      - name: phone
+        in: query
+        description: Filter by the customer's business phone number.
+        required: false
+        schema:
+          type: string
+      - name: phone__in
+        in: query
+        description: Filter by phone__in
+        required: false
+        schema:
+          type: string
+      - name: phone__startswith
+        in: query
+        description: Filter by phone__startswith
+        required: false
+        schema:
+          type: string
+      - name: dba
+        in: query
+        description: Filter by the customer's dba.
+        required: false
+        schema:
+          type: string
+      - name: dba__in
+        in: query
+        description: Filter by dba__in
+        required: false
+        schema:
+          type: string
+      - name: dba__startswith
+        in: query
+        description: Filter by dba__startswith
+        required: false
+        schema:
+          type: string
+      - name: owner__slug
+        in: query
+        description: Filter by the slug of the Company that owns this Customer record.
+        required: false
+        schema:
+          type: string
+      - name: id__in
+        in: query
+        description: Filter by id__in
+        required: false
+        schema:
+          type: number
+      - name: id
+        in: query
+        description: Filter by id
+        required: false
+        schema:
+          type: number
+      - name: next_contact_date__lt
+        in: query
+        description: Filter by next_contact_date__lt
+        required: false
+        schema:
+          type: string
+      - name: next_contact_date__lte
+        in: query
+        description: Filter by next_contact_date__lte
+        required: false
+        schema:
+          type: string
+      - name: next_contact_date__gt
+        in: query
+        description: Filter by next_contact_date__gt
+        required: false
+        schema:
+          type: string
+      - name: next_contact_date__gte
+        in: query
+        description: Filter by next_contact_date__gte
+        required: false
+        schema:
+          type: string
+      - name: company_slug
+        in: query
+        description: Filter by the slug of the Company that owns this Customer record.
+        required: false
+        schema:
+          type: string
+      - name: external_id
+        in: query
+        description: Filter by the customer's external id.
+        required: false
+        schema:
+          type: string
+      - name: external_id__in
+        in: query
+        description: Filter by external_id__in
+        required: false
+        schema:
+          type: string
+      - name: external_id__startswith
+        in: query
+        description: Filter by external_id__startswith
+        required: false
+        schema:
+          type: string
+      - name: ein
+        in: query
+        description: Filter by the customer's EIN.
+        required: false
+        schema:
+          type: string
+      - name: ein__in
+        in: query
+        description: Filter by ein__in
+        required: false
+        schema:
+          type: string
+      - name: ein__startswith
+        in: query
+        description: Filter by ein__startswith
+        required: false
+        schema:
+          type: string
+      - name: discount_percent__lt
+        in: query
+        description: Filter by discount_percent__lt
+        required: false
+        schema:
+          type: number
+      - name: discount_percent__lte
+        in: query
+        description: Filter by discount_percent__lte
+        required: false
+        schema:
+          type: number
+      - name: discount_percent__gt
+        in: query
+        description: Filter by discount_percent__gt
+        required: false
+        schema:
+          type: number
+      - name: discount_percent__gte
+        in: query
+        description: Filter by discount_percent__gte
+        required: false
+        schema:
+          type: number
+      - name: old_license_number
+        in: query
+        description: Filter by the customer's previous license number.
+        required: false
+        schema:
+          type: string
+      - name: old_license_number__in
+        in: query
+        description: Filter by old_license_number__in
+        required: false
+        schema:
+          type: string
+      - name: old_license_number__startswith
+        in: query
+        description: Filter by old_license_number__startswith
+        required: false
+        schema:
+          type: string
+      - name: modified__lt
+        in: query
+        description: Filter by the datetime the object was last modified, less than.
+        required: false
+        schema:
+          type: string
+      - name: modified__lte
+        in: query
+        description: Filter by the datetime the object was last modified, less than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: modified__gt
+        in: query
+        description: Filter by the datetime the object was last modified, greater than.
+        required: false
+        schema:
+          type: string
+      - name: modified__gte
+        in: query
+        description: Filter by the datetime the object was last modified, greater than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: brand
+        in: query
+        description: Filter by the customer's associated brand.
+        required: false
+        schema:
+          type: string
+      - name: brand__in
+        in: query
+        description: Filter by brand__in
+        required: false
+        schema:
+          type: string
+      - name: brand__startswith
+        in: query
+        description: Filter by brand__startswith
+        required: false
+        schema:
+          type: string
+      - name: created_on__lt
+        in: query
+        description: Filter by created_on datetime, less than.
+        required: false
+        schema:
+          type: string
+      - name: created_on__lte
+        in: query
+        description: Filter by created_on datetime, less than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: created_on__gt
+        in: query
+        description: Filter by created_on datetime, greater than.
+        required: false
+        schema:
+          type: string
+      - name: created_on__gte
+        in: query
+        description: Filter by created_on datetime, greater than or equal to.
+        required: false
+        schema:
+          type: string
+      - name: address
+        in: query
+        description: Filter by the customer's address.
+        required: false
+        schema:
+          type: string
+      - name: address__in
+        in: query
+        description: Filter by address__in
+        required: false
+        schema:
+          type: string
+      - name: address__startswith
+        in: query
+        description: Filter by address__startswith
+        required: false
+        schema:
+          type: string
+      - name: business_license_name
+        in: query
+        description: Filter by the customer's business license name.
+        required: false
+        schema:
+          type: string
+      - name: business_license_name__in
+        in: query
+        description: Filter by business_license_name__in
+        required: false
+        schema:
+          type: string
+      - name: business_license_name__startswith
+        in: query
+        description: Filter by business_license_name__startswith
+        required: false
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter by the customer's name.
+        required: false
+        schema:
+          type: string
+      - name: name__in
+        in: query
+        description: Filter by name__in
+        required: false
+        schema:
+          type: string
+      - name: name__startswith
+        in: query
+        description: Filter by name__startswith
+        required: false
+        schema:
+          type: string
+      - name: business_identifier
+        in: query
+        description: Filter by the customer's business identifier.
+        required: false
+        schema:
+          type: string
+      - name: business_identifier__in
+        in: query
+        description: Filter by business_identifier__in
+        required: false
+        schema:
+          type: string
+      - name: business_identifier__startswith
+        in: query
+        description: Filter by business_identifier__startswith
+        required: false
+        schema:
+          type: string
+      - name: license_number
+        in: query
+        description: Filter by the customer's license number.
+        required: false
+        schema:
+          type: string
+      - name: license_number__in
+        in: query
+        description: Filter by license_number__in
+        required: false
+        schema:
+          type: string
+      - name: license_number__startswith
+        in: query
+        description: Filter by license_number__startswith
+        required: false
+        schema:
+          type: string
+      - name: ext_acct_id
+        in: query
+        description: Filter by the customer's external account id.
+        required: false
+        schema:
+          type: string
+      - name: ext_acct_id__in
+        in: query
+        description: Filter by ext_acct_id__in
+        required: false
+        schema:
+          type: string
+      - name: ext_acct_id__startswith
+        in: query
+        description: Filter by ext_acct_id__startswith
+        required: false
+        schema:
+          type: string
+      - name: ext_acct_id__isnull
+        in: query
+        description: Filter by ext_acct_id__isnull
+        required: false
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Filter by the customer's email.
+        required: false
+        schema:
+          type: string
+      - name: email__in
+        in: query
+        description: Filter by email__in
+        required: false
+        schema:
+          type: string
+      - name: email__startswith
+        in: query
+        description: Filter by email__startswith
+        required: false
+        schema:
+          type: string
+      - name: website
+        in: query
+        description: Filter by the customer's website.
+        required: false
+        schema:
+          type: string
+      - name: website__in
+        in: query
+        description: Filter by website__in
+        required: false
+        schema:
+          type: string
+      - name: website__startswith
+        in: query
+        description: Filter by website__startswith
+        required: false
+        schema:
+          type: string
+      - name: owner
+        in: query
+        description: Filter by owner ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: partner
+        in: query
+        description: Filter by partner ID (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: tier
+        in: query
+        description: Filter by the ID of a customer's tier (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: price_schedule
+        in: query
+        description: Filter by the ID of a customer's price schedule (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: service_zone
+        in: query
+        description: Filter by the ID of a customer's service zone (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: license_type
+        in: query
+        description: Filter by the ID of a customer's license type.
+        required: false
+        schema:
+          type: number
+      - name: license_inactive
+        in: query
+        description: Filter by the whether a customer's license is active.
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/PaymentTermFilter'
+      - $ref: '#/components/parameters/PaymentMethodFilter'
+      - name: status
+        in: query
+        description: Filter by the ID of a customer's status (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Filter by the ID of a customer's state (supports multiple values, comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: leaflink_source
+        in: query
+        description: Filter by whether the customer was added by LeafLink.
+        required: false
+        schema:
+          type: boolean
+      - name: archived
+        in: query
+        description: Filter by whether the customer has been archived.
+        required: false
+        schema:
+          type: boolean
+      - name: is_archived
+        in: query
+        description: Filter by whether the customer has been archived (alternative to archived parameter).
+        required: false
+        schema:
+          type: boolean
+      - name: delinquent
+        in: query
+        description: Filter by whether the customer is delinquent.
+        required: false
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      - name: external_id_key
+        in: query
+        description: Filter for orders that match external_ids key:values.  Must be used with external_id_values.
+        schema:
+          type: string
+      - name: external_id_values
+        in: query
+        description: Filter for orders that match external_ids key:values.  Multiple values separated by a comma.  Must be used with external_id_key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomerResponse'
+      tags:
+      - customers
+      security:
+      - Token: []
+    post:
+      operationId: customers_create
+      summary: Create a customer
+      description: Create a new customer.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreate'
+        required: true
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+      tags:
+      - customers
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+  /customers/{id}/:
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this company customer.
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: customers_read
+      summary: Retrieve a customer
+      description: Retrieve a customer by ID.
+      parameters:
+      - name: fields_include
+        in: query
+        description: Include only specific fields in the response, separated by commas.
+        schema:
+          type: string
+      - name: fields_exclude
+        in: query
+        description: Exclude specific fields in the response, separated by commas.
+        schema:
+          type: string
+      - name: include_children
+        in: query
+        description: Include additional fields in the response. Available values include `tags`, `service_zone`, `managers`, `contacts`, and `license_type`
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+      tags:
+      - customers
+      security:
+      - Token: []
+    patch:
+      operationId: customers_partial_update
+      summary: Update a customer
+      description: Update a customer by ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerUpdate'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+      tags:
+      - customers
+      security:
+      - Token: []
+    delete:
+      operationId: customers_delete
+      summary: Archive a customer
+      description: Archive a customer by ID.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+      tags:
+      - customers
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+components:
+  schemas:
+    TierEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: integer
+    PaymentProgramEnum:
+      enum:
+      - direct
+      - flexible
+      type: string
+    UnifiedCompanyCustomerStatus:
+      type: object
+      description: Unified serializer for the CompanyCustomerStatus model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        state:
+          type: string
+          title: Customer Status
+          description: Customer Status State
+          maxLength: 40
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          title: Sort Order
+          description: Sort order, lower is first.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of status
+          maxLength: 1500
+        owner:
+          type:
+          - integer
+          - 'null'
+          title: Company
+          description: The Company that created the custom status.
+        is_stock:
+          type: boolean
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+        hex_color:
+          type:
+          - string
+          - 'null'
+          description: Hex color for customer status
+          pattern: ^#[0-9a-fA-F]{6}$
+          maxLength: 40
+      required:
+      - id
+      - state
+    ShortPaymentMethod:
+      type: object
+      description: Short serializer for payment methods.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        method:
+          type: string
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
+      required:
+      - id
+      - method
+    PatchedUnifiedAddressRequest:
+      type: object
+      description: Inherits AddressSerializer but sets the FK relation on the resource Model
+      properties:
+        address:
+          type: string
+          minLength: 1
+          description: Address
+          maxLength: 400
+        unit_number:
+          type: string
+          title: 'Unit #'
+          description: 'Unit #'
+          maxLength: 400
+        city:
+          type: string
+          minLength: 1
+          description: City
+          maxLength: 400
+        county:
+          type: string
+          description: County
+          maxLength: 400
+        state:
+          type: string
+          minLength: 1
+        zipcode:
+          type: string
+          minLength: 1
+          description: Zipcode
+          maxLength: 7
+    ServiceZone:
+      type: object
+      description: Serializer for the ServiceZone model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Service Zone Name
+          description: Service Zone Name
+          maxLength: 300
+        description:
+          type:
+          - string
+          - 'null'
+          description: Detailed description of the service zone.
+          maxLength: 1500
+        company:
+          type: integer
+      required:
+      - company
+      - id
+      - name
+    NullEnum-unified-upstream-marketplace:
+      enum:
+      - null
+    UnifiedAddress:
+      type: object
+      description: Inherits AddressSerializer but sets the FK relation on the resource Model
+      properties:
+        address:
+          type: string
+          description: Address
+          maxLength: 400
+        unit_number:
+          type: string
+          title: 'Unit #'
+          description: 'Unit #'
+          maxLength: 400
+        city:
+          type: string
+          description: City
+          maxLength: 400
+        county:
+          type: string
+          description: County
+          maxLength: 400
+        state:
+          type: string
+        zipcode:
+          type: string
+          description: Zipcode
+          maxLength: 7
+      required:
+      - address
+      - city
+      - state
+      - zipcode
+    CustomerPaymentOptionSerializerV2:
+      type: object
+      description: External serializer class for Customers payment options.
+      properties:
+        id:
+          type: integer
+        is_default:
+          type: boolean
+          default: false
+        payment_method:
+          $ref: '#/components/schemas/ShortPaymentMethod'
+        payment_program:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentProgramEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        payment_strategy:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentStrategyEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        payment_term:
+          $ref: '#/components/schemas/ShortPaymentTerm'
+    PaymentStrategyEnum:
+      enum:
+      - direct
+      - factored
+      - reverse_factored
+      type: string
+    ShortPaymentTerm:
+      type: object
+      description: Short serializer for payment terms.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        term:
+          type: string
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
+        days:
+          type: integer
+        code:
+          type:
+          - string
+          - 'null'
+          title: Payment Term (code)
+          description: Term of Payment (code)
+          maxLength: 20
+      required:
+      - days
+      - id
+      - term
+    PatchedUnifiedCustomerRequest:
+      type: object
+      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
+      properties:
+        managers:
+          type: array
+          items:
+            type: integer
+        phone:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        next_contact_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        tier:
+          title: Company customer tier
+          description: Company customer tier
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/TierEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        name:
+          type: string
+          minLength: 1
+        license_number:
+          type: string
+          minLength: 1
+        old_license_number:
+          type:
+          - string
+          - 'null'
+          title: Old License Number (stored after a transfer)
+          description: Old License Number (stored after a transfer)
+          maxLength: 100
+        is_license_inactive:
+          type: boolean
+          default: false
+          description: License inactive or transferred for this customer
+        business_identifier:
+          type:
+          - string
+          - 'null'
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          maxLength: 100
+        directions:
+          type:
+          - string
+          - 'null'
+          description: (Driving) Directions to the Customer location for deliveries
+          maxLength: 6000
+        delivery_preferences:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipping_charge:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Additional Shipping Charge
+        brand:
+          type:
+          - string
+          - 'null'
+          title: Brand Name
+          description: Known Brand name of Company or Parent Company
+          maxLength: 400
+        business_license_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Other information on customer
+          maxLength: 3000
+        is_archived:
+          type: boolean
+          default: false
+          description: Is the customer a relevent part of your CRM
+        is_delinquent:
+          type: boolean
+          default: false
+          description: Is this account delinquent on billing
+        discount_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+          description: Discount percent for orders of company customer
+        external_ids:
+          type: object
+          additionalProperties:
+            type: string
+          description: External IDs mapped by integration name
+        owner_id:
+          type: integer
+          description: Owner ID for customer
+        partner_id:
+          type: integer
+          description: Partner ID for customer
+        price_schedule_id:
+          type: integer
+          description: Price schedule ID for the customer
+        service_zone_id:
+          type: integer
+          writeOnly: true
+          description: Service zone ID for the customer
+        status_id:
+          type: integer
+          writeOnly: true
+          description: Status ID for the customer
+    UnifiedAddressRequest:
+      type: object
+      description: Inherits AddressSerializer but sets the FK relation on the resource Model
+      properties:
+        address:
+          type: string
+          minLength: 1
+          description: Address
+          maxLength: 400
+        unit_number:
+          type: string
+          title: 'Unit #'
+          description: 'Unit #'
+          maxLength: 400
+        city:
+          type: string
+          minLength: 1
+          description: City
+          maxLength: 400
+        county:
+          type: string
+          description: County
+          maxLength: 400
+        state:
+          type: string
+          minLength: 1
+        zipcode:
+          type: string
+          minLength: 1
+          description: Zipcode
+          maxLength: 7
+      required:
+      - address
+      - city
+      - state
+      - zipcode
+    UnifiedCustomerRequest:
+      type: object
+      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
+      properties:
+        managers:
+          type: array
+          items:
+            type: integer
+        phone:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        next_contact_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        tier:
+          title: Company customer tier
+          description: Company customer tier
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/TierEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        name:
+          type: string
+          minLength: 1
+        license_number:
+          type: string
+          minLength: 1
+        old_license_number:
+          type:
+          - string
+          - 'null'
+          title: Old License Number (stored after a transfer)
+          description: Old License Number (stored after a transfer)
+          maxLength: 100
+        is_license_inactive:
+          type: boolean
+          default: false
+          description: License inactive or transferred for this customer
+        business_identifier:
+          type:
+          - string
+          - 'null'
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          maxLength: 100
+        directions:
+          type:
+          - string
+          - 'null'
+          description: (Driving) Directions to the Customer location for deliveries
+          maxLength: 6000
+        delivery_preferences:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipping_charge:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Additional Shipping Charge
+        brand:
+          type:
+          - string
+          - 'null'
+          title: Brand Name
+          description: Known Brand name of Company or Parent Company
+          maxLength: 400
+        business_license_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Other information on customer
+          maxLength: 3000
+        is_archived:
+          type: boolean
+          default: false
+          description: Is the customer a relevent part of your CRM
+        is_delinquent:
+          type: boolean
+          default: false
+          description: Is this account delinquent on billing
+        discount_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+          description: Discount percent for orders of company customer
+        external_ids:
+          type: object
+          additionalProperties:
+            type: string
+          description: External IDs mapped by integration name
+        owner_id:
+          type: integer
+          description: Owner ID for customer
+        partner_id:
+          type: integer
+          description: Partner ID for customer
+        price_schedule_id:
+          type: integer
+          description: Price schedule ID for the customer
+        service_zone_id:
+          type: integer
+          writeOnly: true
+          description: Service zone ID for the customer
+        status_id:
+          type: integer
+          writeOnly: true
+          description: Status ID for the customer
+      required:
+      - name
+      - owner_id
+    UnifiedCustomer:
+      type: object
+      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        dba:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        managers:
+          type: array
+          items:
+            type: integer
+        phone:
+          type:
+          - string
+          - 'null'
+        phone_extension:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+        next_contact_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        tier:
+          title: Company customer tier
+          description: Company customer tier
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/TierEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        name:
+          type: string
+        nickname:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        license_number:
+          type: string
+        old_license_number:
+          type:
+          - string
+          - 'null'
+          title: Old License Number (stored after a transfer)
+          description: Old License Number (stored after a transfer)
+          maxLength: 100
+        is_license_inactive:
+          type: boolean
+          default: false
+          description: License inactive or transferred for this customer
+        business_identifier:
+          type:
+          - string
+          - 'null'
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          maxLength: 100
+        ein:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        directions:
+          type:
+          - string
+          - 'null'
+          description: (Driving) Directions to the Customer location for deliveries
+          maxLength: 6000
+        delivery_preferences:
+          type:
+          - string
+          - 'null'
+        currency:
+          type: string
+          readOnly: true
+        shipping_charge:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Additional Shipping Charge
+        brand:
+          type:
+          - string
+          - 'null'
+          title: Brand Name
+          description: Known Brand name of Company or Parent Company
+          maxLength: 400
+        business_license_name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        corporate_address:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedAddress'
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedAddress'
+          readOnly: true
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Other information on customer
+          maxLength: 3000
+        leaflink_last_viewed:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The last time this customer viewed your products on Leaflink
+        leaflink_source:
+          type: boolean
+          readOnly: true
+          title: Added by Leaflink
+          description: Was this customer added to your CRM by Leaflink
+        is_archived:
+          type: boolean
+          default: false
+          description: Is the customer a relevent part of your CRM
+        is_delinquent:
+          type: boolean
+          default: false
+          description: Is this account delinquent on billing
+        discount_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+          description: Discount percent for orders of company customer
+        available_payment_options:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/CustomerPaymentOptionSerializerV2'
+          readOnly: true
+          description: Available payment options for the customer
+        external_ids:
+          type: object
+          additionalProperties:
+            type: string
+          description: External IDs mapped by integration name
+        owner_id:
+          type: integer
+          description: Owner ID for customer
+        partner_id:
+          type: integer
+          description: Partner ID for customer
+        price_schedule_id:
+          type: integer
+          description: Price schedule ID for the customer
+        service_zone:
+          allOf:
+          - $ref: '#/components/schemas/ServiceZone'
+          readOnly: true
+          description: Service zone for the customer
+        license_type:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompanyCustomerStatus'
+          readOnly: true
+          description: Status for a customer
+      required:
+      - available_payment_options
+      - corporate_address
+      - created_date
+      - currency
+      - dba
+      - delivery_address
+      - ein
+      - id
+      - leaflink_last_viewed
+      - leaflink_source
+      - license_type
+      - modified_date
+      - name
+      - nickname
+      - owner_id
+      - service_zone
+      - status
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: Unique id generated by LeafLink.
+        state:
+          type: string
+          description: State abbreviation
+        managers:
+          type: array
+          items:
+            type: integer
+          uniqueItems: true
+          description: Ids for the sales reps assigned to this customer.
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the customer was created.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the customer was last modified.
+        next_contact_date:
+          type: string
+          format: date
+          description: Date for the next contact, YYYY-MM-DD
+        nickname:
+          type: string
+          maxLength: 200
+          description: Alternate name for the customer
+        external_id:
+          description: Id of the customer in a 3rd party system
+          type: string
+          maxLength: 100
+        ext_acct_id:
+          description: Id of the customer in QuickBooks Online.
+          type: string
+        license_number:
+          description: License Number
+          type: string
+          maxLength: 100
+        old_license_number:
+          description: Old license number for the customer
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        license_inactive:
+          description: Is the license inactive for this customer?
+          type: boolean
+        business_identifier:
+          description: Company identifier distinct from license numbers
+          type: string
+          maxLength: 100
+        ein:
+          description: Company's federal EIN number. For Customers linked to LeafLink Buyers (partner_id=Company.id), this field is read-only and inherited directly from the linked LeafLink Buyer Company. For Customers not linked to LeafLink Buyer Companies (partner_id=null), this field will return null.
+          type: string
+          maxLength: 100
+        directions:
+          description: Directions to the customer's location
+          type: string
+          maxLength: 3000
+        delivery_preferences:
+          description: Customer delivery preferences. These will show up as footnotes on orders placed by the customer.
+          type: string
+        currency:
+          type: string
+          readOnly: true
+          minLength: 1
+          description: Currency used by the customer.
+        shipping_charge:
+          description: Additional shipping charge
+          type: string
+          format: decimal
+        brand:
+          description: Brand name associated with the customer
+          type: string
+          maxLength: 400
+        name:
+          description: Customer name
+          type: string
+          maxLength: 400
+        dba:
+          description: DBA of customer
+          type: string
+          maxLength: 400
+        business_license_name:
+          description: Business License Name
+          type: string
+          maxLength: 400
+        description:
+          description: Additional information about the customer
+          type: string
+          maxLength: 4000
+        website:
+          description: Customer's website
+          type: string
+          format: uri
+          maxLength: 400
+        address:
+          description: Customer's address
+          type: string
+          maxLength: 400
+        unit_number:
+          description: 'Unit # for the address'
+          type: string
+        zipcode:
+          description: Zipcode
+          type: string
+          maxLength: 6
+        city:
+          description: City
+          type: string
+          maxLength: 400
+        county:
+          description: County
+          type: string
+          maxLength: 400
+        country:
+          description: Country
+          type: string
+          maxLength: 400
+        lat:
+          description: Location latitude
+          type: string
+          format: decimal
+        long:
+          description: Location longitude
+          type: string
+          format: decimal
+        phone:
+          description: Phone Number
+          type: string
+          maxLength: 400
+        phone_extension:
+          description: Phone Extension
+          type: string
+          maxLength: 400
+        email:
+          description: Email address
+          type: string
+          format: email
+          maxLength: 255
+        notes:
+          description: Other information about the customer
+          type: string
+          maxLength: 3000
+        leaflink_last_views:
+          description: The last time this customer viewed your products.
+          type: string
+          format: date-time
+          readOnly: true
+        leaflink_source:
+          description: Was this customer added to your CRM by LeafLink?
+          type: boolean
+          readOnly: true
+        archived:
+          description: Is the customer record archived?
+          type: boolean
+        delinquent:
+          description: Is this customer delinquent on billing?
+          type: boolean
+        discount_percent:
+          description: Discount percent for orders from this customer.
+          type: string
+          format: decimal
+        owner:
+          type: integer
+          description: Id for the company that this customer record is for.
+        partner:
+          type: integer
+          description: Id for the buyer company that this customer record represents.
+          readOnly: true
+        tier:
+          type: integer
+          description: Id for the customer's tier
+        price_schedule:
+          description: Id for the price schedule assigned to the customer
+          type: integer
+        service_zone:
+          description: Customer's service zone
+          type: integer
+        license_type:
+          title: Business License Type
+          description: Customer's business license type
+          type: integer
+        payment_term:
+          description: Customer's payment terms Deprecated field, please use payment_option instead
+          type: integer
+        payment_methods:
+          description: Customer's payment methods Deprecated field, please use payment_option instead
+          type: array
+          items:
+            type: integer
+        available_payment_options:
+          title: Available payment options
+          description: Available payment options for a customer
+          type: array
+          required:
+          - payment_term_id
+          - payment_method_id
+          properties:
+            id:
+              title: Id
+              description: id for payment option
+              type: integer
+              readOnly: true
+            payment_method_id:
+              title: Payment method id for payment option
+              type: integer
+            payment_term_id:
+              title: Payment term id for payment option
+              type: integer
+            payment_program:
+              title: Payment program for payment option
+              type: string
+            payment_strategy:
+              title: Payment strategy for payment option
+              type: string
+          items: {}
+        status:
+          description: Id for the customer's status
+          type: integer
+        external_ids:
+          $ref: '#/components/schemas/ExternalIds'
+        corporate_address:
+          $ref: '#/components/schemas/Address'
+        delivery_address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      type: object
+      properties:
+        address:
+          title: Address
+          type: string
+        unit_number:
+          title: Unit Number
+          type: string
+        city:
+          title: City
+          type: string
+        county:
+          title: County
+          type: string
+        state:
+          title: State
+          description: State abbreviation
+          type: string
+        zipcode:
+          title: Zip Code
+          type: string
+    ExternalIds:
+      type: object
+      description: Set of key-value pairs for storing external system IDs.  Key value can be up to 36 characters long.
+    CustomerUpdate:
+      type: object
+      properties:
+        state:
+          title: State
+          type: string
+          description: State abbreviation
+        managers:
+          type: array
+          items:
+            type: integer
+          uniqueItems: true
+          description: Ids for the sales reps assigned to this customer.
+        next_contact_date:
+          title: Next contact date
+          type: string
+          format: date
+          description: Date for the next contact, YYYY-MM-DD
+        nickname:
+          title: Nickname
+          type: string
+          maxLength: 200
+          description: Alternate name for the customer
+        external_id:
+          title: External ID
+          description: Id of the customer in a 3rd party system
+          type: string
+          maxLength: 100
+        ext_acct_id:
+          title: Accounting Service External ID
+          description: Id of the customer in QuickBooks Online.
+          type: string
+        license_number:
+          title: License Number
+          description: License Number
+          type: string
+          maxLength: 100
+        old_license_number:
+          description: Old license number for the customer
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        license_inactive:
+          title: License Inactive
+          description: Is the license inactive for this customer?
+          type: boolean
+        business_identifier:
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          type: string
+          maxLength: 100
+        ein:
+          title: EIN Number
+          description: Company's federal EIN number. DEPRECATED for writes. For Customers linked to LeafLink Buyers (partner_id=Company.id), this field is read-only and inherited directly from the linked LeafLink Buyer Company. For Customers not linked to LeafLink Buyer Companies (partner_id=null), this field will return null.
+          type: string
+          maxLength: 100
+        directions:
+          title: Directions
+          description: Directions to the customer's location
+          type: string
+          maxLength: 3000
+        delivery_preferences:
+          title: Delivery Preferences
+          description: Customer delivery preferences. These will show up as footnotes on orders placed by the customer.
+          type: string
+        shipping_charge:
+          title: Shipping charge
+          description: Additional shipping charge
+          type: string
+          format: decimal
+        brand:
+          title: Brand Name
+          description: Brand name associated with the customer
+          type: string
+          maxLength: 400
+        name:
+          title: Name
+          description: Customer name
+          type: string
+          maxLength: 400
+        dba:
+          title: DBA
+          description: DBA of customer
+          type: string
+          maxLength: 400
+        business_license_name:
+          title: Business License Name
+          description: Business License Name
+          type: string
+          maxLength: 400
+        description:
+          title: Description
+          description: Additional information about the customer
+          type: string
+          maxLength: 4000
+        website:
+          title: Website
+          description: Customer's website
+          type: string
+          format: uri
+          maxLength: 400
+        address:
+          title: Address
+          description: Customer's address
+          type: string
+          maxLength: 400
+        unit_number:
+          title: 'Unit #'
+          description: 'Unit # for the address'
+          type: string
+        zipcode:
+          title: Zipcode
+          description: Zipcode
+          type: string
+          maxLength: 6
+        city:
+          title: City
+          description: City
+          type: string
+          maxLength: 400
+        county:
+          title: County
+          description: County
+          type: string
+          maxLength: 400
+        country:
+          title: Country
+          description: Country
+          type: string
+          maxLength: 400
+        lat:
+          title: Lat
+          description: Location latitude
+          type: string
+          format: decimal
+        long:
+          title: Long
+          description: Location longitude
+          type: string
+          format: decimal
+        phone:
+          title: Phone
+          description: Phone Number
+          type: string
+          maxLength: 400
+        phone_extension:
+          description: Phone Extension
+          type: string
+          maxLength: 400
+        email:
+          description: Email address
+          type: string
+          format: email
+          maxLength: 255
+        notes:
+          title: Notes
+          description: Other information about the customer
+          type: string
+          maxLength: 3000
+        leaflink_last_views:
+          title: Last shop time
+          description: The last time this customer viewed your products.
+          type: string
+          format: date-time
+          readOnly: true
+        archived:
+          title: Is Archived
+          description: Is the customer record archived?
+          type: boolean
+        delinquent:
+          title: Delinquent Customer
+          description: Is this customer delinquent on billing?
+          type: boolean
+        discount_percent:
+          title: Discount Percent
+          description: Discount percent for orders from this customer.
+          type: string
+          format: decimal
+        owner:
+          title: Owner
+          type: integer
+          description: Id for the company that this customer record is for.
+        tier:
+          title: Tier
+          type: integer
+          description: Id for the customer's tier
+        price_schedule:
+          description: Id for the price schedule assigned to the customer
+          type: integer
+        service_zone:
+          title: Service Zone
+          description: Customer's service zone
+          type: integer
+        license_type:
+          title: Business License Type
+          description: Customer's business license type
+          type: integer
+        available_payment_options:
+          $ref: '#/components/parameters/AvailablePaymentOptionsCustomer'
+        payment_term:
+          $ref: '#/components/parameters/PaymentTerm'
+        payment_methods:
+          $ref: '#/components/parameters/PaymentMethods'
+        status:
+          title: Customer Account Status
+          description: Id for the customer's status
+          type: integer
+        external_ids:
+          $ref: '#/components/schemas/ExternalIds'
+        corporate_address:
+          $ref: '#/components/schemas/Address'
+        delivery_address:
+          $ref: '#/components/schemas/Address'
+    CustomerCreate:
+      required:
+      - owner
+      - name
+      type: object
+      properties:
+        state:
+          title: State
+          type: string
+          description: State abbreviation
+        managers:
+          type: array
+          items:
+            type: integer
+          uniqueItems: true
+          description: Ids for the sales reps assigned to this customer.
+        next_contact_date:
+          title: Next contact date
+          type: string
+          format: date
+          description: Date for the next contact, YYYY-MM-DD
+        nickname:
+          title: Nickname
+          type: string
+          maxLength: 200
+          description: Alternate name for the customer
+        external_id:
+          title: External ID
+          description: Id of the customer in a 3rd party system
+          type: string
+          maxLength: 100
+        ext_acct_id:
+          title: Accounting Service External ID
+          description: Id of the customer in QuickBooks Online.
+          type: string
+        license_number:
+          title: License Number
+          description: License Number
+          type: string
+          maxLength: 100
+        old_license_number:
+          description: Old license number for the customer
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        license_inactive:
+          title: License Inactive
+          description: Is the license inactive for this customer?
+          type: boolean
+        business_identifier:
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          type: string
+          maxLength: 100
+        ein:
+          title: EIN Number
+          description: Company's federal EIN number. DEPRECATED for writes. For Customers linked to LeafLink Buyers (partner_id=Company.id), this field is read-only and inherited directly from the linked LeafLink Buyer Company. For Customers not linked to LeafLink Buyer Companies (partner_id=null), this field will return null.
+          type: string
+          maxLength: 100
+        directions:
+          title: Directions
+          description: Directions to the customer's location
+          type: string
+          maxLength: 3000
+        delivery_preferences:
+          title: Delivery Preferences
+          description: Customer delivery preferences. These will show up as footnotes on orders placed by the customer.
+          type: string
+        shipping_charge:
+          title: Shipping charge
+          description: Additional shipping charge
+          type: string
+          format: decimal
+        brand:
+          title: Brand Name
+          description: Brand name associated with the customer
+          type: string
+          maxLength: 400
+        name:
+          title: Name
+          description: Customer name
+          type: string
+          maxLength: 400
+        dba:
+          title: DBA
+          description: DBA of customer
+          type: string
+          maxLength: 400
+        business_license_name:
+          title: Business License Name
+          description: Business License Name
+          type: string
+          maxLength: 400
+        description:
+          title: Description
+          description: Additional information about the customer
+          type: string
+          maxLength: 4000
+        website:
+          title: Website
+          description: Customer's website
+          type: string
+          format: uri
+          maxLength: 400
+        address:
+          title: Address
+          description: Customer's address
+          type: string
+          maxLength: 400
+        unit_number:
+          title: 'Unit #'
+          description: 'Unit # for the address'
+          type: string
+        zipcode:
+          title: Zipcode
+          description: Zipcode
+          type: string
+          maxLength: 6
+        city:
+          title: City
+          description: City
+          type: string
+          maxLength: 400
+        county:
+          title: County
+          description: County
+          type: string
+          maxLength: 400
+        country:
+          title: Country
+          description: Country
+          type: string
+          maxLength: 400
+        lat:
+          title: Lat
+          description: Location latitude
+          type: string
+          format: decimal
+        long:
+          title: Long
+          description: Location longitude
+          type: string
+          format: decimal
+        phone:
+          title: Phone
+          description: Phone Number
+          type: string
+          maxLength: 400
+        phone_extension:
+          description: Phone Extension
+          type: string
+          maxLength: 400
+        email:
+          description: Email address
+          type: string
+          format: email
+          maxLength: 255
+        notes:
+          title: Notes
+          description: Other information about the customer
+          type: string
+          maxLength: 3000
+        leaflink_last_views:
+          title: Last shop time
+          description: The last time this customer viewed your products on LeafLink
+          type: string
+          format: date-time
+          readOnly: true
+        leaflink_source:
+          title: Added by LeafLink
+          description: Was this customer added to your CRM by LeafLink
+          type: boolean
+          readOnly: true
+        archived:
+          title: Is Archived
+          description: Is the customer record archived?
+          type: boolean
+        delinquent:
+          title: Delinquent Customer
+          description: Is this customer delinquent on billing?
+          type: boolean
+        discount_percent:
+          title: Discount Percent
+          description: Discount percent for orders from this customer.
+          type: string
+          format: decimal
+        owner:
+          title: Owner
+          type: integer
+          description: Id for the company that this customer record is for.
+        tier:
+          title: Tier
+          type: integer
+          description: Id for the customer's tier
+        price_schedule:
+          description: Id for the price schedule assigned to the customer
+          type: integer
+        service_zone:
+          title: Service Zone
+          description: Customer's service zone
+          type: integer
+        license_type:
+          title: Business License Type
+          description: Customer's business license type
+          type: integer
+        payment_term:
+          $ref: '#/components/parameters/PaymentTerm'
+        payment_methods:
+          $ref: '#/components/parameters/PaymentMethods'
+        available_payment_options:
+          $ref: '#/components/parameters/AvailablePaymentOptionsCustomer'
+        status:
+          title: Customer Account Status
+          description: Id for the customer's status
+          type: integer
+        external_ids:
+          $ref: '#/components/schemas/ExternalIds'
+        corporate_address:
+          $ref: '#/components/schemas/Address'
+        delivery_address:
+          $ref: '#/components/schemas/Address'
+  parameters:
+    AvailablePaymentOptionsCustomer:
+      name: available_payment_options
+      title: Customer Payment Option
+      required:
+      - payment_term_id
+      - payment_method_id
+      description: Payment option available for customer
+      schema:
+        type: array
+        items:
+          properties:
+            id:
+              title: Id test for Customer
+              description: id for payment option
+              type: integer
+              readOnly: true
+            is_default:
+              title: Is that payment option a deafult one
+              type: bool
+              default: false
+            payment_method:
+              $ref: '#/components/parameters/PaymentMethod'
+            payment_method_id:
+              title: Payment method id for payment option
+              type: integer
+            payment_program:
+              title: Payment program for payment option
+              type: object
+            payment_strategy:
+              title: Payment strategy for payment option
+              type: object
+            payment_term:
+              $ref: '#/components/parameters/PaymentTerm'
+            payment_term_id:
+              title: Payment term id for payment option
+              type: integer
+    PaymentTermFilter:
+      name: payment_term
+      in: query
+      description: Filter by the customer's payment term
+      required: false
+      schema:
+        type: integer
+    PaymentTerm:
+      name: payment_term
+      title: Payment Term
+      description: 'Deprecated field, please use payment_option instead<br>
+
+        Customer''s payment terms<br>
+
+        Enum: <code>"llf"</code> <code>"cod"</code> <code>"net3"</code> <code>"net7"</code>
+
+        <code>"net10"</code> <code>"net14"</code> <code>"net15"</code> <code>"net20"</code>
+
+        <code>"net30"</code> <code>"net60"</code> <code>"net90"</code> <code>"prepay"</code> <code>"consign"</code><br>
+
+        Deprecated values (will be mapped appropriately):<br>
+
+        (1, "Cash") replaced with "cod"<br>
+
+        (2, "Net 7") replaced with "net7"<br>
+
+        (3, "Net 15") replaced with "net15",<br>
+
+        (4, "Net 30") replaced with "net30"<br>
+
+        (5, "Net 10") replaced with "net10"<br>
+
+        (6, "Net 20") replaced with "net20<br>
+
+        (7, "Net 60") replaced with "net60"<br>
+
+        (8, "Net 3") replaced with "net3"<br>
+
+        (9, "Net 14") replaced with "net14"<br>
+
+        (10, "Pre-Payment") replaced with "prepay"<br>
+
+        (11, "LeafLink Financial - Net 30") replaced with "llf" with payment_methods ["ach"]<br>
+
+        (12, "Consignment") replaced with "consign"<br>
+
+        (13, "LeafLink Financial - Net 15") replaced with "llf" with payment_methods ["ach"]<br>
+
+        (14, "Net 90") replaced with "net90"<br>
+
+        (15, "Wire on Delivery") replaced with "cod" with payment_methods ["wire"]<br>
+
+        (20, "COD") replaced with "cod"<br>
+
+        (21, "LeafLink Financial") replaced with "llf" with payment_methods ["ach"]<br>'
+      schema:
+        type: string
+    PaymentMethod:
+      name: payment_method
+      tile: Payment Method
+      Description: Payment method chosen for payment option
+      schema:
+        type: string
+    PaymentMethodFilter:
+      name: payment_method
+      in: query
+      description: Filter by the customer's payment method
+      required: false
+      schema:
+        type: integer
+    PaymentMethods:
+      name: payment_methods
+      title: Payment Methods
+      description: 'Deprecated field, please use payment_option instead<br>
+
+        Customer''s payment method<br>
+
+        Enum: <code>"cash"</code> <code>"check"</code> <code>"wire"</code> <code>"ach"</code>'
+      schema:
+        type: array
+        items:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- leaflink-api-openapi-original.yml
+- leaflink-marketplace-v2-openapi-original.yml

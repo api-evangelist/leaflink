@@ -1,0 +1,608 @@
+openapi: 3.2.0
+info:
+  title: Leaflink Facilities API
+  contact:
+    email: support@leaflink.com
+  version: '1.0'
+  description: 'Operations tagged facilities across 2 of this provider''s published API definitions: leaflink-api-openapi-original.yml, leaflink-marketplace-v2-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+- url: https://app.leaflink.com/api/v2
+tags:
+- name: facilities
+paths:
+  /facilities:
+    get:
+      operationId: facilities_list
+      description: List facilities for a company.
+      summary: List Facilities
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - facilities
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFacilityList'
+          description: A list of facilities.
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: facilities_create
+      description: Create a new facility.
+      summary: Create a Facility
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - facilities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacilityCreateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+          description: The facility created.
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /facilities/{id}:
+    get:
+      operationId: facilities_retrieve
+      description: Retrieve a facility by ID.
+      summary: Get a Facility
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: path
+        name: pk
+        schema:
+          type: integer
+        description: ID of the facility.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - facilities
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+          description: The facility.
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: facilities_partial_update
+      description: Patch fields on an existing facility.
+      summary: Patch a Facility
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: path
+        name: pk
+        schema:
+          type: integer
+        description: ID of the facility.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - facilities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFacilityPatchRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+          description: The updated facility.
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: facilities_destroy
+      description: Archive an existing facility.
+      summary: Archive a Facility
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: path
+        name: pk
+        schema:
+          type: integer
+        description: ID of the facility.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - facilities
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /inventory/facilities/:
+    get:
+      operationId: facilities_list
+      summary: List
+      description: 'List all facilities.
+
+
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
+
+        '
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Facility_2'
+      tags:
+      - facilities
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+  /inventory/facilities/{id}/:
+    get:
+      operationId: facilities_read
+      summary: Read
+      description: 'Get facility by ID.
+
+
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
+
+        '
+      parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this facility.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility_2'
+      tags:
+      - facilities
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+components:
+  schemas:
+    AddressInputRequest:
+      type: object
+      description: Nested serializer for the address payload required on facility creation.
+      properties:
+        address:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+        state:
+          type: string
+          minLength: 1
+          description: State abbreviation e.g. 'CA'
+        zipcode:
+          type: string
+          minLength: 1
+          maxLength: 7
+        unit_number:
+          type: string
+          default: ''
+        county:
+          type: string
+          default: ''
+        lat:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+        long:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+      required:
+      - address
+      - city
+      - state
+      - zipcode
+    Facility:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Name of the facility
+      required:
+      - id
+      - name
+    FacilityCreateRequest:
+      type: object
+      description: Serializer for creating a facility.
+      properties:
+        company_id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          default: ''
+        address:
+          allOf:
+          - $ref: '#/components/schemas/AddressInputRequest'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type: boolean
+          default: false
+      required:
+      - company_id
+      - name
+    PaginatedFacilityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+    PatchedFacilityPatchRequest:
+      type: object
+      description: Serializer for patching a facility.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+        address_id:
+          type:
+          - integer
+          - 'null'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type:
+          - boolean
+          - 'null'
+    Facility_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique id generated by LeafLink.
+        name:
+          type: string
+          description: Name of the facility.
+        description:
+          type: string
+          description: Description of the facility.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- leaflink-api-openapi-original.yml
+- leaflink-marketplace-v2-openapi-original.yml

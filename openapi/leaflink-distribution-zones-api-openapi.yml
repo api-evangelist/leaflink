@@ -1,0 +1,541 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Distribution Zones API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: distribution-zones
+paths:
+  /distribution-zones:
+    get:
+      operationId: distribution_zones_list
+      description: List all Distribution Zones for a seller.
+      summary: Distribution Zones defined by the seller
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - distribution-zones
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDistributionZoneList'
+          description: A list of Distribution Zones
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: distribution_zones_create
+      description: Create a new Distribution Zone.
+      summary: Create a Distribution Zone
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - distribution-zones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributionZoneCreateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionZone'
+          description: The Distribution Zone created
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /distribution-zones/{id}:
+    get:
+      operationId: distribution_zones_retrieve
+      description: Retrieve a single Distribution Zone by ID.
+      summary: Get a Distribution Zone
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: path
+        name: pk
+        schema:
+          type: integer
+        description: ID of the Distribution Zone.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - distribution-zones
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionZone'
+          description: The Distribution Zone
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: distribution_zones_partial_update
+      description: Update an existing Distribution Zone.
+      summary: Update a Distribution Zone
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: path
+        name: pk
+        schema:
+          type: integer
+        description: ID of the Distribution Zone.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - distribution-zones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDistributionZoneUpdateRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionZone'
+          description: The Distribution Zone updated
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: distribution_zones_destroy
+      description: Delete an existing Distribution Zone.
+      summary: Delete a Distribution Zone
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: path
+        name: pk
+        schema:
+          type: integer
+        description: ID of the Distribution Zone.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - distribution-zones
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    DistributionZone:
+      type: object
+      description: 'Serializer for a Distribution Zone.
+
+        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
+      properties:
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+        facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+        zip_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZipCode'
+      required:
+      - facilities
+      - id
+      - is_active
+      - name
+    DistributionZoneCreateRequest:
+      type: object
+      description: 'Serializer to create a Distribution Zone.
+
+        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
+      properties:
+        owner_id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+          minLength: 1
+        facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacilityRequest'
+        zip_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZipCodeRequest'
+      required:
+      - facilities
+      - is_active
+      - name
+      - owner_id
+      - zip_codes
+    ZipCodeRequest:
+      type: object
+      description: Serializer for a zip code with optional polygon in a distribution zone.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          minLength: 1
+          description: ZIP code value (e.g. '80939')
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
+    PaginatedDistributionZoneList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DistributionZone'
+    ZipCode:
+      type: object
+      description: Serializer for a zip code with optional polygon in a distribution zone.
+      properties:
+        name:
+          type: string
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          description: ZIP code value (e.g. '80939')
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
+    FacilityRequest:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          description: Name of the facility
+      required:
+      - id
+      - name
+    Facility:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Name of the facility
+      required:
+      - id
+      - name
+    PatchedDistributionZoneUpdateRequest:
+      type: object
+      description: 'Serializer to update a Distribution Zone.
+
+        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
+      properties:
+        id:
+          type: integer
+        owner_id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+          minLength: 1
+        facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacilityRequest'
+        zip_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZipCodeRequest'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

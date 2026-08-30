@@ -1,0 +1,650 @@
+openapi: 3.2.0
+info:
+  title: Leaflink Customer Statuses API
+  contact:
+    email: support@leaflink.com
+  version: '1.0'
+  description: 'Operations tagged customer_statuses across 2 of this provider''s published API definitions: leaflink-api-openapi-original.yml, leaflink-marketplace-v2-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+- url: https://app.leaflink.com/api/v2
+tags:
+- name: customer_statuses
+paths:
+  /customer_statuses:
+    post:
+      operationId: customer_statuses_create
+      description: LeafLink API for Marketplace company customer status.
+      tags:
+      - customer_statuses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedCompanyCustomerStatusRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCompanyCustomerStatus'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customer_statuses/{id}:
+    put:
+      operationId: customer_statuses_update
+      description: LeafLink API for Marketplace company customer status.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer status.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customer_statuses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedCompanyCustomerStatusRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCompanyCustomerStatus'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: customer_statuses_partial_update
+      description: LeafLink API for Marketplace company customer status.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer status.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customer_statuses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedCompanyCustomerStatusRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCompanyCustomerStatus'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: customer_statuses_destroy
+      description: LeafLink API for Marketplace company customer status.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this company customer status.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - customer_statuses
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /customer-statuses/:
+    parameters: []
+    get:
+      operationId: customer-statuses_list
+      summary: List
+      description: List all `CompanyCustomerStatus` objects available for use.
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      - name: fields_include
+        in: query
+        description: Include only specific fields in the response, separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: fields_exclude
+        in: query
+        description: Exclude specific fields in the response, separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: fields_add
+        in: query
+        description: Include additional fields in the response. Available values include `created_by` and `last_changed_by`
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by id
+        required: false
+        schema:
+          type: integer
+      - name: state
+        in: query
+        description: Filter by state (case-insensitive contains match)
+        required: false
+        schema:
+          type: string
+      - name: order
+        in: query
+        description: Filter by order
+        required: false
+        schema:
+          type: integer
+      - name: description
+        in: query
+        description: Filter by description
+        required: false
+        schema:
+          type: string
+      - name: owner
+        in: query
+        description: Filter by owner ID
+        required: false
+        schema:
+          type: integer
+      - name: is_stock
+        in: query
+        description: Filter by is_stock
+        required: false
+        schema:
+          type: boolean
+      - name: hex_color
+        in: query
+        description: Filter by hex_color
+        required: false
+        schema:
+          type: string
+      - name: company_slug
+        in: query
+        description: Filter by Company slug
+        required: false
+        schema:
+          type: string
+      - name: search
+        in: query
+        description: Search by state or description
+        required: false
+        schema:
+          type: string
+      - name: ordering
+        in: query
+        description: Order results by field (prefix with '-' for descending)
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanyCustomerStatus'
+      tags:
+      - customer_statuses
+      security:
+      - Token: []
+    post:
+      operationId: customer-statuses_create
+      summary: Create
+      description: Create a new customer status.
+      requestBody:
+        $ref: '#/components/requestBodies/CompanyCustomerStatus'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyCustomerStatus'
+      tags:
+      - customer_statuses
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+  /customer-statuses/{id}/:
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this company customer status.
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: customer-statuses__read
+      summary: Read
+      description: Retrieve a `CompanyCustomerStatus` by ID.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyCustomerStatus'
+      tags:
+      - customer_statuses
+      security:
+      - Token: []
+    patch:
+      operationId: customer-statuses_partial_update
+      summary: Update
+      description: Update an existing customer status by ID.
+      requestBody:
+        $ref: '#/components/requestBodies/CompanyCustomerStatus'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyCustomerStatus'
+      tags:
+      - customer_statuses
+      security:
+      - Token: []
+    delete:
+      operationId: customer-statuses_delete
+      summary: Delete
+      description: Delete a customer status by ID.
+      responses:
+        '204':
+          description: ''
+      tags:
+      - customer_statuses
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+components:
+  schemas:
+    PatchedUnifiedCompanyCustomerStatusRequest:
+      type: object
+      description: Unified serializer for the CompanyCustomerStatus model.
+      properties:
+        state:
+          type: string
+          minLength: 1
+          title: Customer Status
+          description: Customer Status State
+          maxLength: 40
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          title: Sort Order
+          description: Sort order, lower is first.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of status
+          maxLength: 1500
+        owner:
+          type:
+          - integer
+          - 'null'
+          title: Company
+          description: The Company that created the custom status.
+        is_stock:
+          type: boolean
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+        hex_color:
+          type:
+          - string
+          - 'null'
+          description: Hex color for customer status
+          pattern: ^#[0-9a-fA-F]{6}$
+          maxLength: 40
+    UnifiedCompanyCustomerStatusRequest:
+      type: object
+      description: Unified serializer for the CompanyCustomerStatus model.
+      properties:
+        state:
+          type: string
+          minLength: 1
+          title: Customer Status
+          description: Customer Status State
+          maxLength: 40
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          title: Sort Order
+          description: Sort order, lower is first.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of status
+          maxLength: 1500
+        owner:
+          type:
+          - integer
+          - 'null'
+          title: Company
+          description: The Company that created the custom status.
+        is_stock:
+          type: boolean
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+        hex_color:
+          type:
+          - string
+          - 'null'
+          description: Hex color for customer status
+          pattern: ^#[0-9a-fA-F]{6}$
+          maxLength: 40
+      required:
+      - state
+    UnifiedCompanyCustomerStatus:
+      type: object
+      description: Unified serializer for the CompanyCustomerStatus model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        state:
+          type: string
+          title: Customer Status
+          description: Customer Status State
+          maxLength: 40
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          title: Sort Order
+          description: Sort order, lower is first.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of status
+          maxLength: 1500
+        owner:
+          type:
+          - integer
+          - 'null'
+          title: Company
+          description: The Company that created the custom status.
+        is_stock:
+          type: boolean
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+        hex_color:
+          type:
+          - string
+          - 'null'
+          description: Hex color for customer status
+          pattern: ^#[0-9a-fA-F]{6}$
+          maxLength: 40
+      required:
+      - id
+      - state
+    CompanyCustomerStatus:
+      required:
+      - state
+      - owner
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        state:
+          title: Customer Status
+          description: Customer Status State
+          type: string
+          maxLength: 40
+          minLength: 1
+        order:
+          title: Sort Order
+          description: Sort order, lower is first.
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+        description:
+          title: Description
+          description: Description of status
+          type:
+          - string
+          - 'null'
+          maxLength: 1500
+        owner:
+          title: Company
+          description: The Company that created the custom status.
+          type: integer
+        is_stock:
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+          type: boolean
+        hex_color:
+          title: Hex Color
+          description: Hex color for customer status
+          type:
+          - string
+          - 'null'
+          maxLength: 40
+  requestBodies:
+    CompanyCustomerStatus:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CompanyCustomerStatus'
+      required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- leaflink-api-openapi-original.yml
+- leaflink-marketplace-v2-openapi-original.yml

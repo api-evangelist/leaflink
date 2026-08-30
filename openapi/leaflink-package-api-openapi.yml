@@ -1,0 +1,333 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Package API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: package
+paths:
+  /packages:
+    get:
+      operationId: packages_list
+      description: Lists Traceability packages (requires source_production_batch_numbers); lab PDFs are client-side.
+      summary: List Packages
+      parameters:
+      - in: query
+        name: assigned
+        schema:
+          type: boolean
+        description: 'Filter by assignment: true=assigned only, false=unassigned only; omit=all.'
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: source_production_batch_numbers
+        schema:
+          type: string
+        description: METRC production batch number(s), comma-separated.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - package
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedPackageList'
+          description: A list of packages
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+        '500':
+          description: 'Traceability package list failed (non-success HTTP or error payload). Body: {"detail": string}.'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+    post:
+      operationId: packages_create
+      description: Bulk assign packages to products via traceability service.
+      summary: Assign Packages to Products
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - package
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackageAssignRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageAssignResponse'
+          description: Assigned packages (same format as list)
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: 'Assignment payload invalid (serializer), or traceability bulk update failed. Body: {"detail": string}.'
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    PaginatedUnifiedPackageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedPackage'
+    PackageAssignmentInputRequest:
+      type: object
+      description: Serializer for a single package-to-product assignment.
+      properties:
+        package_id:
+          type: integer
+        product_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - package_id
+      - product_id
+    UnifiedPackage:
+      type: object
+      description: Serializer for TraceabilityPackage - read/response only.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        label:
+          type: string
+          maxLength: 64
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        unit_of_measure:
+          type: string
+          maxLength: 32
+        assigned_product_id:
+          type:
+          - integer
+          - 'null'
+        assigned_product_name:
+          type:
+          - string
+          - 'null'
+        strain_names:
+          type:
+          - string
+          - 'null'
+        facility:
+          type:
+          - string
+          - 'null'
+        package_status:
+          type:
+          - string
+          - 'null'
+        item_name:
+          type: string
+        item_category:
+          type: string
+      required:
+      - id
+      - label
+      - quantity
+      - unit_of_measure
+    PackageAssignResponse:
+      type: object
+      description: Response serializer for assign packages - returns assigned packages.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedPackage'
+          readOnly: true
+        count:
+          type: integer
+          readOnly: true
+      required:
+      - count
+      - results
+    PackageAssignRequest:
+      type: object
+      description: Serializer for bulk assigning packages to products.
+      properties:
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageAssignmentInputRequest'
+      required:
+      - assignments
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

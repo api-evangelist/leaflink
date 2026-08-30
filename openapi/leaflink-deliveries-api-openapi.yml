@@ -1,0 +1,938 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Deliveries API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: deliveries
+paths:
+  /deliveries:
+    get:
+      operationId: deliveries_list
+      description: Unified API product categories.
+      parameters:
+      - in: query
+        name: buyer
+        schema:
+          type: string
+      - in: query
+        name: delivery_date
+        schema:
+          type: string
+          format: date
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: order_invoice_number
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: pickup_date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: requested_date
+        schema:
+          type: string
+          format: date
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sort_by
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -created_on
+            - -display_delivery_date
+            - -requested_pickup_date
+            - created_on
+            - display_delivery_date
+            - requested_pickup_date
+        description: Ordering
+        explode: false
+        style: form
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            title: Status of L3Order
+            enum:
+            - assigned
+            - created
+            - delivered
+            - planned
+            - shipped
+            - uploaded
+        explode: true
+        style: form
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - deliveries
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedL3OrderList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: deliveries_create
+      description: Unified API product categories.
+      tags:
+      - deliveries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedL3OrderRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedL3Order'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    InternalVehicle:
+      type: object
+      description: Internal serializer for Vehicle Model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        make:
+          type:
+          - string
+          - 'null'
+          title: Vehicle Make
+          description: Vehicle Make
+          maxLength: 255
+        model_year:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Model Year
+        model_name:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Model Name
+          maxLength: 255
+        license_number:
+          type:
+          - string
+          - 'null'
+          description: License Number of Vehicle
+          maxLength: 15
+        capacity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Capacity
+        has_air_conditioner:
+          type: boolean
+          description: Vehicle Has Air Conditioner
+      required:
+      - id
+    PaymentTermRequest:
+      type: object
+      description: Serialize payment term.
+      properties:
+        term:
+          type: string
+          minLength: 1
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
+        description:
+          type: string
+          minLength: 1
+          title: Payment Term description
+          description: Description of the Payment Term
+          maxLength: 400
+        days:
+          type: integer
+      required:
+      - days
+      - description
+      - term
+    Address:
+      type: object
+      description: 'Serializer for Address models via the internal API.
+
+        This includes but is not limited to delivery and corporate addresses for Companies.'
+      properties:
+        address:
+          type: string
+          description: Address
+          maxLength: 400
+        unit_number:
+          type: string
+          title: 'Unit #'
+          description: 'Unit #'
+          maxLength: 400
+        city:
+          type: string
+          description: City
+          maxLength: 400
+        county:
+          type: string
+          description: County
+          maxLength: 400
+        state:
+          type: string
+        zipcode:
+          type: string
+          description: Zipcode
+          maxLength: 7
+      required:
+      - address
+      - city
+      - state
+      - zipcode
+    Driver:
+      type: object
+      description: serializer for Driver Model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          title: First Name of Driver
+          description: First Name
+          maxLength: 100
+        last_name:
+          type: string
+          description: Last Name of Driver
+          maxLength: 100
+        metrc_employee_id:
+          type: string
+          description: METRC Employee ID for Driver
+          maxLength: 100
+        license_number:
+          type: string
+          description: License Number of Driver
+          maxLength: 15
+        phone:
+          type: string
+          description: Phone Number of Driver
+          maxLength: 15
+        is_active:
+          type: boolean
+          title: Active
+          description: Is an active driver?
+        transport_company_id:
+          type: integer
+          description: Transport company driver is associated to.
+          readOnly: true
+      required:
+      - first_name
+      - id
+      - last_name
+      - license_number
+      - metrc_employee_id
+      - phone
+      - transport_company_id
+    UnifiedL3OrderRequest:
+      type: object
+      description: Internal serializer for L3Order Model.
+      properties:
+        payment_expected:
+          type: object
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          required:
+          - amount
+          - currency
+          description: Money object with amount and currency
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedL3OrderStatusEnum'
+          title: Status of L3Order
+        requested_pickup_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Requested pick up date
+          description: Requested pick up date
+        expected_pickup_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          title: Expected pick up datetime
+          description: Expected pick up date and time
+        actual_pickup_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          title: Actual pick up datetime
+          description: Actual date time the order was picked up
+        requested_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Requested delivery date for the order
+        expected_delivery_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Expected delivery date and time for the order
+        actual_delivery_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Actual delivery date and time for the order
+        pickup_driver:
+          $ref: '#/components/schemas/DriverRequest'
+        pickup_vehicle:
+          $ref: '#/components/schemas/InternalVehicleRequest'
+        delivery_driver:
+          $ref: '#/components/schemas/DriverRequest'
+        delivery_vehicle:
+          $ref: '#/components/schemas/InternalVehicleRequest'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodRequest'
+        payment_term:
+          $ref: '#/components/schemas/PaymentTermRequest'
+        customer_notes:
+          type:
+          - string
+          - 'null'
+          description: Customer notes for the L3 Order
+        notes:
+          type:
+          - string
+          - 'null'
+          title: Additional Notes
+          description: Additional notes for the L3 Order
+        eligible_payment_methods:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 100
+          title: Eligible payment methods for this order
+          description: A selection of eligible payment methods for this order
+        payment_method_collected:
+          type: string
+          title: Collected Payment Method
+          description: Payment method used for this order
+          maxLength: 100
+        collected_payment_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Payment collected at delivery
+        delivery_driver_comment:
+          type: string
+          description: Comment from delivery driver for this order
+          maxLength: 500
+        brand:
+          $ref: '#/components/schemas/InternalLogisticsCompanyRequest'
+      required:
+      - brand
+      - delivery_driver
+      - delivery_vehicle
+      - payment_expected
+      - payment_method
+      - payment_term
+      - pickup_driver
+      - pickup_vehicle
+    InternalVehicleRequest:
+      type: object
+      description: Internal serializer for Vehicle Model.
+      properties:
+        make:
+          type:
+          - string
+          - 'null'
+          title: Vehicle Make
+          description: Vehicle Make
+          maxLength: 255
+        model_year:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Model Year
+        model_name:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Model Name
+          maxLength: 255
+        license_number:
+          type:
+          - string
+          - 'null'
+          description: License Number of Vehicle
+          maxLength: 15
+        capacity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Capacity
+        has_air_conditioner:
+          type: boolean
+          description: Vehicle Has Air Conditioner
+    UnifiedL3Order:
+      type: object
+      description: Internal serializer for L3Order Model.
+      properties:
+        number:
+          type: string
+          readOnly: true
+        invoice_number:
+          type: string
+          readOnly: true
+        mp_order_number:
+          type: string
+          readOnly: true
+        transport_order_id:
+          type: string
+          readOnly: true
+        payment_expected:
+          type: object
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          required:
+          - amount
+          - currency
+          description: Money object with amount and currency
+        customer:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        pickup_address:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        destination:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedL3OrderStatusEnum'
+          title: Status of L3Order
+        requested_pickup_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Requested pick up date
+          description: Requested pick up date
+        expected_pickup_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          title: Expected pick up datetime
+          description: Expected pick up date and time
+        actual_pickup_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          title: Actual pick up datetime
+          description: Actual date time the order was picked up
+        requested_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Requested delivery date for the order
+        expected_delivery_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Expected delivery date and time for the order
+        actual_delivery_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Actual delivery date and time for the order
+        display_delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        pickup_driver:
+          $ref: '#/components/schemas/Driver'
+        additional_pickup_drivers:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        pickup_vehicle:
+          $ref: '#/components/schemas/InternalVehicle'
+        delivery_driver:
+          $ref: '#/components/schemas/Driver'
+        delivery_vehicle:
+          $ref: '#/components/schemas/InternalVehicle'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        payment_term:
+          $ref: '#/components/schemas/PaymentTerm'
+        customer_notes:
+          type:
+          - string
+          - 'null'
+          description: Customer notes for the L3 Order
+        notes:
+          type:
+          - string
+          - 'null'
+          title: Additional Notes
+          description: Additional notes for the L3 Order
+        eligible_payment_methods:
+          type: array
+          items:
+            type: string
+            maxLength: 100
+          title: Eligible payment methods for this order
+          description: A selection of eligible payment methods for this order
+        payment_method_collected:
+          type: string
+          title: Collected Payment Method
+          description: Payment method used for this order
+          maxLength: 100
+        collected_payment_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Payment collected at delivery
+        delivery_driver_comment:
+          type: string
+          description: Comment from delivery driver for this order
+          maxLength: 500
+        metrc_transfer:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        transport_company:
+          $ref: '#/components/schemas/TransportCompany'
+        brand:
+          $ref: '#/components/schemas/InternalLogisticsCompany'
+      required:
+      - additional_pickup_drivers
+      - brand
+      - created_on
+      - customer
+      - delivery_driver
+      - delivery_vehicle
+      - destination
+      - display_delivery_date
+      - invoice_number
+      - metrc_transfer
+      - mp_order_number
+      - number
+      - payment_expected
+      - payment_method
+      - payment_term
+      - pickup_address
+      - pickup_driver
+      - pickup_vehicle
+      - transport_company
+      - transport_order_id
+    TransportCompany:
+      type: object
+      description: Serializer for TransportCompany model
+      properties:
+        transport_company_id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        medical_license_number:
+          type: string
+          readOnly: true
+        adult_use_license_number:
+          type: string
+          readOnly: true
+        state:
+          type: string
+          readOnly: true
+      required:
+      - adult_use_license_number
+      - medical_license_number
+      - name
+      - state
+      - transport_company_id
+    PaymentTerm:
+      type: object
+      description: Serialize payment term.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        term:
+          type: string
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
+        description:
+          type: string
+          title: Payment Term description
+          description: Description of the Payment Term
+          maxLength: 400
+        days:
+          type: integer
+      required:
+      - created_on
+      - days
+      - description
+      - id
+      - modified
+      - term
+    PaginatedUnifiedL3OrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedL3Order'
+    PaymentMethodRequest:
+      type: object
+      description: Serialize payment method.
+      properties:
+        method:
+          type: string
+          minLength: 1
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
+        description:
+          type: string
+          minLength: 1
+          title: Payment Method Description
+          description: Description of the Payment Method
+          maxLength: 400
+      required:
+      - description
+      - method
+    UnifiedL3OrderStatusEnum:
+      enum:
+      - uploaded
+      - created
+      - assigned
+      - planned
+      - shipped
+      - delivered
+      - deleted
+      type: string
+    DriverRequest:
+      type: object
+      description: serializer for Driver Model.
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          title: First Name of Driver
+          description: First Name
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          description: Last Name of Driver
+          maxLength: 100
+        metrc_employee_id:
+          type: string
+          minLength: 1
+          description: METRC Employee ID for Driver
+          maxLength: 100
+        license_number:
+          type: string
+          minLength: 1
+          description: License Number of Driver
+          maxLength: 15
+        phone:
+          type: string
+          minLength: 1
+          description: Phone Number of Driver
+          maxLength: 15
+        is_active:
+          type: boolean
+          title: Active
+          description: Is an active driver?
+      required:
+      - first_name
+      - last_name
+      - license_number
+      - metrc_employee_id
+      - phone
+    ComplianceLicense:
+      type: object
+      description: Serializer for License models via the v2 API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+          description: Type
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    InternalLogisticsCompanyRequest:
+      type: object
+      description: Internal serializer for the Company model to be used by L3 endpoints.
+      properties:
+        display_name:
+          type: string
+          minLength: 1
+      required:
+      - display_name
+    InternalLogisticsCompany:
+      type: object
+      description: Internal serializer for the Company model to be used by L3 endpoints.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComplianceLicense'
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+        corporate_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+      required:
+      - corporate_address
+      - delivery_address
+      - display_name
+      - id
+      - licenses
+    PaymentMethod:
+      type: object
+      description: Serialize payment method.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        method:
+          type: string
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
+        description:
+          type: string
+          title: Payment Method Description
+          description: Description of the Payment Method
+          maxLength: 400
+      required:
+      - created_on
+      - description
+      - id
+      - method
+      - modified
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

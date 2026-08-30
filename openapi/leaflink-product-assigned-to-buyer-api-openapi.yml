@@ -1,0 +1,325 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product Assigned To Buyer API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: product-assigned-to-buyer
+paths:
+  /product-assigned-to-buyer:
+    get:
+      operationId: product_assigned_to_buyer_list
+      description: List all product assignments for a seller (optionally filtered by product_ids).
+      summary: List Product Assignments by Seller
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: product_ids
+        schema:
+          type: string
+        description: Comma-separated list of product IDs to filter by
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - product-assigned-to-buyer
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductAssignmentWithItemsList'
+          description: A list of product assignments
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    put:
+      operationId: product_assigned_to_buyer_update
+      description: "Update product assignments for multiple products.\n    Creates, updates, or deletes buyer and group assignments.\n    "
+      summary: Update Product Assignments
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - product-assigned-to-buyer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductAssignmentUpdateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Product assignments updated successfully
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedProductAssignmentBuyerItem:
+      type: object
+      description: Serializer for Product Assignment Buyer Item
+      properties:
+        buyer_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+    UnifiedProductAssignmentGroupItem:
+      type: object
+      description: Serializer for Product Assignment Group Item
+      properties:
+        customer_group_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+    UnifiedProductAssignmentUpdateRequest:
+      type: object
+      description: Serializer for updating product assignments (PUT request)
+      properties:
+        product_ids:
+          type: array
+          items:
+            type: integer
+          description: List of product IDs to update
+        assigned_buyers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItemInputRequest'
+        assigned_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItemInputRequest'
+        is_exclusive:
+          type: boolean
+          default: false
+      required:
+      - product_ids
+    UnifiedProductAssignmentBuyerItemInputRequest:
+      type: object
+      description: Serializer for Product Assignment Buyer Item input (PUT request)
+      properties:
+        buyer_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      required:
+      - buyer_id
+    PaginatedUnifiedProductAssignmentWithItemsList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentWithItems'
+    UnifiedProductAssignmentWithItems:
+      type: object
+      description: Serializer for Product Assignment with buyer and group items
+      properties:
+        seller_id:
+          type: integer
+        product_id:
+          type: integer
+        is_exclusive:
+          type: boolean
+        assigned_buyers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItem'
+        assigned_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItem'
+      required:
+      - assigned_buyers
+      - assigned_groups
+      - is_exclusive
+      - product_id
+      - seller_id
+    UnifiedProductAssignmentGroupItemInputRequest:
+      type: object
+      description: Serializer for Product Assignment Group Item input (PUT request)
+      properties:
+        customer_group_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      required:
+      - customer_group_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

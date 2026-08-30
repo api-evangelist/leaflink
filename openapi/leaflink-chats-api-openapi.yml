@@ -1,0 +1,720 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Chats API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: chats
+paths:
+  /chats:
+    get:
+      operationId: chats_list
+      description: List all discussions
+      parameters:
+      - in: query
+        name: from_date
+        schema:
+          type: string
+        description: Filter discussions from this date (YYYY-MM-DD)
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term for filtering messages content
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by discussion status ('in_progress' or 'completed')
+      - in: query
+        name: to_date
+        schema:
+          type: string
+        description: Filter discussions until this date (YYYY-MM-DD)
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - chats
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedChatsList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: chats_create
+      description: Create a new discussion with the first message.
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedChatsRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedChats'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /chats/{id}:
+    get:
+      operationId: chats_retrieve
+      description: LeafLink API for Marketplace discussions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - chats
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedChats'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    put:
+      operationId: chats_update
+      description: LeafLink API for Marketplace discussions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedChatsRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedChats'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    patch:
+      operationId: chats_partial_update
+      description: LeafLink API for Marketplace discussions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedChatsRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedChats'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: chats_destroy
+      description: LeafLink API for Marketplace discussions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - chats
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /chats/{id}/messages/{message_id}/read:
+    patch:
+      operationId: chats_messages_read_partial_update
+      description: Mark a specific message as read
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat.
+        required: true
+      - in: path
+        name: message_id
+        schema:
+          type: integer
+        description: A unique integer value identifying this message.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMessageReadRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedChats'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /chats/bulk_update:
+    patch:
+      operationId: chats_bulk_update_partial_update
+      description: 'Takes a list of chat IDs and updates their status to the given status. Status must be one of: in_progress, completed'
+      summary: Bulk update chat status
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBulkChatUpdateRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    Author:
+      type: object
+      description: Author serializer
+      properties:
+        id:
+          type: integer
+        company:
+          allOf:
+          - $ref: '#/components/schemas/DiscussionCompany'
+          readOnly: true
+        user:
+          type: integer
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+      required:
+      - company
+      - email
+      - id
+      - name
+      - user
+    Message:
+      type: object
+      description: Discussion Message serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        message:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        read_by_sender:
+          type: string
+          format: date-time
+          readOnly: true
+        read_by_recipient:
+          type: string
+          format: date-time
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/Author'
+          readOnly: true
+      required:
+      - author
+      - created_on
+      - id
+      - message
+      - read_by_recipient
+      - read_by_sender
+    PatchedBulkChatUpdateRequest:
+      type: object
+      description: Chat status serializer
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ChatStatusEnum'
+          writeOnly: true
+        chats:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+    UnifiedChatsRequest:
+      type: object
+      description: Unified Chats serializer
+      properties:
+        topic:
+          type: string
+          minLength: 1
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        first_message:
+          allOf:
+          - $ref: '#/components/schemas/MessageRequest'
+          writeOnly: true
+        product_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+      required:
+      - first_message
+      - recipient_company
+      - sender_company
+      - topic
+    PatchedMessageReadRequest:
+      type: object
+      description: Discussion Message read serializer
+      properties:
+        read_by_sender_company:
+          type: boolean
+        read_by_recipient_company:
+          type: boolean
+    PatchedUnifiedChatsRequest:
+      type: object
+      description: Unified Chats serializer
+      properties:
+        topic:
+          type: string
+          minLength: 1
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        first_message:
+          allOf:
+          - $ref: '#/components/schemas/MessageRequest'
+          writeOnly: true
+        product_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+    DiscussionCompanyRequest:
+      type: object
+      description: Company serializer
+      properties:
+        id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+      required:
+      - id
+    MessageRequest:
+      type: object
+      description: Discussion Message serializer
+      properties:
+        message:
+          type: string
+          minLength: 1
+      required:
+      - message
+    PaginatedUnifiedChatsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        current_page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedChats'
+    ChatStatusEnum:
+      enum:
+      - in_progress
+      - completed
+      type: string
+    UnifiedChats:
+      type: object
+      description: Unified Chats serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        topic:
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ChatStatusEnum'
+          readOnly: true
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompany'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompany'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        latest_message:
+          allOf:
+          - $ref: '#/components/schemas/Message'
+          readOnly: true
+      required:
+      - id
+      - latest_message
+      - recipient_company
+      - sender_company
+      - status
+      - topic
+    DiscussionCompany:
+      type: object
+      description: Company serializer
+      properties:
+        id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+        image_url:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+      required:
+      - id
+      - image_url
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

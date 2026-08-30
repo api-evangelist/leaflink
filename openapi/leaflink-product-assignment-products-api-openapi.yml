@@ -1,0 +1,458 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product Assignment Products API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: product-assignment-products
+paths:
+  /product-assignments:
+    get:
+      operationId: product_assignments_list
+      description: "List all products for a seller with their product assignments (buyer/group assignments).\n    Products without assignments will have empty assignments arrays.\n    "
+      summary: List Products with Product Assignments
+      parameters:
+      - in: query
+        name: archived
+        schema:
+          type: boolean
+        description: Filter by archived status
+      - in: query
+        name: brand
+        schema:
+          type: string
+        description: Filter by brand ID(s). Comma-separated values supported.
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: include_children
+        schema:
+          type: string
+        description: Comma-separated list of child fields to include (e.g., 'images', 'volume_discounts', 'strains')
+      - in: query
+        name: listing_state
+        schema:
+          type: string
+        description: Filter by listing state (e.g., 'Internal', 'Available'). Comma-separated values supported.
+      - in: query
+        name: ordering
+        schema:
+          type: string
+        description: Ordering field (e.g., 'display_name', '-display_name')
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: product_line
+        schema:
+          type: string
+        description: Filter by product line ID(s). Comma-separated values supported.
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search term to filter the list by
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - product-assignment-products
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductAssignmentProductList'
+          description: A list of products with product assignments
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedProductAssignmentBuyerItem:
+      type: object
+      description: Serializer for Product Assignment Buyer Item
+      properties:
+        buyer_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+    PaginatedUnifiedProductAssignmentProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentProduct'
+    UnifiedProductAssignmentGroupItem:
+      type: object
+      description: Serializer for Product Assignment Group Item
+      properties:
+        customer_group_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+    UnifiedProductAssignmentWithItems:
+      type: object
+      description: Serializer for Product Assignment with buyer and group items
+      properties:
+        seller_id:
+          type: integer
+        product_id:
+          type: integer
+        is_exclusive:
+          type: boolean
+        assigned_buyers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItem'
+        assigned_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItem'
+      required:
+      - assigned_buyers
+      - assigned_groups
+      - is_exclusive
+      - product_id
+      - seller_id
+    UnifiedProductAssignmentProduct:
+      type: object
+      description: 'Serializer for ProductListing (product + assignment) to API shape.
+
+
+        Extracts product fields from ProductListing.product and assignment from
+
+        ProductListing.assignment, transforming the domain shape for the API.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_on:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        last_edit:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        sku:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        listing_state:
+          type: string
+          readOnly: true
+        display_listing_state:
+          type: string
+          readOnly: true
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          readOnly: true
+        retail_price:
+          type: object
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          readOnly: true
+        sale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          readOnly: true
+        available_inventory:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+          readOnly: true
+        children_count:
+          type: integer
+          readOnly: true
+        price_schedule_price:
+          type:
+          - object
+          - 'null'
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          readOnly: true
+        sale_price_schedule_price:
+          type:
+          - object
+          - 'null'
+          properties:
+            amount:
+              type: number
+              format: decimal
+            currency:
+              type: string
+          readOnly: true
+        image_count:
+          type: integer
+          readOnly: true
+        images:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        is_ancillary:
+          type: boolean
+          readOnly: true
+        strain_classification_display:
+          type: string
+          readOnly: true
+        has_deals_eligible_children:
+          type: boolean
+          readOnly: true
+        discount_percent:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        inv_count:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        unit_multiplier:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        unit_of_measure:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        unit_denomination:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        category:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        sub_category:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        brand:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        product_line:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        license:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        parent:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        seller:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        inventory_management:
+          type: string
+          readOnly: true
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentWithItems'
+          readOnly: true
+      required:
+      - assignments
+      - available_inventory
+      - brand
+      - category
+      - children_count
+      - created_on
+      - description
+      - discount_percent
+      - display_listing_state
+      - display_name
+      - has_deals_eligible_children
+      - id
+      - image_count
+      - images
+      - inv_count
+      - inventory_management
+      - is_ancillary
+      - last_edit
+      - license
+      - listing_state
+      - name
+      - parent
+      - price_schedule_price
+      - product_line
+      - retail_price
+      - sale_price
+      - sale_price_schedule_price
+      - seller
+      - sku
+      - strain_classification_display
+      - sub_category
+      - unit_denomination
+      - unit_multiplier
+      - unit_of_measure
+      - wholesale_price
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

@@ -1,0 +1,145 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Invoice Recorded Payment API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Invoice Recorded Payment
+paths:
+  /invoice_recorded_payments:
+    post:
+      operationId: invoice_recorded_payments_create
+      description: Create an invoice's recorded payment.
+      summary: Create an Invoice Recorded Payment
+      tags:
+      - Invoice Recorded Payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordInvoicePaymentRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvoicePayment'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    RecordInvoicePayment:
+      type: object
+      description: Creating a recorded payment on an Invoice
+      properties:
+        amount:
+          type: string
+          description: Quantity in USD
+        payment_date:
+          type: string
+          format: date
+          description: Date payment was made in YYYY-MM-DD
+        payment_reason:
+          type: string
+          description: 'Reason payment was made. choices: [''invoice_purchase'', ''reversal'', ''adjustment'', ''principal'', ''extension_fee'', ''factor_fee'', ''direct_pay_fee'', ''direct_pay_fee_reversal'', ''direct_pay_fee_batch'', ''cashback_reward'', ''standard'', ''ach_error'', ''marketplace_payment'', ''other'', ''sell_through'']'
+        payment_method:
+          type: string
+          description: The way the payment was made. choices:['ach', 'wire', 'money_order', 'cash_pickup', 'check', 'other']
+        check_number:
+          type: string
+          description: Check number if the method is check
+        source_id:
+          type: string
+          description: The ID of this payment in your system
+      required:
+      - amount
+      - payment_date
+      - payment_method
+      - payment_reason
+      - source_id
+    RecordInvoicePaymentRequest:
+      type: object
+      description: Creating a recorded payment on an Invoice
+      properties:
+        amount:
+          type: string
+          minLength: 1
+          description: Quantity in USD
+        payment_date:
+          type: string
+          format: date
+          description: Date payment was made in YYYY-MM-DD
+        payment_reason:
+          type: string
+          minLength: 1
+          description: 'Reason payment was made. choices: [''invoice_purchase'', ''reversal'', ''adjustment'', ''principal'', ''extension_fee'', ''factor_fee'', ''direct_pay_fee'', ''direct_pay_fee_reversal'', ''direct_pay_fee_batch'', ''cashback_reward'', ''standard'', ''ach_error'', ''marketplace_payment'', ''other'', ''sell_through'']'
+        payment_method:
+          type: string
+          minLength: 1
+          description: The way the payment was made. choices:['ach', 'wire', 'money_order', 'cash_pickup', 'check', 'other']
+        check_number:
+          type: string
+          minLength: 1
+          description: Check number if the method is check
+        source_id:
+          type: string
+          minLength: 1
+          description: The ID of this payment in your system
+      required:
+      - amount
+      - payment_date
+      - payment_method
+      - payment_reason
+      - source_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

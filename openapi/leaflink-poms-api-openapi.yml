@@ -1,0 +1,135 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Poms API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: poms
+paths:
+  /poms/orders/approval:
+    post:
+      operationId: poms_orders_approval_create
+      description: 'Handle the ''APPROVAL'' endpoint for a POMS Order.
+
+        See the CartOrderApprovalAction choices for supported actions that can be performed.'
+      tags:
+      - poms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedPomsOrderApprovalRequestDataRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedPomsOrderApprovalRequestData'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedPomsOrderApprovalRequestData:
+      type: object
+      description: Unified POMS Order Approval serializer for request data.
+      properties:
+        order_id:
+          type: integer
+          description: Order ID from POMS system
+        purchase_order_number:
+          type: string
+          format: uuid
+          description: UUID of Order for approval
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CartOrderPomsStatusEnum'
+          description: Status of the POMS order that defines the action to be taken
+        message:
+          type: string
+          description: Optional message
+      required:
+      - purchase_order_number
+      - status
+    UnifiedPomsOrderApprovalRequestDataRequest:
+      type: object
+      description: Unified POMS Order Approval serializer for request data.
+      properties:
+        order_id:
+          type: integer
+          description: Order ID from POMS system
+        purchase_order_number:
+          type: string
+          format: uuid
+          description: UUID of Order for approval
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CartOrderPomsStatusEnum'
+          description: Status of the POMS order that defines the action to be taken
+        message:
+          type: string
+          minLength: 1
+          description: Optional message
+      required:
+      - purchase_order_number
+      - status
+    CartOrderPomsStatusEnum:
+      enum:
+      - approved
+      - rejected
+      - completed
+      - error
+      type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

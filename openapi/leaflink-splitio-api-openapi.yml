@@ -1,0 +1,371 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Split IO API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: SplitIO
+paths:
+  /splits:
+    get:
+      operationId: splits_retrieve
+      description: Get split treatments for a company
+      summary: Get split treatments
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: split_name
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ads_moloco_shop_brands_sidebar_banners
+            - bme_enable_crm_customers
+            - bme_enable_order_actions
+            - brands-products-perf
+            - buyer_settings_store_requests_vue
+            - can_access_company_group_features
+            - cart__optimized_cart_query
+            - ce_pod__buyer_metrc_onboarding
+            - code_freeze_temp
+            - collab_pod__payments_in_crm
+            - collab_pod__sales_rep_email_actions
+            - com_pod__cart_payment_cta
+            - com_pod__cart_payment_option
+            - com_pod__reverse_factor
+            - commerce__accept_payments_payment_events
+            - cop_pod__bank_linking
+            - cop_pod__payments_exploration_dashboard_widget
+            - cop_pod__terms_and_conditions
+            - custom_menus__edit_product_redirect
+            - enable_logistics_permission_to_all_users
+            - fire_pod__delinquent_lockdown
+            - fire_pod__direct_pay_enabled_states
+            - fire_pod__enable_post_weekly_sum_view
+            - fire_pod__mp_auto_pausing
+            - fire_pod__mp_auto_pausing_update
+            - fire_pod__order_adjustments_event_consumer
+            - fire_pod__post_package_services
+            - fire_pod__post_settings
+            - force_segment_reporting
+            - gro_pod__order_summary_invitations
+            - gro_pod__printed_menu
+            - inbound_shipments_create
+            - int_pod__order_pdf_report
+            - inte_pod__bulk_import_from_metrc
+            - integrations_pod__license_sync_sf_case_creation
+            - inventory_negative_available_quantity_logging
+            - inventory_pod__inventory_batch_support
+            - inventory_pod__inventory_warehouse_support
+            - inventory_v2_company_rollout
+            - live_inventory_indicator
+            - logistics_pod__enable_customers_to_select_transport_partner
+            - logistics_pod__submit_order_via_csv_upload
+            - manage_license__add_integration__buyer
+            - manage_licenses__new_metrc_flow
+            - messaging_notifications
+            - michigan_affiliated_orders_enabled
+            - npr_pod__integrations_seller
+            - order_summary_ancillary_enhancements
+            - order_summary_receipt_log
+            - orders_internal_approvals
+            - pause_inactive_license_companies
+            - plat_arch_pod__unified_hijacking
+            - post_automated_payments__calculation
+            - post_sts_unit_conversion
+            - replenishment_catalog_page
+            - ret_pod__order_minimum
+            - ret_pod__split_orders
+            - retention_pod__buyer_reports
+            - saas_pod__internal_product_id
+            - seed_to_sale__buyer_nav
+            - seed_to_sale_coa_download
+            - settings__tax_schedules
+            - sgo_orders_debug_logging
+            - sips_pod__mp_license_service_api
+            - spliff_pod__collab_notification
+            - ssr_iframe
+            - supply_chain_delivered_status
+            - trace_pod__search_by_assigned_packages
+            - traceability__biotrack_buyer_onboarding
+            - traceability__biotrack_seller_attach_manifest
+            - traceability_pod__automated_metrc_license_validation
+            - traceability_pod__biotrack_new_york
+            - traceability_pod__experiment__reconcile_inventory
+            - traceability_pod__integration_settings
+            - traceability_pod__v2_batches
+            - traceability_pod__v2_batches_orders_and_menus
+            - traceability_pod__v2_batches_source_label
+            - traceability_pod__v2_inventory
+            - transport_pod__ma_next_day_delivery
+            - transport_pod__shipping_set_order_payments
+            - vue_buyer_notification_settings
+            - vue_inventory_product_add_edit_page
+        description: The names of the splits
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - SplitIO
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SplitTreatment'
+          description: Split treatments
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Invalid request
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    SplitTreatment:
+      type: object
+      description: 'Serializer for Split.io overrides request
+
+        Shape of the request is { ''commerce__accept_payments_payment_events'': ''on'', ''fire_pod__mp_auto_pausing'': ''on'' }'
+      properties:
+        commerce__accept_payments_payment_events:
+          type: string
+        fire_pod__mp_auto_pausing:
+          type: string
+        fire_pod__mp_auto_pausing_update:
+          type: string
+        traceability_pod__automated_metrc_license_validation:
+          type: string
+        cop_pod__bank_linking:
+          type: string
+        traceability_pod__biotrack_new_york:
+          type: string
+        bme_enable_crm_customers:
+          type: string
+        bme_enable_order_actions:
+          type: string
+        brands-products-perf:
+          type: string
+        inte_pod__bulk_import_from_metrc:
+          type: string
+        traceability__biotrack_buyer_onboarding:
+          type: string
+        ce_pod__buyer_metrc_onboarding:
+          type: string
+        buyer_settings_store_requests_vue:
+          type: string
+        retention_pod__buyer_reports:
+          type: string
+        can_access_company_group_features:
+          type: string
+        ret_pod__split_orders:
+          type: string
+        cart__optimized_cart_query:
+          type: string
+        com_pod__cart_payment_cta:
+          type: string
+        com_pod__cart_payment_option:
+          type: string
+        com_pod__reverse_factor:
+          type: string
+        code_freeze_temp:
+          type: string
+        custom_menus__edit_product_redirect:
+          type: string
+        spliff_pod__collab_notification:
+          type: string
+        fire_pod__delinquent_lockdown:
+          type: string
+        fire_pod__direct_pay_enabled_states:
+          type: string
+        fire_pod__post_settings:
+          type: string
+        logistics_pod__enable_customers_to_select_transport_partner:
+          type: string
+        enable_logistics_permission_to_all_users:
+          type: string
+        force_segment_reporting:
+          type: string
+        ret_pod__order_minimum:
+          type: string
+        inbound_shipments_create:
+          type: string
+        traceability_pod__integration_settings:
+          type: string
+        npr_pod__integrations_seller:
+          type: string
+        orders_internal_approvals:
+          type: string
+        saas_pod__internal_product_id:
+          type: string
+        inventory_pod__inventory_batch_support:
+          type: string
+        inventory_negative_available_quantity_logging:
+          type: string
+        traceability_pod__v2_inventory:
+          type: string
+        inventory_v2_company_rollout:
+          type: string
+        inventory_pod__inventory_warehouse_support:
+          type: string
+        integrations_pod__license_sync_sf_case_creation:
+          type: string
+        live_inventory_indicator:
+          type: string
+        manage_license__add_integration__buyer:
+          type: string
+        michigan_affiliated_orders_enabled:
+          type: string
+        messaging_notifications:
+          type: string
+        fire_pod__order_adjustments_event_consumer:
+          type: string
+        int_pod__order_pdf_report:
+          type: string
+        order_summary_ancillary_enhancements:
+          type: string
+        gro_pod__order_summary_invitations:
+          type: string
+        order_summary_receipt_log:
+          type: string
+        pause_inactive_license_companies:
+          type: string
+        cop_pod__payments_exploration_dashboard_widget:
+          type: string
+        collab_pod__payments_in_crm:
+          type: string
+        post_automated_payments__calculation:
+          type: string
+        fire_pod__enable_post_weekly_sum_view:
+          type: string
+        fire_pod__post_package_services:
+          type: string
+        post_sts_unit_conversion:
+          type: string
+        gro_pod__printed_menu:
+          type: string
+        replenishment_catalog_page:
+          type: string
+        seed_to_sale_coa_download:
+          type: string
+        traceability_pod__experiment__reconcile_inventory:
+          type: string
+        collab_pod__sales_rep_email_actions:
+          type: string
+        trace_pod__search_by_assigned_packages:
+          type: string
+        seed_to_sale__buyer_nav:
+          type: string
+        traceability__biotrack_seller_attach_manifest:
+          type: string
+        sgo_orders_debug_logging:
+          type: string
+        manage_licenses__new_metrc_flow:
+          type: string
+        settings__tax_schedules:
+          type: string
+        sips_pod__mp_license_service_api:
+          type: string
+        ssr_iframe:
+          type: string
+        logistics_pod__submit_order_via_csv_upload:
+          type: string
+        supply_chain_delivered_status:
+          type: string
+        cop_pod__terms_and_conditions:
+          type: string
+        traceability_pod__v2_batches:
+          type: string
+        traceability_pod__v2_batches_orders_and_menus:
+          type: string
+        traceability_pod__v2_batches_source_label:
+          type: string
+        transport_pod__shipping_set_order_payments:
+          type: string
+        transport_pod__ma_next_day_delivery:
+          type: string
+        plat_arch_pod__unified_hijacking:
+          type: string
+        ads_moloco_shop_brands_sidebar_banners:
+          type: string
+        vue_buyer_notification_settings:
+          type: string
+        vue_inventory_product_add_edit_page:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

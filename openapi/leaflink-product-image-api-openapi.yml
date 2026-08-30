@@ -1,0 +1,706 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product Image API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Product Image
+paths:
+  /product_images:
+    get:
+      operationId: product_images_list
+      description: List multiple Product Images.
+      summary: List Product Images
+      parameters:
+      - in: query
+        name: company
+        schema:
+          type: integer
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: product
+        schema:
+          type: integer
+      - in: query
+        name: product__id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Image
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnifiedProductImageList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    post:
+      operationId: product_images_create
+      description: LeafLink API for Marketplace product images.
+      summary: Create Product Image
+      tags:
+      - Product Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductImageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductImageRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductImage'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /product_images/{id}:
+    get:
+      operationId: product_images_retrieve
+      description: Get a single Product Image.
+      summary: Get Product Image
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product image.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Image
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductImage'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: product_images_destroy
+      description: LeafLink API for Marketplace product images.
+      summary: Delete Product Image
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product image.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Image
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /product_images/{id}/clone:
+    post:
+      operationId: product_images_clone_create
+      description: Clone a Product Image via the CloneProductImageService service.
+      summary: Clone Product Image
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product image.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnifiedCloneProductImageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnifiedCloneProductImageRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedCloneProductImage'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /product_images/bulk_create:
+    post:
+      operationId: product_images_bulk_create_create
+      description: LeafLink API for Marketplace product images.
+      summary: Bulk Create Product Images
+      tags:
+      - Product Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductBulkCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductBulkCreateRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedProductBulkCreate'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    UnifiedProductBulkCreate:
+      type: object
+      description: Unified ProductImage bulk create serializer.
+      properties:
+        product_id:
+          type: integer
+          description: Product ID
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          minItems: 1
+        positions:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+      required:
+      - images
+      - positions
+      - product_id
+    UnifiedCloneProductImage:
+      type: object
+      description: Unified Product Image serializer for cloning product images.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        image:
+          type: string
+          format: uri
+          readOnly: true
+          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
+        product:
+          type: integer
+          description: The Product this image is attached to
+        position:
+          type: integer
+          description: The position of the image in the product image gallery
+        crop_x:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box X Position
+          description: The X position of the image crop box
+        crop_y:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Y Position
+          description: The Y position of the image crop box
+        crop_w:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Width
+          description: The width of the image crop box
+        crop_h:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Height
+          description: The height of the image crop box
+      required:
+      - created_date
+      - id
+      - image
+      - modified_date
+      - position
+      - product
+    UnifiedProductImage:
+      type: object
+      description: Unified ProductImage serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        image:
+          type: string
+          format: uri
+          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
+        product:
+          type: integer
+          description: The Product this image is attached to
+        position:
+          type: integer
+          description: The position of the image in the product image gallery
+        crop_x:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box X Position
+          description: The X position of the image crop box
+        crop_y:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Y Position
+          description: The Y position of the image crop box
+        crop_w:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Width
+          description: The width of the image crop box
+        crop_h:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Height
+          description: The height of the image crop box
+      required:
+      - created_date
+      - id
+      - image
+      - modified_date
+      - position
+      - product
+    PaginatedUnifiedProductImageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductImage'
+    UnifiedProductImageRequest:
+      type: object
+      description: Unified ProductImage serializer.
+      properties:
+        image:
+          type: string
+          format: binary
+          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
+        product:
+          type: integer
+          description: The Product this image is attached to
+        position:
+          type: integer
+          description: The position of the image in the product image gallery
+        crop_x:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box X Position
+          description: The X position of the image crop box
+        crop_y:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Y Position
+          description: The Y position of the image crop box
+        crop_w:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Width
+          description: The width of the image crop box
+        crop_h:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Height
+          description: The height of the image crop box
+      required:
+      - image
+      - position
+      - product
+    UnifiedCloneProductImageRequest:
+      type: object
+      description: Unified Product Image serializer for cloning product images.
+      properties:
+        product:
+          type: integer
+          description: The Product this image is attached to
+        position:
+          type: integer
+          description: The position of the image in the product image gallery
+        crop_x:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box X Position
+          description: The X position of the image crop box
+        crop_y:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Y Position
+          description: The Y position of the image crop box
+        crop_w:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Width
+          description: The width of the image crop box
+        crop_h:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Height
+          description: The height of the image crop box
+      required:
+      - position
+      - product
+    UnifiedProductBulkCreateRequest:
+      type: object
+      description: Unified ProductImage bulk create serializer.
+      properties:
+        product_id:
+          type: integer
+          description: Product ID
+        images:
+          type: array
+          items:
+            type: string
+            format: binary
+          minItems: 1
+        positions:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+      required:
+      - images
+      - positions
+      - product_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

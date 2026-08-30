@@ -1,0 +1,761 @@
+openapi: 3.2.0
+info:
+  title: Leaflink Batches API
+  contact:
+    email: support@leaflink.com
+  version: '1.0'
+  description: 'Operations tagged batches across 2 of this provider''s published API definitions: leaflink-api-openapi-original.yml, leaflink-marketplace-v2-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+- url: https://app.leaflink.com/api/v2
+tags:
+- name: batches
+paths:
+  /batches/{id}:
+    patch:
+      operationId: batches_partial_update
+      description: LeafLink Unified API for Batches.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this batch v2.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - batches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnifiedBatchRequest'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnifiedBatch'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    delete:
+      operationId: batches_destroy
+      description: LeafLink Unified API for Batches.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this batch v2.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - batches
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: No response body
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+    servers:
+    - url: https://api.leaflink.com
+      description: LeafLink API production URL.
+    - url: https://staging-api.leaflink.com
+      description: LeafLink API staging URL.
+  /batches/:
+    parameters: []
+    get:
+      operationId: batches_list
+      summary: List batches
+      description: List all batches. <br /> <br /> For legacy auth, retrieved per company with the owner query parameter or with the following path parameter, /companies/{company_id}/batches/
+      parameters:
+      - name: batch_date__lt
+        in: query
+        description: Filter by batch_date__lt
+        required: false
+        schema:
+          type: string
+      - name: batch_date__lte
+        in: query
+        description: Filter by batch_date__lte
+        required: false
+        schema:
+          type: string
+      - name: batch_date__gt
+        in: query
+        description: Filter by batch_date__gt
+        required: false
+        schema:
+          type: string
+      - name: batch_date__gte
+        in: query
+        description: Filter by batch_date__gte
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by one or multiple batch ids, separated by commas.
+        required: false
+        schema:
+          type: number
+      - name: owner
+        in: query
+        description: Filter by one or multiple company ids, separated by commas.
+        required: false
+        schema:
+          type: number
+      - name: company_slug
+        in: query
+        description: Filter by owner company slug.
+        required: false
+        schema:
+          type: string
+      - name: production_batch_number
+        in: query
+        description: Filter by one or multiple production_batch_numbers, separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: products
+        in: query
+        description: Filter by one or multiple product ids, separated by commas.
+        required: false
+        schema:
+          type: number
+      - name: thc
+        in: query
+        description: Filter by a range of THC percent.
+        required: false
+        schema:
+          type: string
+      - name: thca
+        in: query
+        description: Filter by a range of THCa percent.
+        required: false
+        schema:
+          type: string
+      - name: total_thc
+        in: query
+        description: Filter by a range of total THC percent.
+        required: false
+        schema:
+          type: string
+      - name: cbd
+        in: query
+        description: Filter by a range of CBD percent.
+        required: false
+        schema:
+          type: string
+      - name: cbda
+        in: query
+        description: Filter by a range of CBDa percent.
+        required: false
+        schema:
+          type: string
+      - name: cbg
+        in: query
+        description: Filter by a range of CBG percent.
+        required: false
+        schema:
+          type: string
+      - name: cbn
+        in: query
+        description: Filter by a range of CBN percent.
+        required: false
+        schema:
+          type: string
+      - name: total_cannabinoids
+        in: query
+        description: Filter by a range of total cannabinoids percent.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BatchResponse'
+      tags:
+      - batches
+      security:
+      - Token: []
+    post:
+      operationId: batches_create
+      summary: Create a batch
+      description: Create a new batch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreate'
+        required: true
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponse'
+      tags:
+      - batches
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+  /batches/{id}/:
+    parameters:
+    - name: id
+      description: The id for the batch.
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: batches__read
+      summary: Retrieve a batch
+      description: Retrieve an individual batch.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponse'
+      tags:
+      - batches
+      security:
+      - Token: []
+    patch:
+      operationId: batches__partial_update
+      summary: Update a batch
+      description: Update an existing batch.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdate'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponse'
+      tags:
+      - batches
+      security:
+      - Token: []
+    delete:
+      operationId: batches__delete
+      summary: Delete a batch
+      description: Delete a batch.
+      responses:
+        '204':
+          description: ''
+      tags:
+      - batches
+      security:
+      - Token: []
+    servers:
+    - url: https://app.leaflink.com/api/v2
+components:
+  schemas:
+    Terpene:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
+    TerpeneRequest:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+          minLength: 1
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
+    PatchedUnifiedBatchRequest:
+      type: object
+      description: Serializer for Batch - read/response only.
+      properties:
+        supplier:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        harvest_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
+        append_thc:
+          type: boolean
+          default: false
+        terpenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TerpeneRequest'
+        is_assigned:
+          type: boolean
+          default: false
+        unit_of_measure:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        lab_test_unit_of_measure:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        item_name:
+          type:
+          - string
+          - 'null'
+        item_category:
+          type:
+          - string
+          - 'null'
+        total_thc:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbd:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        lab_result_file_id:
+          type:
+          - integer
+          - 'null'
+    UnifiedBatch:
+      type: object
+      description: Serializer for Batch - read/response only.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        company_id:
+          type: integer
+          readOnly: true
+        number:
+          type: string
+          readOnly: true
+          maxLength: 100
+        source:
+          type: string
+          readOnly: true
+          maxLength: 100
+        source_type:
+          type: string
+          readOnly: true
+          maxLength: 32
+        supplier:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        harvest_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        status:
+          type: string
+          maxLength: 20
+        append_thc:
+          type: boolean
+          default: false
+        terpenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Terpene'
+        is_assigned:
+          type: boolean
+          default: false
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        unit_of_measure:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        lab_test_unit_of_measure:
+          type:
+          - string
+          - 'null'
+          maxLength: 32
+        item_name:
+          type:
+          - string
+          - 'null'
+        item_category:
+          type:
+          - string
+          - 'null'
+        total_thc:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbd:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        lab_result_file_id:
+          type:
+          - integer
+          - 'null'
+        display_sku:
+          type: string
+          readOnly: true
+      required:
+      - company_id
+      - created_on
+      - display_sku
+      - id
+      - modified
+      - number
+      - source
+      - source_type
+      - status
+    BatchUpdate:
+      type: object
+      properties:
+        production_batch_number:
+          type: string
+          maxLength: 50
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type: string
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
+    BatchCreate:
+      required:
+      - owner
+      - production_batch_number
+      - batch_date
+      - testing_source
+      type: object
+      properties:
+        owner:
+          description: id for the company
+          type: string
+        production_batch_number:
+          type: string
+          maxLength: 50
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type:
+          - string
+          - 'null'
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
+        testing_source:
+          type: string
+          description: Name of the source system for the test results
+    BatchResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique id generated by LeafLink.
+        owner:
+          description: Id for the company
+          type: string
+        production_batch_number:
+          type: string
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type: string
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        documents:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Unique id generated by LeafLink.
+              created_on:
+                type: string
+                format: date-time
+                description: Date and time the document was uploaded.
+              modified:
+                type: string
+                format: date-time
+                description: Date and time the document was last modified.
+              summary:
+                type: string
+              document:
+                description: uri for the document
+                type: string
+                format: uri
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
+        testing_source:
+          type: string
+          description: Name of the source system for the test results
+        is_from_api:
+          type: boolean
+          description: Describes whether this batch was created via an external system
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+    Token:
+      description: 'You must authenticate your requests by including your API key in each request header as described below.
+
+
+        Requests should include a header named `Authorization`, with the value `App {MY_API_KEY}`. Note the single space in the header value.
+
+
+        Example: `Authorization: App MY_API_KEY`
+
+
+        [Learn more about generating your key](https://developer.leaflink.com/brands/api/getting-started/)
+
+
+        **Legacy API keys:** If you are not using an Application API key, your authorization header should include the string `Token` and access will be scoped to all companies under which the user exists as a companystaff.
+
+
+        Example: `Authorization: Token MY_API_KEY`
+
+        '
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- leaflink-api-openapi-original.yml
+- leaflink-marketplace-v2-openapi-original.yml

@@ -1,0 +1,1683 @@
+openapi: 3.2.0
+info:
+  title: LeafLink Product API
+  version: '2022-10-31'
+  description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
+
+
+    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
+
+    '
+  termsOfService: https://www.leaflink.com/terms-and-conditions/
+  contact:
+    email: support@leaflink.com
+servers:
+- url: https://api.leaflink.com
+  description: LeafLink API production URL.
+- url: https://staging-api.leaflink.com
+  description: LeafLink API staging URL.
+security:
+- bearerAuth: []
+tags:
+- name: Product
+paths:
+  /dashboard/product_spotlight:
+    get:
+      operationId: dashboard_product_spotlight_list
+      description: List new brands, products with deals, and sponsored products on the dashboard.
+      summary: Featured Products
+      parameters:
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFeaturedProductList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /express_menus:
+    get:
+      operationId: express_menus_list
+      description: List multiple ExpressProductMenus.
+      summary: List Express Product Menus
+      parameters:
+      - in: query
+        name: brand
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: price_schedule
+        schema:
+          type: integer
+      - in: query
+        name: products
+        schema:
+          type: string
+        description: Set to 'false' to avoid an unnecessary query for product IDs
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A list of serialized express product menus
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products:
+    get:
+      operationId: products_list
+      description: List multiple Products.
+      summary: List Products
+      parameters:
+      - in: query
+        name: archived
+        schema:
+          type: boolean
+      - in: query
+        name: base_units_per_unit__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: batch_associated__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: brand
+        schema:
+          type: integer
+      - in: query
+        name: buyer
+        schema:
+          type: integer
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - in: query
+        name: company
+        schema:
+          type: integer
+      - in: query
+        name: company_slug
+        schema:
+          type: string
+      - in: query
+        name: created_on__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_on__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: display_name
+        schema:
+          type: string
+      - in: query
+        name: extern_sts_ids
+        schema:
+          type: array
+          items:
+            type: number
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: external_id_key
+        schema:
+          type: string
+        description: Filter by external ID key (integration system name)
+      - in: query
+        name: external_id_unmapped
+        schema:
+          type: boolean
+      - in: query
+        name: external_id_values
+        schema:
+          type: string
+      - in: query
+        name: external_ids
+        schema:
+          type: string
+      - in: query
+        name: has_children
+        schema:
+          type: boolean
+      - in: query
+        name: id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: last_edit__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: last_edit__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: last_edit__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: last_edit__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: license
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: license__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: license__type
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: listing_state
+        schema:
+          type: string
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: parent
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: parent__isnull
+        schema:
+          type: boolean
+      - in: query
+        name: product_line
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: reconcile_inventory
+        schema:
+          type: boolean
+      - in: query
+        name: s2s_connected
+        schema:
+          type: boolean
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: seller_internal_id
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: sku
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: strains
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: sub_category
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: sub_category__isnull
+        schema:
+          type: boolean
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A list of serialized products
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products/{id}:
+    get:
+      operationId: products_retrieve
+      description: Get a single Product.
+      summary: Get Product
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: A serialized product
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products/{id}/audit_log:
+    get:
+      operationId: products_audit_log_retrieve
+      description: "List paginated audit log entries for a product, including product edits, \n        bulk operations, and inventory item changes."
+      summary: Get Product Audit Log
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Page size
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductAuditLogResponse'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '404':
+          description: Product not found
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products/bulk/update:
+    post:
+      operationId: products_bulk_update
+      description: Update Multiple Products.
+      summary: Bulk Product Update
+      tags:
+      - Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnifiedProductBulkUpdateRequest'
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductBulkUpdateResponse'
+              examples:
+                BulkProductUpdate:
+                  value:
+                    updated: 2
+                    expected: 4
+                    errors:
+                      wholesale_price:
+                      - message: The price must be a positive number.
+                        products:
+                        - id: 1
+                          name: Nifty Product
+                          display_name: A Nifty Product
+                      sale_price:
+                      - message: The sale price must be less than the wholesale price.
+                        products:
+                        - id: 2
+                          name: Widget
+                          display_name: A Widget
+                  summary: Bulk Product Update
+          description: Success.  Returns the number of products updated and the number products expected to be updated.
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '400':
+          description: Bad Request
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '408':
+          description: Timeout Error
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+  /products/recommended:
+    get:
+      operationId: products_recommended_list
+      description: List product recommendations.
+      summary: Recommended Products
+      parameters:
+      - in: query
+        name: ad_count
+        schema:
+          type: integer
+        description: The number of ads to request
+      - in: query
+        name: brand_id
+        schema:
+          type: string
+        description: The brand to restrict recommendations to.
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Filter by category id
+        explode: true
+        style: form
+      - in: query
+        name: company_id
+        schema:
+          type: integer
+        description: The ID of the viewing company
+        required: true
+      - in: query
+        name: object_id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: One or more Object IDs
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: placement
+        schema:
+          type: string
+          enum:
+          - buyer-dash-hero-1
+          - buyer-dash-hero-2
+          - buyer-dash-hero-3
+          - buyer-dash-hero-4
+          - buyer-dash-hero-5
+          - buyer-dash-hero-6
+          - buyer-dash-hero-7
+          - buyer-dash-hero-8
+          - buyer-dashboard-hero-banner-1
+          - buyer-dashboard-hero-banner-2
+          - buyer-dashboard-hero-banner-3
+          - buyer-dashboard-hero-banner-4
+          - buyer-dashboard-hero-banner-5
+          - buyer-dashboard-hero-banner-6
+          - buyer-dashboard-hero-banner-7
+          - buyer-dashboard-hero-banner-8
+          - deals-page-1
+          - deals-page-2
+          - deals-page-3
+          - deals-page-4
+          - discovery-left
+          - discovery-right
+          - order-submit-1
+          - order-submit-2
+          - order-submit-3
+          - order-submit-4
+          - product-spotlight-carousel
+          - recommended-brands-recently-purchased
+          - recommended-products-cart
+          - recommended-products-order
+          - recommended-products-pdm-alternative
+          - recommended-products-pdp-alternative
+          - recommended-products-shop-brands
+          - recommended-products-shop-discover-products
+          - recommended-products-shop-products
+          - recommended-products-top-purchased
+          - seller-dash-hero-1
+          - seller-dash-hero-2
+          - seller-dash-hero-3
+          - seller-dash-hero-4
+          - seller-dash-hero-5
+          - seller-dash-hero-6
+          - seller-dash-hero-7
+          - seller-dash-hero-8
+          - shop-brands-featured-brand
+          - shop-brands-featured-brand-2
+          - shop-brands-featured-brand-3
+          - shop-brands-featured-brand-4
+          - shop-brands-featured-brand-5
+          - shop-brands-sidebar-3
+          - shop-brands-sidebar-4
+          - shop-brands-sidebar-bottom
+          - shop-brands-sidebar-top
+          - shop-brands-skyscraper-1
+          - shop-brands-skyscraper-2
+          - shop-brands-skyscraper-3
+          - shop-brands-skyscraper-4
+          - shop-products-1
+          - shop-products-2
+          - shop-products-3
+          - shop-products-4
+          - shop-products-5
+        description: The ID of an ad location
+        required: true
+      - in: query
+        name: product_count
+        schema:
+          type: integer
+        description: The number of products to request
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: subcategory
+        schema:
+          type: string
+        description: The product sub-category id to restrict recommendations to.
+      - name: LeafLink-Version
+        description: '[API version docs](/api/getting-started/#versioning)'
+        required: false
+        in: header
+        schema:
+          type: string
+          format: date
+      tags:
+      - Product
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRecommendedProductList'
+          description: ''
+          headers:
+            RateLimit-Limit:
+              schema:
+                type: integer
+              description: The requests quota in the time window.
+            RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The remaining requests quota in the current window.
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: The time remaining in the current window, specified in seconds.
+            RateLimit-Policy:
+              schema:
+                type: string
+              description: The quota policy information.
+        '429':
+          description: Rate Limit Error
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: The time remaining before the rejected request can be tried again, specified in seconds.
+components:
+  schemas:
+    PaginatedRecommendedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendedProduct'
+    ProductBulkUpdateResponse:
+      type: object
+      properties:
+        updated:
+          type: integer
+        expected:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductBulkUpdateResponseErrorDetail'
+      required:
+      - errors
+      - expected
+      - updated
+    RecommendedProduct:
+      type: object
+      description: Serializer for Recommended Products
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        company_id:
+          type: string
+        company_name:
+          type: string
+        enable_vendor_menu:
+          type: boolean
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
+          type: string
+          format: uri
+        featured:
+          type: boolean
+          description: This product is featured for it's brand.
+        spotlight_badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotlightBadgesEnum'
+          readOnly: true
+        display_price:
+          type: string
+          readOnly: true
+        display_unit_price:
+          type: string
+          readOnly: true
+        display_price_unit:
+          type: string
+          readOnly: true
+        unit_price:
+          type: string
+          readOnly: true
+        base_unit_price:
+          type: string
+          readOnly: true
+        sale_or_deal_price:
+          type: number
+          format: double
+        discount_percent:
+          oneOf:
+          - type: integer
+          - type: number
+            format: double
+          readOnly: true
+        minimum_order:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Minimum Units per Order
+        brand:
+          $ref: '#/components/schemas/FeaturedBrand'
+        sponsorship:
+          allOf:
+          - $ref: '#/components/schemas/Sponsorship'
+          readOnly: true
+        pricing:
+          type: object
+          properties:
+            wholesale_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            sale_price:
+              type:
+              - object
+              - 'null'
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            base_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            retail_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            effective_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            base_unit_price:
+              type:
+              - object
+              - 'null'
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            price_per_unit:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+          required:
+          - wholesale_price
+          - sale_price
+          - base_price
+          - retail_price
+          - effective_price
+          - base_unit_price
+          - price_per_unit
+          readOnly: true
+        sub_category:
+          allOf:
+          - $ref: '#/components/schemas/SubCategory'
+          readOnly: true
+        sold_in_bulk:
+          type: boolean
+          readOnly: true
+        unit_multiplier:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          description: How many individual units are sold when checking out by Unit of Measure
+        display_min_order:
+          oneOf:
+          - type: number
+            format: double
+          - type: integer
+          readOnly: true
+        display_max_order:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+        score:
+          type: number
+          format: double
+          readOnly: true
+        is_on_purchase_list:
+          type: boolean
+      required:
+      - base_unit_price
+      - brand
+      - company_id
+      - company_name
+      - discount_percent
+      - display_max_order
+      - display_min_order
+      - display_price
+      - display_price_unit
+      - display_unit_price
+      - enable_vendor_menu
+      - id
+      - image
+      - is_on_purchase_list
+      - name
+      - pricing
+      - sale_or_deal_price
+      - score
+      - slug
+      - sold_in_bulk
+      - sponsorship
+      - spotlight_badges
+      - sub_category
+      - unit_price
+    FieldEnum:
+      enum:
+      - maximum_order
+      - product_line_id
+      - minimum_order
+      - brand_id
+      - retail_price
+      - wholesale_price
+      - listing_state
+      - show_quantity
+      - sale_price
+      type: string
+    FeaturedProduct:
+      type: object
+      description: Serializer for Product Spotlight featured products
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        company_id:
+          type: string
+        company_name:
+          type: string
+        enable_vendor_menu:
+          type: boolean
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
+          type: string
+          format: uri
+        featured:
+          type: boolean
+          description: This product is featured for it's brand.
+        spotlight_badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpotlightBadgesEnum'
+          readOnly: true
+        display_price:
+          type: string
+          readOnly: true
+        display_unit_price:
+          type: string
+          readOnly: true
+        display_price_unit:
+          type: string
+          readOnly: true
+        unit_price:
+          type: string
+          readOnly: true
+        base_unit_price:
+          type: string
+          readOnly: true
+        sale_or_deal_price:
+          type: number
+          format: double
+        discount_percent:
+          oneOf:
+          - type: integer
+          - type: number
+            format: double
+          readOnly: true
+        minimum_order:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Minimum Units per Order
+        brand:
+          $ref: '#/components/schemas/FeaturedBrand'
+        sponsorship:
+          allOf:
+          - $ref: '#/components/schemas/Sponsorship'
+          readOnly: true
+        pricing:
+          type: object
+          properties:
+            wholesale_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            sale_price:
+              type:
+              - object
+              - 'null'
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            base_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            retail_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            effective_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            base_unit_price:
+              type:
+              - object
+              - 'null'
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            price_per_unit:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+          required:
+          - wholesale_price
+          - sale_price
+          - base_price
+          - retail_price
+          - effective_price
+          - base_unit_price
+          - price_per_unit
+          readOnly: true
+        sub_category:
+          allOf:
+          - $ref: '#/components/schemas/SubCategory'
+          readOnly: true
+        sold_in_bulk:
+          type: boolean
+          readOnly: true
+        unit_multiplier:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          description: How many individual units are sold when checking out by Unit of Measure
+        display_min_order:
+          oneOf:
+          - type: number
+            format: double
+          - type: integer
+          readOnly: true
+        display_max_order:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+      required:
+      - base_unit_price
+      - brand
+      - company_id
+      - company_name
+      - discount_percent
+      - display_max_order
+      - display_min_order
+      - display_price
+      - display_price_unit
+      - display_unit_price
+      - enable_vendor_menu
+      - id
+      - image
+      - name
+      - pricing
+      - sale_or_deal_price
+      - slug
+      - sold_in_bulk
+      - sponsorship
+      - spotlight_badges
+      - sub_category
+      - unit_price
+    UnifiedProductBulkUpdateRequest:
+      type: object
+      description: Unified Product Bulk Update Serializer
+      properties:
+        selector:
+          allOf:
+          - $ref: '#/components/schemas/SelectorEnum'
+          description: association or field to select products. Supports 'product_line' and 'product'.
+        selector_values:
+          type: array
+          items:
+            type: integer
+        update_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductBulkUpdateDataRequest'
+      required:
+      - selector
+      - selector_values
+      - update_data
+    TypeEnum:
+      enum:
+      - percentage_delta
+      - delta
+      - absolute
+      type: string
+    SelectorEnum:
+      enum:
+      - product_line
+      - product
+      type: string
+    ProductAuditLogEntry:
+      type: object
+      description: Polymorphic serializer for product audit log entries.
+      properties:
+        log_type:
+          type: string
+          readOnly: true
+        created_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        editor:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        source:
+          type: string
+          readOnly: true
+        source_detail:
+          type: string
+          readOnly: true
+        source_data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        changed_fields:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        product:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        inventory_item:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - changed_fields
+      - created_on
+      - editor
+      - inventory_item
+      - log_type
+      - product
+      - source
+      - source_data
+      - source_detail
+    UnifiedProductBulkUpdateDataRequest:
+      type: object
+      description: Unified Product Bulk Update Data Serializer
+      properties:
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        field:
+          $ref: '#/components/schemas/FieldEnum'
+        value:
+          oneOf:
+          - type: boolean
+          - type: integer
+          - type: number
+          - type: string
+          - type: 'null'
+      required:
+      - field
+      - type
+      - value
+    SpotlightBadgesEnum:
+      enum:
+      - deal
+      - new
+      - sponsored
+      type: string
+    ProductBulkUpdateResponseErrorDetail:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductBulkUpdateResponseProduct'
+        message:
+          type: string
+      required:
+      - message
+      - products
+    PaginatedProductAuditLogResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of entries
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: URL to the next page
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: URL to the previous page
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductAuditLogEntry'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    SponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+      required:
+      - click_url
+      - id
+      - impression_url
+    FeaturedBrand:
+      type: object
+      description: Serializer for Product Spotlight brands
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+      - name
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
+    PaginatedFeaturedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeaturedProduct'
+    ProductBulkUpdateResponseProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        display_name:
+          type: string
+      required:
+      - display_name
+      - id
+      - name
+    SubCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        base_unit_of_measure:
+          type:
+          - string
+          - 'null'
+        base_unit_of_measure_short_name:
+          type:
+          - string
+          - 'null'
+      required:
+      - base_unit_of_measure
+      - base_unit_of_measure_short_name
+      - id
+      - name
+    Sponsorship:
+      type: object
+      description: Serializer for ll.ads.data_models.Sponsorship
+      properties:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
+          type: string
+      required:
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authentication is done via access tokens (JWTs). See the [API authentication doc](/api/getting-started/#authentication) for more information.
+
+        '
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
