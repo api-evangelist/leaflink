@@ -2,24 +2,24 @@
   "repo": "leaflink",
   "feeds": [
     {
-      "source": "https://www.leaflink.com/blog/feed/",
+      "source": "https://www.leaflink.com/blog/",
       "feed_url": "https://www.leaflink.com/blog/feed/",
       "title": "",
       "saved": 0,
-      "method": "feed"
+      "method": "discovered"
     },
     {
       "source": "https://help.leaflink.com/",
       "error": "URLError"
     },
     {
-      "source": "https://www.leaflink.com/blog/",
+      "source": "https://www.leaflink.com/blog/feed/",
       "feed_url": "https://www.leaflink.com/blog/feed/",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "feed"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-08-30T22:33:40Z"
+  "fetched": "2026-09-06T19:17:18Z"
 }
