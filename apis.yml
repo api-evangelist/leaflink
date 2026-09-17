@@ -2183,36 +2183,6 @@ apis:
     url: https://developer.leaflink.com/legacy/v2/api/release-notes/
   - type: FAQ
     url: https://developer.leaflink.com/legacy/v2/api/faqs/
-- aid: leaflink:leaflink-promocodes-api
-  name: LeafLink Promocodes API
-  description: The Promocode model represents a promotional discount code for a specific Brand.
-  humanURL: https://developer.leaflink.com/api/
-  baseURL: https://api.leaflink.com
-  tags:
-  - Promo Codes
-  tags_raw:
-  - promocodes
-  properties:
-  - type: OpenAPI
-    url: openapi/leaflink-promocodes-api-openapi.yml
-  - type: Documentation
-    url: https://developer.leaflink.com/api/
-  - type: APIReference
-    url: https://developer.leaflink.com/api/ref/
-  - type: GettingStarted
-    url: https://developer.leaflink.com/api/getting-started/
-  - type: RateLimits
-    url: rate-limits/leaflink-rate-limits.yml
-  - type: Documentation
-    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
-  - type: APIReference
-    url: https://developer.leaflink.com/legacy/v2/api/ref/
-  - type: Authentication
-    url: https://developer.leaflink.com/legacy/v2/api/authorization/
-  - type: ChangeLog
-    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
-  - type: FAQ
-    url: https://developer.leaflink.com/legacy/v2/api/faqs/
 - aid: leaflink:leaflink-reports-api
   name: LeafLink Reports API
   description: The Report model represents a report download initiated by a User
@@ -2603,6 +2573,34 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/leaflink-vendors-api-openapi.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/api/
+  - type: APIReference
+    url: https://developer.leaflink.com/api/ref/
+  - type: GettingStarted
+    url: https://developer.leaflink.com/api/getting-started/
+  - type: RateLimits
+    url: rate-limits/leaflink-rate-limits.yml
+  - type: Documentation
+    url: https://developer.leaflink.com/legacy/v2/api/getting-started/
+  - type: APIReference
+    url: https://developer.leaflink.com/legacy/v2/api/ref/
+  - type: Authentication
+    url: https://developer.leaflink.com/legacy/v2/api/authorization/
+  - type: ChangeLog
+    url: https://developer.leaflink.com/legacy/v2/api/release-notes/
+  - type: FAQ
+    url: https://developer.leaflink.com/legacy/v2/api/faqs/
+- aid: leaflink:leaflink-promo-codes-api
+  name: LeafLink Promo Codes API
+  description: The Promocode model represents a promotional discount code for a specific Brand.
+  humanURL: https://developer.leaflink.com/api/
+  baseURL: https://api.leaflink.com
+  tags:
+  - Promo Codes
+  properties:
+  - type: OpenAPI
+    url: openapi/leaflink-promo-codes-api-openapi.yml
   - type: Documentation
     url: https://developer.leaflink.com/api/
   - type: APIReference
