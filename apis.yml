@@ -222,6 +222,8 @@ apis:
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
+  - Brands
+  tags_raw:
   - Brand
   properties:
   - type: OpenAPI
@@ -571,7 +573,7 @@ apis:
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
-  - Credits
+  - Credit
   tags_raw:
   - credits
   properties:
@@ -748,6 +750,8 @@ apis:
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
+  - Dashboards
+  tags_raw:
   - Dashboard
   properties:
   - type: OpenAPI
@@ -2391,7 +2395,7 @@ apis:
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
-  - Strains
+  - Strain
   tags_raw:
   - strains
   properties:
@@ -2421,7 +2425,7 @@ apis:
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
-  - Taxes
+  - Tax
   tags_raw:
   - taxes
   properties:
