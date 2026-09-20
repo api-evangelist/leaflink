@@ -2629,6 +2629,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Plans
+  url: plans/leaflink-plans-pricing.yml
 - type: CapabilityMap
   url: capabilities/leaflink-capability-edges.yml
   name: LeafLink Business Capability Map

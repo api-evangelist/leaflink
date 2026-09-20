@@ -1,0 +1,24 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://www.leaflink.com/
+sources:
+- https://www.leaflink.com/
+- https://www.leaflink.com/pricing/
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T120546
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: negotiated
+published: false
+note: Marketing homepage; no numeric prices. Brand pricing requires contacting sales; retailer signup
+  stated as free. Stats like $1B+ payments processed are not prices.
+plan_count: 2
+plans:
+- name: For Brands
+  price_text: contact our Sales team for pricing based on your brand volume, location, etc.
+  period: none
+- name: For Retailers
+  price_text: signing up to shop is free
+  period: none
