@@ -11,6 +11,10 @@ provenance:
   grounding: every price_text was found verbatim in the fetched page text
 audience: business-product
 pricing_basis: negotiated
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-09-20'
 published: false
 note: Marketing homepage; no numeric prices. Brand pricing requires contacting sales; retailer signup
   stated as free. Stats like $1B+ payments processed are not prices.
