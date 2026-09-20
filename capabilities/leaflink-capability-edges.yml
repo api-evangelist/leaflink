@@ -1,0 +1,362 @@
+slug: leaflink
+provider: LeafLink
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 32
+edges:
+- tag: customers
+  spec_file: leaflink-customers-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.85
+  evidence: POST /customers, POST /customers/{id}/corporate_address, POST /customers/{id}/delivery_address;
+    schemas UnifiedCustomer, CustomerCreate, CustomerUpdate, ExternalIds
+  reason: Full CRUD on customer records with corporate and delivery addresses, external ids, payment terms
+    and tiers - this is maintenance of the customer master record, i.e. Customer Data Management.
+- tag: SplitIO
+  spec_file: leaflink-splitio-api-openapi.yml
+  capability_id: BC-4210.50
+  capability_id_l1: BC-4210
+  capability_name: Feature Flag Management
+  confidence: 0.83
+  evidence: GET /splits  splits_retrieve  Get split treatments; schema SplitTreatment
+  reason: '''Splits'' and ''treatments'' are Split.io feature-flag vocabulary; the endpoint returns flag
+    treatments for runtime feature gating. This is feature flag management, technical plumbing rather
+    than any cannabis-commerce business capability.'
+- tag: Product Promotion
+  spec_file: leaflink-product-promotion-api-openapi.yml
+  capability_id: BC-440.30
+  capability_id_l1: BC-440
+  capability_name: Discount & Promotion Management
+  confidence: 0.82
+  evidence: POST /product_promotions  product_promotions_create  Create a Product Promotion; schemas ProductPromotion,
+    PromotionStatusEnum, PeriodEnum
+  reason: Operations create and maintain time-bounded product promotions with status, which is promotional
+    offer management in the commercial pricing sense. Sub-capability Discount & Promotion Management fits
+    directly.
+- tag: Logistics Transport
+  spec_file: leaflink-logistics-transport-api-openapi.yml
+  capability_id: BC-2420
+  capability_id_l1: BC-2420
+  capability_name: Transport Operations Management
+  confidence: 0.8
+  evidence: '''Get Transport Order'', ''List Drivers'', ''Create Driver'', ''List Vehicles'', ''Create
+    Vehicle'', ''Create Company Transport Partner'''
+  reason: Operations manage transport orders together with the drivers, vehicles and transport partner
+    companies that execute them — transport execution resources. Mapped at L1 because the evidence spans
+    dispatch resources, orders and carrier partners without naming one narrower sub-capability.
+- tag: compliance
+  spec_file: leaflink-compliance-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.8
+  evidence: 'GET /compliance/licenses  compliance_licenses_list; POST /compliance/licenses; GET /compliance/license_types;
+    schemas: CompanyLicense, LicenseTypeInternalResponse'
+  reason: Operations create and list cannabis licences and licence types held by companies, matching the
+    vendor's stated 'compliance and licensing' function. Maintaining regulator-issued licences to trade
+    is Regulatory Compliance Management; small residual doubt only over whether it is better read as counterparty
+    due-diligence data.
+- tag: inventory-command
+  spec_file: leaflink-inventory-command-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.8
+  evidence: POST /inventory/commands/putaway  "Submit putaway command"; POST /inventory/commands/hold  "Submit
+    hold command"; POST /inventory/commands/reconcile  "Submit reconcile command"; POST /inventory/commands/transfer
+  reason: Commands that putaway, hold/unhold, fulfil, transfer, reconcile, archive and destroy stock are
+    core inventory movement and control operations. Spans reservation, accuracy and movement sub-capabilities,
+    so L1 only.
+- tag: orders-received
+  spec_file: leaflink-orders-received-api-openapi.yml
+  capability_id: BC-520.40
+  capability_id_l1: BC-520
+  capability_name: Order Fulfilment Management
+  confidence: 0.8
+  evidence: POST /orders-received/ Create an order; POST /orders-received/{number}/transition/{action}/
+    Transition an order; GET /orders/{order_number}/delivery-information/ Retrieve delivery information
+  reason: Full wholesale order lifecycle for the seller including status transitions and delivery information
+    — order fulfilment/order management.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: product_promotions
+  spec_file: leaflink-product-promotions-api-openapi.yml
+  capability_id: BC-440.30
+  capability_id_l1: BC-440
+  capability_name: Discount & Promotion Management
+  confidence: 0.8
+  evidence: PUT /product_promotions/{id} product_promotions_update; schemas ProductPromotion, PeriodEnum,
+    PromotionStatusEnum
+  reason: Operations manage promotion records on products with period and status, which is promotional
+    offer management under pricing.
+- tag: promocodes
+  spec_file: leaflink-promo-codes-api-openapi.yml
+  capability_id: BC-440.30
+  capability_id_l1: BC-440
+  capability_name: Discount & Promotion Management
+  confidence: 0.8
+  evidence: POST /promocodes/ promocodes_create Create; schema PromoCode
+  reason: CRUD over promo codes applied to wholesale orders is discount and promotion administration.
+    Held at 0.8 because the schema detail (e.g. discount rules) is not shown.
+  recovered_from: sweep-20260828T235257Z-edges.json
+  reanchored_from: leaflink-promocodes-api-openapi.yml
+- tag: Product MVP
+  spec_file: leaflink-product-mvp-api-openapi.yml
+  capability_id: BC-2370.10
+  capability_id_l1: BC-2370
+  capability_name: Item Master Data Management
+  confidence: 0.78
+  evidence: POST /products_mvp "Create Product"; PATCH /products_mvp/{id} "Update Product"; schemas "UnifiedProductMVP",
+    "UnifiedProductCategory", "UnifiedProductSpecification", "StrainClassificationEnum"
+  reason: Full create/update/clone lifecycle of the product record with categories, specifications, units
+    of measure and brand — authoring of the canonical item master record.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: sales_invoices
+  spec_file: leaflink-sales-invoices-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.78
+  evidence: schemas UnifiedOrderAsSalesInvoice, UnifiedOrderedProductAsInvoiceLineItem, UnifiedInvoiceCustomer;
+    GET /sales_invoices
+  reason: Read access to customer sales invoices derived from orders, with invoice line items and invoice
+    customer — customer invoicing/receivables data. Read-only, so it exposes rather than performs AR,
+    hence moderate confidence.
+- tag: Invoice Recorded Payment
+  spec_file: leaflink-invoice-recorded-payment-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.75
+  evidence: POST /invoice_recorded_payments — 'Create an Invoice Recorded Payment'; schema RecordInvoicePaymentRequest
+  reason: Recording a payment received against a customer invoice is cash application within accounts
+    receivable. Sole operation is explicit; slight ambiguity only about whether it belongs to AR or a
+    broader payments capability.
+- tag: Product Image
+  spec_file: leaflink-product-image-api-openapi.yml
+  capability_id: BC-2370.20
+  capability_id_l1: BC-2370
+  capability_name: Product Content Authoring Management
+  confidence: 0.75
+  evidence: POST /product_images "Create Product Image"; POST /product_images/bulk_create "Bulk Create
+    Product Images"
+  reason: Creating, cloning and deleting product imagery is authoring of the rich media that makes an
+    item record sellable — product content authoring, not generic file upload plumbing since it is bound
+    to products.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: inventory-items
+  spec_file: leaflink-inventory-items-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.75
+  evidence: GET /inventory/items/, POST /inventory/items/ ; schemas InventoryItem, InventoryItemCreate,
+    InventoryItemUpdate
+  reason: Create/read/update of inventory item records is maintenance of stock records for the seller's
+    catalogue. No sub-capability is named (no reorder points, counts, or allocation semantics visible),
+    so L1 only.
+- tag: product-images
+  spec_file: leaflink-product-images-api-openapi.yml
+  capability_id: BC-2370.20
+  capability_id_l1: BC-2370
+  capability_name: Product Content Authoring Management
+  confidence: 0.75
+  evidence: POST /product-images/ product-images_create Upload an image
+  reason: Management of product photography/rich media attached to product records is product content
+    authoring within product information management.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: products
+  spec_file: leaflink-products-api-openapi.yml
+  capability_id: BC-2370.10
+  capability_id_l1: BC-2370
+  capability_name: Item Master Data Management
+  confidence: 0.75
+  evidence: POST /products/ 'Create a product', DELETE /products/{id}/ 'Archive a product'; schemas UnifiedProduct,
+    UnifiedProductCategory, ParentProduct
+  reason: Full lifecycle CRUD over the product record including categories, brand, parent product and
+    archival — the authoritative item record for the marketplace, i.e. item master data management.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: Product
+  spec_file: leaflink-product-api-openapi.yml
+  capability_id: BC-2370.10
+  capability_id_l1: BC-2370
+  capability_name: Item Master Data Management
+  confidence: 0.72
+  evidence: GET /products products_list "List Products"; POST /products/bulk/update "Bulk Product Update";
+    schema "ProductAuditLogEntry", "SubCategory"
+  reason: Operations read and bulk-maintain the canonical product records (with categories, subcategories,
+    audit trail) of a wholesale marketplace catalogue — item master data. Some featured/sponsorship schemas
+    hint at advertising placement, which lowers confidence slightly.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: Product Category
+  spec_file: leaflink-product-category-api-openapi.yml
+  capability_id: BC-2370.10
+  capability_id_l1: BC-2370
+  capability_name: Item Master Data Management
+  confidence: 0.72
+  evidence: GET /product_categories "List Product Categories"; schema "ProductCategory"
+  reason: Product category reference data is part of the item master taxonomy/hierarchy that classifies
+    products in the catalogue; read-only taxonomy lookup rather than category-as-business-unit management.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: Product Subcategory
+  spec_file: leaflink-product-subcategory-api-openapi.yml
+  capability_id: BC-2370.10
+  capability_id_l1: BC-2370
+  capability_name: Item Master Data Management
+  confidence: 0.72
+  evidence: GET /product_subcategories "List Product Subcategories"; schema "UnifiedProductSubCategory"
+  reason: Subcategory reference data forming the product classification hierarchy of the item master record.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: Customer
+  spec_file: leaflink-customer-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.7
+  evidence: GET /customers  customers_list  List Customers; GET /customer_statuses  customer_statuses_list  List
+    Company Customer Status
+  reason: Operations expose the company's customer records and customer status classifications on a wholesale
+    B2B platform, which is customer master/data management. No schemas given, so moderate confidence.
+- tag: contacts
+  spec_file: leaflink-contacts-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.7
+  evidence: 'POST /contacts contacts_create; GET /contacts/ contacts_list List; schemas: UnifiedContact,
+    Contact'
+  reason: Full CRUD over contact records associated with trading partners — maintenance of customer/contact
+    master records. Slight residual risk that contacts here serve licence or logistics metadata rather
+    than CRM.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: deliveries
+  spec_file: leaflink-deliveries-api-openapi.yml
+  capability_id: BC-2420
+  capability_id_l1: BC-2420
+  capability_name: Transport Operations Management
+  confidence: 0.7
+  evidence: GET /deliveries, POST /deliveries; schemas InternalVehicle, Driver, TransportCompany, InternalLogisticsCompany,
+    UnifiedL3Order
+  reason: Creating and listing deliveries against orders with driver, vehicle, logistics-company and transport-company
+    objects is execution of physical transport moves. Left at L1 because the surface does not distinguish
+    dispatch assignment from last-mile delivery execution.
+- tag: distribution-zones
+  spec_file: leaflink-distribution-zones-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.7
+  evidence: '''Distribution Zones defined by the seller''; schemas ZipCode, Facility'
+  reason: Defines seller distribution/delivery zones by zip code and facility — a logistics network/distribution
+    coverage construct rather than pricing or sales.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: inventory-query
+  spec_file: leaflink-inventory-query-api-openapi.yml
+  capability_id: BC-530.30
+  capability_id_l1: BC-530
+  capability_name: Inventory Allocation Management
+  confidence: 0.7
+  evidence: GET /inventory/buyers/{buyer_id}/allocations  "List allocations for a buyer"; GET /inventory/orders/{order_id}/reservations  "List
+    reservations for an order"; schemas Allocation, Reservation
+  reason: Read views of allocations per buyer/group and reservations per order, plus stock measurements
+    by product/facility/batch - allocation and reservation of inventory across buyers and orders is Inventory
+    Allocation Management. The measurement endpoints are broader stock reporting, hence 0.7 rather than
+    higher.
+- tag: licenses
+  spec_file: leaflink-licenses-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.7
+  evidence: GET /licenses/ licenses_list; schema ComplianceLicense
+  reason: Exposes state cannabis licences via a schema explicitly named ComplianceLicense, matching the
+    platform's regulatory licensing/compliance function for licensed operators.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: line-items
+  spec_file: leaflink-line-items-api-openapi.yml
+  capability_id: BC-520.40
+  capability_id_l1: BC-520
+  capability_name: Order Fulfilment Management
+  confidence: 0.7
+  evidence: '''Create line item'', GET /orders-received/{number}/line-items/ ''List line items'''
+  reason: CRUD on order line items nested under orders-received — wholesale order capture and fulfilment
+    management on the marketplace.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: order-payments
+  spec_file: leaflink-order-payments-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.7
+  evidence: POST /order-payments/ order-payments_create Create a payment; schema OrderPaymentResponse
+  reason: Recording and retrieving payments made against wholesale orders is customer cash application/receivables
+    accounting on the seller side.
+- tag: payments
+  spec_file: leaflink-payments-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.7
+  evidence: POST /payments payments_create; schemas UnifiedOrderPayment, OrderPaymentUnifiedCustomer,
+    PaymentTypeEnum
+  reason: Creation and retrieval of order payments from customers on the wholesale platform — receivable
+    payment capture and cash application. Unified variant of the order-payments surface; 0.7 reflects
+    the sparse operation summaries.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: retailer-inventory
+  spec_file: leaflink-retailer-inventory-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.7
+  evidence: GET /retailer-inventory/ retailer-inventory_list List products; PATCH /retailer-inventory/{id}/
+    Update a product; schemas RetailerInventoryCreate, RetailerInventoryUpdate
+  reason: Maintains the retailer's on-hand inventory records of products on a platform that explicitly
+    offers 'inventory management'. L1 only, since the operations do not distinguish stock-level, replenishment
+    or accuracy sub-capabilities.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: taxes
+  spec_file: leaflink-taxes-api-openapi.yml
+  capability_id: BC-220.20
+  capability_id_l1: BC-220
+  capability_name: Indirect Tax Management
+  confidence: 0.7
+  evidence: 'GET /taxes/tax_schedules ... POST /taxes/tax_schedules ... schemas: PaginatedUnifiedTaxScheduleList,
+    UnifiedTaxSchedule'
+  reason: The operations manage tax schedules used on wholesale commerce transactions, i.e. configuration
+    of transactional (sales/excise) tax rates — indirect tax management. It is not corporate income tax
+    and not subscription billing tax, so BC-220.20 fits best; confidence moderate because the spec gives
+    no explicit statement of which tax type the schedules represent.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: traceability
+  spec_file: leaflink-traceability-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.7
+  evidence: schemas MetrcVehicle, BiotrackDriver, TraceabilityPackage, TraceabilityDelivery, LicenseApiKeyRequest;
+    POST /traceability/company_licenses/
+  reason: Integration with state seed-to-sale traceability systems (Metrc, BioTrack) covering licences,
+    packages, transfers and deliveries — this is mandated cannabis regulatory reporting/compliance, matching
+    Regulatory Compliance Management. Some overlap with supply-chain traceability, hence not maximal confidence.
+- tag: transportation
+  spec_file: leaflink-transportation-api-openapi.yml
+  capability_id: BC-2420
+  capability_id_l1: BC-2420
+  capability_name: Transport Operations Management
+  confidence: 0.7
+  evidence: POST /transportation/orders; GET/PATCH /transportation/drivers/{id}; GET/PATCH/DELETE /transportation/vehicles/{id};
+    schemas InternalTransportCompany, CompanyTransportPartner, UnifiedL3Order
+  reason: Creation of transport orders plus maintenance of the drivers, vehicles and transport partner
+    companies executing deliveries — transport execution. Mixed driver/vehicle/order surface means no
+    single L2 (dispatch vs fleet) is clearly named.
