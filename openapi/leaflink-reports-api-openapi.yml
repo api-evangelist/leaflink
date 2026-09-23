@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -49,7 +16,7 @@ security:
 - Token: []
 tags:
 - description: The Report model represents a report download initiated by a User
-  name: reports
+  name: Reports
 paths:
   /reports/:
     parameters: []
@@ -106,7 +73,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/ReportDownload'
       tags:
-      - reports
+      - Reports
     post:
       operationId: reports_create
       summary: Create
@@ -125,7 +92,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ReportDownload'
       tags:
-      - reports
+      - Reports
   /reports/{number}/:
     parameters:
     - name: number
@@ -146,7 +113,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ReportDownload'
       tags:
-      - reports
+      - Reports
 components:
   schemas:
     ReportDownload:

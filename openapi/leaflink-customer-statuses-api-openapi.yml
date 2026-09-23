@@ -59,6 +59,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Customer statuses create
+      x-summary-source: derived
     servers:
     - url: https://api.leaflink.com
       description: LeafLink API production URL.
@@ -123,6 +125,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Customer statuses update
+      x-summary-source: derived
     patch:
       operationId: customer_statuses_partial_update
       description: LeafLink API for Marketplace company customer status.
@@ -180,6 +184,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Customer statuses partial update
+      x-summary-source: derived
     delete:
       operationId: customer_statuses_destroy
       description: LeafLink API for Marketplace company customer status.
@@ -228,6 +234,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Customer statuses destroy
+      x-summary-source: derived
     servers:
     - url: https://api.leaflink.com
       description: LeafLink API production URL.
@@ -435,45 +443,6 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
-    PatchedUnifiedCompanyCustomerStatusRequest:
-      type: object
-      description: Unified serializer for the CompanyCustomerStatus model.
-      properties:
-        state:
-          type: string
-          minLength: 1
-          title: Customer Status
-          description: Customer Status State
-          maxLength: 40
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 1
-          title: Sort Order
-          description: Sort order, lower is first.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of status
-          maxLength: 1500
-        owner:
-          type:
-          - integer
-          - 'null'
-          title: Company
-          description: The Company that created the custom status.
-        is_stock:
-          type: boolean
-          title: Is a LeafLink Stock Status
-          description: Is this a stock LeafLink status?
-        hex_color:
-          type:
-          - string
-          - 'null'
-          description: Hex color for customer status
-          pattern: ^#[0-9a-fA-F]{6}$
-          maxLength: 40
     UnifiedCompanyCustomerStatusRequest:
       type: object
       description: Unified serializer for the CompanyCustomerStatus model.
@@ -515,6 +484,45 @@ components:
           maxLength: 40
       required:
       - state
+    PatchedUnifiedCompanyCustomerStatusRequest:
+      type: object
+      description: Unified serializer for the CompanyCustomerStatus model.
+      properties:
+        state:
+          type: string
+          minLength: 1
+          title: Customer Status
+          description: Customer Status State
+          maxLength: 40
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          title: Sort Order
+          description: Sort order, lower is first.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of status
+          maxLength: 1500
+        owner:
+          type:
+          - integer
+          - 'null'
+          title: Company
+          description: The Company that created the custom status.
+        is_stock:
+          type: boolean
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+        hex_color:
+          type:
+          - string
+          - 'null'
+          description: Hex color for customer status
+          pattern: ^#[0-9a-fA-F]{6}$
+          maxLength: 40
     UnifiedCompanyCustomerStatus:
       type: object
       description: Unified serializer for the CompanyCustomerStatus model.

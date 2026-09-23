@@ -12,7 +12,7 @@ servers:
   description: LeafLink API staging URL.
 - url: https://app.leaflink.com/api/v2
 tags:
-- name: facilities
+- name: Facilities
 paths:
   /facilities:
     get:
@@ -58,7 +58,7 @@ paths:
           type: string
           format: date
       tags:
-      - facilities
+      - Facilities
       security:
       - bearerAuth: []
       responses:
@@ -111,7 +111,7 @@ paths:
           type: string
           format: date
       tags:
-      - facilities
+      - Facilities
       requestBody:
         content:
           application/json:
@@ -188,7 +188,7 @@ paths:
           type: string
           format: date
       tags:
-      - facilities
+      - Facilities
       security:
       - bearerAuth: []
       responses:
@@ -253,7 +253,7 @@ paths:
           type: string
           format: date
       tags:
-      - facilities
+      - Facilities
       requestBody:
         content:
           application/json:
@@ -323,7 +323,7 @@ paths:
           type: string
           format: date
       tags:
-      - facilities
+      - Facilities
       security:
       - bearerAuth: []
       responses:
@@ -365,9 +365,7 @@ paths:
       description: 'List all facilities.
 
 
-        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
-
-        '
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       responses:
         '200':
           description: ''
@@ -393,7 +391,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Facility_2'
       tags:
-      - facilities
+      - Facilities
       security:
       - Token: []
     servers:
@@ -405,9 +403,7 @@ paths:
       description: 'Get facility by ID.
 
 
-        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
-
-        '
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       parameters:
       - name: id
         in: path
@@ -423,13 +419,61 @@ paths:
               schema:
                 $ref: '#/components/schemas/Facility_2'
       tags:
-      - facilities
+      - Facilities
       security:
       - Token: []
     servers:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
+    FacilityCreateRequest:
+      type: object
+      description: Serializer for creating a facility.
+      properties:
+        company_id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          default: ''
+        address:
+          allOf:
+          - $ref: '#/components/schemas/AddressInputRequest'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type: boolean
+          default: false
+      required:
+      - company_id
+      - name
+    PatchedFacilityPatchRequest:
+      type: object
+      description: Serializer for patching a facility.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+        address_id:
+          type:
+          - integer
+          - 'null'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type:
+          - boolean
+          - 'null'
     AddressInputRequest:
       type: object
       description: Nested serializer for the address payload required on facility creation.
@@ -471,44 +515,6 @@ components:
       - city
       - state
       - zipcode
-    Facility:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Name of the facility
-      required:
-      - id
-      - name
-    FacilityCreateRequest:
-      type: object
-      description: Serializer for creating a facility.
-      properties:
-        company_id:
-          type: integer
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        description:
-          type: string
-          default: ''
-        address:
-          allOf:
-          - $ref: '#/components/schemas/AddressInputRequest'
-        external_id:
-          type:
-          - integer
-          - 'null'
-        is_archived:
-          type: boolean
-          default: false
-      required:
-      - company_id
-      - name
     PaginatedFacilityList:
       type: object
       required:
@@ -534,28 +540,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Facility'
-    PatchedFacilityPatchRequest:
+    Facility:
       type: object
-      description: Serializer for patching a facility.
+      description: Serializer for a Facility.
       properties:
+        id:
+          type: integer
         name:
           type: string
-          minLength: 1
-          maxLength: 100
-        description:
-          type: string
-        address_id:
-          type:
-          - integer
-          - 'null'
-        external_id:
-          type:
-          - integer
-          - 'null'
-        is_archived:
-          type:
-          - boolean
-          - 'null'
+          description: Name of the facility
+      required:
+      - id
+      - name
     Facility_2:
       type: object
       properties:

@@ -12,14 +12,14 @@ servers:
   description: LeafLink API staging URL.
 - url: https://app.leaflink.com/api/v2
 tags:
-- name: contacts
+- name: Contacts
 paths:
   /contacts:
     post:
       operationId: contacts_create
       description: LeafLink API for Marketplace contacts.
       tags:
-      - contacts
+      - Contacts
       requestBody:
         content:
           application/json:
@@ -59,6 +59,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Contacts create
+      x-summary-source: derived
     servers:
     - url: https://api.leaflink.com
       description: LeafLink API production URL.
@@ -83,7 +85,7 @@ paths:
           type: string
           format: date
       tags:
-      - contacts
+      - Contacts
       requestBody:
         content:
           application/json:
@@ -123,6 +125,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Contacts update
+      x-summary-source: derived
     patch:
       operationId: contacts_partial_update
       description: LeafLink API for Marketplace contacts.
@@ -141,7 +145,7 @@ paths:
           type: string
           format: date
       tags:
-      - contacts
+      - Contacts
       requestBody:
         content:
           application/json:
@@ -180,6 +184,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Contacts partial update
+      x-summary-source: derived
     delete:
       operationId: contacts_destroy
       description: Perform a 'DELETE' on a contact. It will mark the specified contact as Deleted.
@@ -198,7 +204,7 @@ paths:
           type: string
           format: date
       tags:
-      - contacts
+      - Contacts
       security:
       - bearerAuth: []
       responses:
@@ -228,6 +234,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Contacts destroy
+      x-summary-source: derived
     servers:
     - url: https://api.leaflink.com
       description: LeafLink API production URL.
@@ -392,7 +400,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Contact'
       tags:
-      - contacts
+      - Contacts
       security:
       - Token: []
     post:
@@ -409,7 +417,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Contact'
       tags:
-      - contacts
+      - Contacts
       security:
       - Token: []
     servers:
@@ -434,7 +442,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Contact'
       tags:
-      - contacts
+      - Contacts
       security:
       - Token: []
     patch:
@@ -451,7 +459,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Contact'
       tags:
-      - contacts
+      - Contacts
       security:
       - Token: []
     delete:
@@ -462,13 +470,81 @@ paths:
         '204':
           description: ''
       tags:
-      - contacts
+      - Contacts
       security:
       - Token: []
     servers:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
+    PatchedUnifiedContactRequest:
+      type: object
+      description: Unified Contact serializer
+      properties:
+        owner:
+          type: integer
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        secondary_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Secondary email address
+          maxLength: 255
+        role:
+          type:
+          - string
+          - 'null'
+          title: Position
+          description: Position or role at company
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the contact
+          maxLength: 1500
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        secondary_phone:
+          type:
+          - string
+          - 'null'
+          description: Secondary Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        secondary_phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        delete:
+          type: boolean
+          title: Contact deleted
+          description: Is this Contact marked as deleted?
     UnifiedContactRequest:
       type: object
       description: Unified Contact serializer
@@ -626,74 +702,6 @@ components:
       - id
       - modified_date
       - owner
-    PatchedUnifiedContactRequest:
-      type: object
-      description: Unified Contact serializer
-      properties:
-        owner:
-          type: integer
-        first_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-        last_name:
-          type: string
-          maxLength: 30
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          title: Email address
-          maxLength: 255
-        secondary_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          title: Secondary email address
-          maxLength: 255
-        role:
-          type:
-          - string
-          - 'null'
-          title: Position
-          description: Position or role at company
-          maxLength: 400
-        description:
-          type:
-          - string
-          - 'null'
-          description: An overview of the contact
-          maxLength: 1500
-        phone:
-          type:
-          - string
-          - 'null'
-          description: Phone Number of Brand
-          pattern: ^(\d{10})?$
-          maxLength: 400
-        phone_extension:
-          type:
-          - string
-          - 'null'
-          maxLength: 20
-        secondary_phone:
-          type:
-          - string
-          - 'null'
-          description: Secondary Phone Number of Brand
-          pattern: ^(\d{10})?$
-          maxLength: 400
-        secondary_phone_extension:
-          type:
-          - string
-          - 'null'
-          maxLength: 20
-        delete:
-          type: boolean
-          title: Contact deleted
-          description: Is this Contact marked as deleted?
     Contact:
       required:
       - owner

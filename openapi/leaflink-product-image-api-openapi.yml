@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -394,49 +392,13 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedProductBulkCreate:
+    UnifiedProductImageRequest:
       type: object
-      description: Unified ProductImage bulk create serializer.
+      description: Unified ProductImage serializer.
       properties:
-        product_id:
-          type: integer
-          description: Product ID
-        images:
-          type: array
-          items:
-            type: string
-            format: uri
-          minItems: 1
-        positions:
-          type: array
-          items:
-            type: integer
-          minItems: 1
-      required:
-      - images
-      - positions
-      - product_id
-    UnifiedCloneProductImage:
-      type: object
-      description: Unified Product Image serializer for cloning product images.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time the resource was created
-        modified_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time of the last edit
         image:
           type: string
-          format: uri
-          readOnly: true
+          format: binary
           description: The uploaded file, sent via multipart form data. Retrieved as a url link.
         product:
           type: integer
@@ -477,10 +439,7 @@ components:
           title: Crop Box Height
           description: The height of the image crop box
       required:
-      - created_date
-      - id
       - image
-      - modified_date
       - position
       - product
     UnifiedProductImage:
@@ -549,6 +508,50 @@ components:
       - modified_date
       - position
       - product
+    UnifiedProductBulkCreateRequest:
+      type: object
+      description: Unified ProductImage bulk create serializer.
+      properties:
+        product_id:
+          type: integer
+          description: Product ID
+        images:
+          type: array
+          items:
+            type: string
+            format: binary
+          minItems: 1
+        positions:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+      required:
+      - images
+      - positions
+      - product_id
+    UnifiedProductBulkCreate:
+      type: object
+      description: Unified ProductImage bulk create serializer.
+      properties:
+        product_id:
+          type: integer
+          description: Product ID
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          minItems: 1
+        positions:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+      required:
+      - images
+      - positions
+      - product_id
     PaginatedUnifiedProductImageList:
       type: object
       required:
@@ -574,56 +577,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedProductImage'
-    UnifiedProductImageRequest:
-      type: object
-      description: Unified ProductImage serializer.
-      properties:
-        image:
-          type: string
-          format: binary
-          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
-        product:
-          type: integer
-          description: The Product this image is attached to
-        position:
-          type: integer
-          description: The position of the image in the product image gallery
-        crop_x:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box X Position
-          description: The X position of the image crop box
-        crop_y:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box Y Position
-          description: The Y position of the image crop box
-        crop_w:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box Width
-          description: The width of the image crop box
-        crop_h:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box Height
-          description: The height of the image crop box
-      required:
-      - image
-      - position
-      - product
     UnifiedCloneProductImageRequest:
       type: object
       description: Unified Product Image serializer for cloning product images.
@@ -669,28 +622,73 @@ components:
       required:
       - position
       - product
-    UnifiedProductBulkCreateRequest:
+    UnifiedCloneProductImage:
       type: object
-      description: Unified ProductImage bulk create serializer.
+      description: Unified Product Image serializer for cloning product images.
       properties:
-        product_id:
+        id:
           type: integer
-          description: Product ID
-        images:
-          type: array
-          items:
-            type: string
-            format: binary
-          minItems: 1
-        positions:
-          type: array
-          items:
-            type: integer
-          minItems: 1
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        image:
+          type: string
+          format: uri
+          readOnly: true
+          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
+        product:
+          type: integer
+          description: The Product this image is attached to
+        position:
+          type: integer
+          description: The position of the image in the product image gallery
+        crop_x:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box X Position
+          description: The X position of the image crop box
+        crop_y:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Y Position
+          description: The Y position of the image crop box
+        crop_w:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Width
+          description: The width of the image crop box
+        crop_h:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Height
+          description: The height of the image crop box
       required:
-      - images
-      - positions
-      - product_id
+      - created_date
+      - id
+      - image
+      - modified_date
+      - position
+      - product
   securitySchemes:
     bearerAuth:
       type: http

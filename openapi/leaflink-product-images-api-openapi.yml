@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -48,8 +15,8 @@ servers:
 security:
 - Token: []
 tags:
-- description: Product images for display in the marketplace.  Each product may have up to 5 images.
-  name: product-images
+- description: Product images for display in the marketplace. Each product may have up to 5 images.
+  name: Product Images
 paths:
   /product-images/:
     parameters: []
@@ -58,9 +25,6 @@ paths:
       summary: List images
       description: 'List all all images.
 
-        <br />
-
-        <br />
 
         Retrieved per product via the product query parameter or with the following path parameter, /products/{product_id}/images'
       parameters:
@@ -119,7 +83,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/ProductImageResponse'
       tags:
-      - product-images
+      - Product Images
     post:
       operationId: product-images_create
       summary: Upload an image
@@ -156,7 +120,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductImageResponse'
       tags:
-      - product-images
+      - Product Images
   /product-images/{id}/:
     parameters:
     - name: id
@@ -177,7 +141,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductImageResponse'
       tags:
-      - product-images
+      - Product Images
     delete:
       operationId: product-images_delete
       summary: Delete an image
@@ -186,7 +150,7 @@ paths:
         '204':
           description: ''
       tags:
-      - product-images
+      - Product Images
 components:
   schemas:
     ProductImageResponse:

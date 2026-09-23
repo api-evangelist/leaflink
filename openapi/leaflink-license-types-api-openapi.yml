@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -49,7 +16,7 @@ security:
 - Token: []
 tags:
 - description: The LicenseType model represents a category of state-issued licenses.
-  name: license-types
+  name: License Types
 paths:
   /license-types/:
     parameters: []
@@ -58,9 +25,10 @@ paths:
       summary: List
       description: 'List all licenses types available on LeafLink.
 
-        <br />You can list the license types associated with
 
-        a company''s products at <b>/companies/{company_id}/license-types</b>'
+        You can list the license types associated with
+
+        a company''s products at /companies/{company_id}/license-types'
       parameters:
       - name: limit
         in: query
@@ -102,7 +70,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/LicenseType'
       tags:
-      - license-types
+      - License Types
   /license-types/{id}/:
     parameters:
     - name: id
@@ -123,7 +91,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LicenseType'
       tags:
-      - license-types
+      - License Types
 components:
   schemas:
     LicenseType:

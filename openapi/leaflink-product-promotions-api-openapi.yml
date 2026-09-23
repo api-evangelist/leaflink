@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -80,6 +78,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Product promotions update
+      x-summary-source: derived
     delete:
       operationId: product_promotions_destroy
       description: API endpoint to create, view, and edit ProductPromotions for a company.
@@ -128,8 +128,16 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Product promotions destroy
+      x-summary-source: derived
 components:
   schemas:
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
     ProductPromotionRequest:
       type: object
       properties:
@@ -199,6 +207,39 @@ components:
       - products
       - start_date
       - status
+    UnifiedCompany:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+      required:
+      - id
+      - name
+    PromotionStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Completed
+      type: string
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
     ProductPromotion:
       type: object
       properties:
@@ -274,45 +315,6 @@ components:
       - products
       - start_date
       - status
-    UnifiedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-      required:
-      - id
-      - name
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
-    PromotionStatusEnum:
-      enum:
-      - Pending
-      - Approved
-      - Completed
-      type: string
-    UnifiedCompany:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-      required:
-      - id
-      - name
   securitySchemes:
     bearerAuth:
       type: http

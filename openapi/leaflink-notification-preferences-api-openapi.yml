@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -95,7 +93,7 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
   /notification/preferences/user/{user_id}:
     get:
-      summary: Get a user's notification preferences.
+      summary: Get a user's notification preferences
       description: Get a user's notification preferences.
       parameters:
       - in: path
@@ -168,8 +166,10 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      operationId: getNotificationPreferencesUserByUserId
+      x-operation-id-source: derived
     patch:
-      summary: Update a user's notification preferences.
+      summary: Update a user's notification preferences
       description: Update a user's notification preferences.
       requestBody:
         required: true
@@ -250,29 +250,75 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      operationId: patchNotificationPreferencesUserByUserId
+      x-operation-id-source: derived
 components:
   schemas:
-    NotificationTopic:
+    NotificationPreferencesPayloadSchema:
       type: object
-      description: Serializer for NotificationTopic model.
+      properties:
+        topic:
+          type: string
+        medium:
+          type: string
+        enabled_timestamp:
+          type: boolean
+      required:
+      - enabled_timestamp
+      - medium
+      - topic
+    MultipleErrors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        code:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        source:
+          $ref: '#/components/schemas/ErrorSource'
+        meta: {}
+      required:
+      - status
+    ErrorSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+        parameter:
+          type: string
+    NotificationPreferences:
+      type: object
+      description: Schema for notification preferences payload.
       properties:
         name:
           type: string
           maxLength: 255
-        default_value:
-          type: boolean
-        description:
+        display_description:
           type: string
           maxLength: 255
-        available_medium:
+        items:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/NotificationTopic'
           readOnly: true
       required:
-      - available_medium
-      - default_value
-      - description
+      - display_description
+      - items
       - name
     PaginatedNotificationPreferencesList:
       type: object
@@ -299,24 +345,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotificationPreferences'
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-        code:
-          type: string
-        title:
-          type: string
-        detail:
-          type: string
-        source:
-          $ref: '#/components/schemas/ErrorSource'
-        meta: {}
-      required:
-      - status
     NotificationPreferences-unified-upstream-notification-service:
       type: object
       properties:
@@ -333,54 +361,28 @@ components:
       - enabled_timestamp
       - medium
       - topic
-    MultipleErrors:
+    NotificationTopic:
       type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-    NotificationPreferencesPayloadSchema:
-      type: object
-      properties:
-        topic:
-          type: string
-        medium:
-          type: string
-        enabled_timestamp:
-          type: boolean
-      required:
-      - enabled_timestamp
-      - medium
-      - topic
-    NotificationPreferences:
-      type: object
-      description: Schema for notification preferences payload.
+      description: Serializer for NotificationTopic model.
       properties:
         name:
           type: string
           maxLength: 255
-        display_description:
+        default_value:
+          type: boolean
+        description:
           type: string
           maxLength: 255
-        items:
+        available_medium:
           type: array
           items:
-            $ref: '#/components/schemas/NotificationTopic'
+            type: string
           readOnly: true
       required:
-      - display_description
-      - items
+      - available_medium
+      - default_value
+      - description
       - name
-    ErrorSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-        parameter:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

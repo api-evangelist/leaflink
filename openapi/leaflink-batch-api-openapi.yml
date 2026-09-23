@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: batch
+- name: Batch
 paths:
   /batches:
     get:
@@ -84,7 +82,7 @@ paths:
           type: string
           format: date
       tags:
-      - batch
+      - Batch
       security:
       - bearerAuth: []
       responses:
@@ -156,7 +154,7 @@ paths:
           type: string
           format: date
       tags:
-      - batch
+      - Batch
       requestBody:
         content:
           application/json:
@@ -260,7 +258,7 @@ paths:
           type: string
           format: date
       tags:
-      - batch
+      - Batch
       security:
       - bearerAuth: []
       responses:
@@ -357,7 +355,7 @@ paths:
           type: string
           format: date
       tags:
-      - batch
+      - Batch
       requestBody:
         content:
           application/json:
@@ -437,48 +435,12 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    SourceTypeEnum:
-      enum:
-      - production_batch
-      - source_label
-      type: string
     Terpene:
       type: object
       description: Serializer for Terpene (nested in Batch)
       properties:
         name:
           type: string
-        percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - name
-      - percentage
-    PricingStrategyInputRequest:
-      type: object
-      description: Serializer for pricing strategy input (nested in batch update).
-      properties:
-        product_id:
-          type: integer
-        price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        customer_group_id:
-          type:
-          - integer
-          - 'null'
-      required:
-      - price
-      - product_id
-    TerpeneRequest:
-      type: object
-      description: Serializer for Terpene (nested in Batch)
-      properties:
-        name:
-          type: string
-          minLength: 1
         percentage:
           type: string
           format: decimal
@@ -499,33 +461,6 @@ components:
       - active_batch_count
       - inactive_batch_count
       - low_inventory_batch_count
-    BatchListPaginatedResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedBatch'
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/BatchMetaPayload'
-      required:
-      - count
-      - next
-      - previous
-      - results
     BatchUpdateRequest:
       type: object
       description: Serializer for updating a batch (PUT, full replace). id and company_id are injected by the view.
@@ -585,6 +520,63 @@ components:
       - is_assigned
       - status
       - terpenes
+    TerpeneRequest:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+          minLength: 1
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
+    SourceTypeEnum:
+      enum:
+      - production_batch
+      - source_label
+      type: string
+    BatchCreateRequest:
+      type: object
+      description: Serializer for creating a batch. company_id is injected by the view.
+      properties:
+        company_id:
+          type: integer
+        number:
+          type: string
+          minLength: 1
+          maxLength: 100
+        source_type:
+          allOf:
+          - $ref: '#/components/schemas/SourceTypeEnum'
+          default: production_batch
+        product_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - company_id
+      - number
+    PricingStrategyInputRequest:
+      type: object
+      description: Serializer for pricing strategy input (nested in batch update).
+      properties:
+        product_id:
+          type: integer
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        customer_group_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - price
+      - product_id
     UnifiedBatch:
       type: object
       description: Serializer for Batch - read/response only.
@@ -697,27 +689,33 @@ components:
       - source
       - source_type
       - status
-    BatchCreateRequest:
+    BatchListPaginatedResponse:
       type: object
-      description: Serializer for creating a batch. company_id is injected by the view.
       properties:
-        company_id:
+        count:
           type: integer
-        number:
-          type: string
-          minLength: 1
-          maxLength: 100
-        source_type:
-          allOf:
-          - $ref: '#/components/schemas/SourceTypeEnum'
-          default: production_batch
-        product_ids:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
           type: array
           items:
-            type: integer
+            $ref: '#/components/schemas/UnifiedBatch'
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/BatchMetaPayload'
       required:
-      - company_id
-      - number
+      - count
+      - next
+      - previous
+      - results
   securitySchemes:
     bearerAuth:
       type: http

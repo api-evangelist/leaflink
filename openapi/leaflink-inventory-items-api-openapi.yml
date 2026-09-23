@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -48,7 +15,7 @@ servers:
 security:
 - Token: []
 tags:
-- name: inventory-items
+- name: Inventory Items
   x-displayName: Inventory Items
   description: The `InventoryItem` model represents items of a particular inventory batch at a given facility.
 paths:
@@ -57,7 +24,12 @@ paths:
     get:
       operationId: inventory-items_list
       summary: List
-      description: "List all inventory items. By default this returns non-archived items - you can query for archived items by \nincluding the \"include_archived\" query parameter.\n\n__⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.\n"
+      description: 'List all inventory items. By default this returns non-archived items - you can query for archived items by
+
+        including the "include_archived" query parameter.
+
+
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       parameters:
       - name: include_archived
         in: query
@@ -96,7 +68,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/InventoryItem'
       tags:
-      - inventory-items
+      - Inventory Items
     post:
       operationId: inventory-items_create
       summary: Create
@@ -112,9 +84,7 @@ paths:
         for archived items by including the "include_archived" query parameter.
 
 
-        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
-
-        '
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       requestBody:
         content:
           application/json:
@@ -129,7 +99,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InventoryItem'
       tags:
-      - inventory-items
+      - Inventory Items
   /inventory/items/{id}/:
     get:
       operationId: inventory-items_read
@@ -137,9 +107,7 @@ paths:
       description: 'Get inventory item by ID.
 
 
-        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
-
-        '
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       parameters:
       - name: id
         in: path
@@ -161,16 +129,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/InventoryItem'
       tags:
-      - inventory-items
+      - Inventory Items
     patch:
       operationId: inventory-items_partial_update
       summary: Update
       description: 'Update an existing inventory item by ID.
 
 
-        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
-
-        '
+        __⚠️ WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       parameters:
       - name: id
         in: path
@@ -198,9 +164,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/InventoryItem'
       tags:
-      - inventory-items
+      - Inventory Items
 components:
   schemas:
+    InventoryItemCreate:
+      required:
+      - batch
+      - is_archived
+      - facility
+      - product
+      - quantity
+      type: object
+      properties:
+        batch:
+          type: integer
+          description: ID of the associated batch.
+        is_archived:
+          type: boolean
+          description: Indicated whether the inventory item is archived.
+        facility:
+          type: integer
+          description: ID of the associated facility.
+        product:
+          type: integer
+          description: ID of the associated product.
+        quantity:
+          type: number
+          format: decimal
+          description: Number of inventory items available.
     InventoryItem:
       type: object
       properties:
@@ -244,31 +235,6 @@ components:
         is_archived:
           type: boolean
           description: Indicated whether the inventory item is active.
-        quantity:
-          type: number
-          format: decimal
-          description: Number of inventory items available.
-    InventoryItemCreate:
-      required:
-      - batch
-      - is_archived
-      - facility
-      - product
-      - quantity
-      type: object
-      properties:
-        batch:
-          type: integer
-          description: ID of the associated batch.
-        is_archived:
-          type: boolean
-          description: Indicated whether the inventory item is archived.
-        facility:
-          type: integer
-          description: ID of the associated facility.
-        product:
-          type: integer
-          description: ID of the associated product.
         quantity:
           type: number
           format: decimal

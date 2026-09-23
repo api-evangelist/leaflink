@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: chats
+- name: Chats
 paths:
   /chats:
     get:
@@ -72,7 +70,7 @@ paths:
           type: string
           format: date
       tags:
-      - chats
+      - Chats
       security:
       - bearerAuth: []
       responses:
@@ -106,11 +104,13 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats list
+      x-summary-source: derived
     post:
       operationId: chats_create
       description: Create a new discussion with the first message.
       tags:
-      - chats
+      - Chats
       requestBody:
         content:
           application/json:
@@ -150,6 +150,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats create
+      x-summary-source: derived
   /chats/{id}:
     get:
       operationId: chats_retrieve
@@ -169,7 +171,7 @@ paths:
           type: string
           format: date
       tags:
-      - chats
+      - Chats
       security:
       - bearerAuth: []
       responses:
@@ -203,6 +205,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats retrieve
+      x-summary-source: derived
     put:
       operationId: chats_update
       description: LeafLink API for Marketplace discussions.
@@ -221,7 +225,7 @@ paths:
           type: string
           format: date
       tags:
-      - chats
+      - Chats
       requestBody:
         content:
           application/json:
@@ -261,6 +265,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats update
+      x-summary-source: derived
     patch:
       operationId: chats_partial_update
       description: LeafLink API for Marketplace discussions.
@@ -279,7 +285,7 @@ paths:
           type: string
           format: date
       tags:
-      - chats
+      - Chats
       requestBody:
         content:
           application/json:
@@ -318,6 +324,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats partial update
+      x-summary-source: derived
     delete:
       operationId: chats_destroy
       description: LeafLink API for Marketplace discussions.
@@ -336,7 +344,7 @@ paths:
           type: string
           format: date
       tags:
-      - chats
+      - Chats
       security:
       - bearerAuth: []
       responses:
@@ -366,6 +374,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats destroy
+      x-summary-source: derived
   /chats/{id}/messages/{message_id}/read:
     patch:
       operationId: chats_messages_read_partial_update
@@ -391,7 +401,7 @@ paths:
           type: string
           format: date
       tags:
-      - chats
+      - Chats
       requestBody:
         content:
           application/json:
@@ -430,13 +440,15 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats messages read partial update
+      x-summary-source: derived
   /chats/bulk_update:
     patch:
       operationId: chats_bulk_update_partial_update
       description: 'Takes a list of chat IDs and updates their status to the given status. Status must be one of: in_progress, completed'
       summary: Bulk update chat status
       tags:
-      - chats
+      - Chats
       requestBody:
         content:
           application/json:
@@ -473,30 +485,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    Author:
-      type: object
-      description: Author serializer
-      properties:
-        id:
-          type: integer
-        company:
-          allOf:
-          - $ref: '#/components/schemas/DiscussionCompany'
-          readOnly: true
-        user:
-          type: integer
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-      required:
-      - company
-      - email
-      - id
-      - name
-      - user
     Message:
       type: object
       description: Discussion Message serializer
@@ -542,70 +530,7 @@ components:
           items:
             type: integer
           writeOnly: true
-    UnifiedChatsRequest:
-      type: object
-      description: Unified Chats serializer
-      properties:
-        topic:
-          type: string
-          minLength: 1
-        sender_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        recipient_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        creator:
-          type:
-          - integer
-          - 'null'
-          description: Discussion Creator
-        first_message:
-          allOf:
-          - $ref: '#/components/schemas/MessageRequest'
-          writeOnly: true
-        product_id:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
-      required:
-      - first_message
-      - recipient_company
-      - sender_company
-      - topic
-    PatchedMessageReadRequest:
-      type: object
-      description: Discussion Message read serializer
-      properties:
-        read_by_sender_company:
-          type: boolean
-        read_by_recipient_company:
-          type: boolean
-    PatchedUnifiedChatsRequest:
-      type: object
-      description: Unified Chats serializer
-      properties:
-        topic:
-          type: string
-          minLength: 1
-        sender_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        recipient_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        creator:
-          type:
-          - integer
-          - 'null'
-          description: Discussion Creator
-        first_message:
-          allOf:
-          - $ref: '#/components/schemas/MessageRequest'
-          writeOnly: true
-        product_id:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
-    DiscussionCompanyRequest:
+    DiscussionCompany:
       type: object
       description: Company serializer
       properties:
@@ -615,9 +540,14 @@ components:
           type:
           - string
           - 'null'
-          minLength: 1
+        image_url:
+          type:
+          - string
+          - 'null'
+          readOnly: true
       required:
       - id
+      - image_url
     MessageRequest:
       type: object
       description: Discussion Message serializer
@@ -627,33 +557,6 @@ components:
           minLength: 1
       required:
       - message
-    PaginatedUnifiedChatsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 420
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        current_page:
-          type: integer
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedChats'
-    ChatStatusEnum:
-      enum:
-      - in_progress
-      - completed
-      type: string
     UnifiedChats:
       type: object
       description: Unified Chats serializer
@@ -687,7 +590,84 @@ components:
       - sender_company
       - status
       - topic
-    DiscussionCompany:
+    PaginatedUnifiedChatsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        current_page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedChats'
+    PatchedUnifiedChatsRequest:
+      type: object
+      description: Unified Chats serializer
+      properties:
+        topic:
+          type: string
+          minLength: 1
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        first_message:
+          allOf:
+          - $ref: '#/components/schemas/MessageRequest'
+          writeOnly: true
+        product_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+    UnifiedChatsRequest:
+      type: object
+      description: Unified Chats serializer
+      properties:
+        topic:
+          type: string
+          minLength: 1
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        first_message:
+          allOf:
+          - $ref: '#/components/schemas/MessageRequest'
+          writeOnly: true
+        product_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+      required:
+      - first_message
+      - recipient_company
+      - sender_company
+      - topic
+    DiscussionCompanyRequest:
       type: object
       description: Company serializer
       properties:
@@ -697,14 +677,46 @@ components:
           type:
           - string
           - 'null'
-        image_url:
-          type:
-          - string
-          - 'null'
-          readOnly: true
+          minLength: 1
       required:
       - id
-      - image_url
+    Author:
+      type: object
+      description: Author serializer
+      properties:
+        id:
+          type: integer
+        company:
+          allOf:
+          - $ref: '#/components/schemas/DiscussionCompany'
+          readOnly: true
+        user:
+          type: integer
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+      required:
+      - company
+      - email
+      - id
+      - name
+      - user
+    PatchedMessageReadRequest:
+      type: object
+      description: Discussion Message read serializer
+      properties:
+        read_by_sender_company:
+          type: boolean
+        read_by_recipient_company:
+          type: boolean
+    ChatStatusEnum:
+      enum:
+      - in_progress
+      - completed
+      type: string
   securitySchemes:
     bearerAuth:
       type: http

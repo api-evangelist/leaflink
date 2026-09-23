@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: deliveries
+- name: Deliveries
 paths:
   /deliveries:
     get:
@@ -113,7 +111,7 @@ paths:
           type: string
           format: date
       tags:
-      - deliveries
+      - Deliveries
       security:
       - bearerAuth: []
       responses:
@@ -147,11 +145,13 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Deliveries list
+      x-summary-source: derived
     post:
       operationId: deliveries_create
       description: Unified API product categories.
       tags:
-      - deliveries
+      - Deliveries
       requestBody:
         content:
           application/json:
@@ -191,109 +191,44 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Deliveries create
+      x-summary-source: derived
 components:
   schemas:
-    InternalVehicle:
+    InternalLogisticsCompanyRequest:
       type: object
-      description: Internal serializer for Vehicle Model.
+      description: Internal serializer for the Company model to be used by L3 endpoints.
       properties:
-        id:
-          type: integer
-          readOnly: true
-        make:
-          type:
-          - string
-          - 'null'
-          title: Vehicle Make
-          description: Vehicle Make
-          maxLength: 255
-        model_year:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Vehicle Model Year
-        model_name:
-          type:
-          - string
-          - 'null'
-          description: Vehicle Model Name
-          maxLength: 255
-        license_number:
-          type:
-          - string
-          - 'null'
-          description: License Number of Vehicle
-          maxLength: 15
-        capacity:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Vehicle Capacity
-        has_air_conditioner:
-          type: boolean
-          description: Vehicle Has Air Conditioner
-      required:
-      - id
-    PaymentTermRequest:
-      type: object
-      description: Serialize payment term.
-      properties:
-        term:
+        display_name:
           type: string
           minLength: 1
-          title: Payment Term Name
-          description: Name of the Payment Term
-          maxLength: 80
-        description:
-          type: string
-          minLength: 1
-          title: Payment Term description
-          description: Description of the Payment Term
-          maxLength: 400
-        days:
-          type: integer
       required:
-      - days
-      - description
-      - term
-    Address:
+      - display_name
+    PaginatedUnifiedL3OrderList:
       type: object
-      description: 'Serializer for Address models via the internal API.
-
-        This includes but is not limited to delivery and corporate addresses for Companies.'
-      properties:
-        address:
-          type: string
-          description: Address
-          maxLength: 400
-        unit_number:
-          type: string
-          title: 'Unit #'
-          description: 'Unit #'
-          maxLength: 400
-        city:
-          type: string
-          description: City
-          maxLength: 400
-        county:
-          type: string
-          description: County
-          maxLength: 400
-        state:
-          type: string
-        zipcode:
-          type: string
-          description: Zipcode
-          maxLength: 7
       required:
-      - address
-      - city
-      - state
-      - zipcode
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedL3Order'
     Driver:
       type: object
       description: serializer for Driver Model.
@@ -455,6 +390,25 @@ components:
       - payment_term
       - pickup_driver
       - pickup_vehicle
+    PaymentMethodRequest:
+      type: object
+      description: Serialize payment method.
+      properties:
+        method:
+          type: string
+          minLength: 1
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
+        description:
+          type: string
+          minLength: 1
+          title: Payment Method Description
+          description: Description of the Payment Method
+          maxLength: 400
+      required:
+      - description
+      - method
     InternalVehicleRequest:
       type: object
       description: Internal serializer for Vehicle Model.
@@ -495,6 +449,306 @@ components:
         has_air_conditioner:
           type: boolean
           description: Vehicle Has Air Conditioner
+    UnifiedL3OrderStatusEnum:
+      enum:
+      - uploaded
+      - created
+      - assigned
+      - planned
+      - shipped
+      - delivered
+      - deleted
+      type: string
+    Address:
+      type: object
+      description: 'Serializer for Address models via the internal API.
+
+        This includes but is not limited to delivery and corporate addresses for Companies.'
+      properties:
+        address:
+          type: string
+          description: Address
+          maxLength: 400
+        unit_number:
+          type: string
+          title: 'Unit #'
+          description: 'Unit #'
+          maxLength: 400
+        city:
+          type: string
+          description: City
+          maxLength: 400
+        county:
+          type: string
+          description: County
+          maxLength: 400
+        state:
+          type: string
+        zipcode:
+          type: string
+          description: Zipcode
+          maxLength: 7
+      required:
+      - address
+      - city
+      - state
+      - zipcode
+    DriverRequest:
+      type: object
+      description: serializer for Driver Model.
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          title: First Name of Driver
+          description: First Name
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          description: Last Name of Driver
+          maxLength: 100
+        metrc_employee_id:
+          type: string
+          minLength: 1
+          description: METRC Employee ID for Driver
+          maxLength: 100
+        license_number:
+          type: string
+          minLength: 1
+          description: License Number of Driver
+          maxLength: 15
+        phone:
+          type: string
+          minLength: 1
+          description: Phone Number of Driver
+          maxLength: 15
+        is_active:
+          type: boolean
+          title: Active
+          description: Is an active driver?
+      required:
+      - first_name
+      - last_name
+      - license_number
+      - metrc_employee_id
+      - phone
+    ComplianceLicense:
+      type: object
+      description: Serializer for License models via the v2 API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+          description: Type
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    InternalVehicle:
+      type: object
+      description: Internal serializer for Vehicle Model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        make:
+          type:
+          - string
+          - 'null'
+          title: Vehicle Make
+          description: Vehicle Make
+          maxLength: 255
+        model_year:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Model Year
+        model_name:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Model Name
+          maxLength: 255
+        license_number:
+          type:
+          - string
+          - 'null'
+          description: License Number of Vehicle
+          maxLength: 15
+        capacity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Capacity
+        has_air_conditioner:
+          type: boolean
+          description: Vehicle Has Air Conditioner
+      required:
+      - id
+    PaymentMethod:
+      type: object
+      description: Serialize payment method.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        method:
+          type: string
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
+        description:
+          type: string
+          title: Payment Method Description
+          description: Description of the Payment Method
+          maxLength: 400
+      required:
+      - created_on
+      - description
+      - id
+      - method
+      - modified
+    PaymentTerm:
+      type: object
+      description: Serialize payment term.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        term:
+          type: string
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
+        description:
+          type: string
+          title: Payment Term description
+          description: Description of the Payment Term
+          maxLength: 400
+        days:
+          type: integer
+      required:
+      - created_on
+      - days
+      - description
+      - id
+      - modified
+      - term
+    TransportCompany:
+      type: object
+      description: Serializer for TransportCompany model
+      properties:
+        transport_company_id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        medical_license_number:
+          type: string
+          readOnly: true
+        adult_use_license_number:
+          type: string
+          readOnly: true
+        state:
+          type: string
+          readOnly: true
+      required:
+      - adult_use_license_number
+      - medical_license_number
+      - name
+      - state
+      - transport_company_id
+    InternalLogisticsCompany:
+      type: object
+      description: Internal serializer for the Company model to be used by L3 endpoints.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComplianceLicense'
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+        corporate_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+      required:
+      - corporate_address
+      - delivery_address
+      - display_name
+      - id
+      - licenses
+    PaymentTermRequest:
+      type: object
+      description: Serialize payment term.
+      properties:
+        term:
+          type: string
+          minLength: 1
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
+        description:
+          type: string
+          minLength: 1
+          title: Payment Term description
+          description: Description of the Payment Term
+          maxLength: 400
+        days:
+          type: integer
+      required:
+      - days
+      - description
+      - term
     UnifiedL3Order:
       type: object
       description: Internal serializer for L3Order Model.
@@ -671,258 +925,6 @@ components:
       - pickup_vehicle
       - transport_company
       - transport_order_id
-    TransportCompany:
-      type: object
-      description: Serializer for TransportCompany model
-      properties:
-        transport_company_id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        medical_license_number:
-          type: string
-          readOnly: true
-        adult_use_license_number:
-          type: string
-          readOnly: true
-        state:
-          type: string
-          readOnly: true
-      required:
-      - adult_use_license_number
-      - medical_license_number
-      - name
-      - state
-      - transport_company_id
-    PaymentTerm:
-      type: object
-      description: Serialize payment term.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_on:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        term:
-          type: string
-          title: Payment Term Name
-          description: Name of the Payment Term
-          maxLength: 80
-        description:
-          type: string
-          title: Payment Term description
-          description: Description of the Payment Term
-          maxLength: 400
-        days:
-          type: integer
-      required:
-      - created_on
-      - days
-      - description
-      - id
-      - modified
-      - term
-    PaginatedUnifiedL3OrderList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedL3Order'
-    PaymentMethodRequest:
-      type: object
-      description: Serialize payment method.
-      properties:
-        method:
-          type: string
-          minLength: 1
-          title: Payment Method Name
-          description: Name of the Payment Method
-          maxLength: 80
-        description:
-          type: string
-          minLength: 1
-          title: Payment Method Description
-          description: Description of the Payment Method
-          maxLength: 400
-      required:
-      - description
-      - method
-    UnifiedL3OrderStatusEnum:
-      enum:
-      - uploaded
-      - created
-      - assigned
-      - planned
-      - shipped
-      - delivered
-      - deleted
-      type: string
-    DriverRequest:
-      type: object
-      description: serializer for Driver Model.
-      properties:
-        first_name:
-          type: string
-          minLength: 1
-          title: First Name of Driver
-          description: First Name
-          maxLength: 100
-        last_name:
-          type: string
-          minLength: 1
-          description: Last Name of Driver
-          maxLength: 100
-        metrc_employee_id:
-          type: string
-          minLength: 1
-          description: METRC Employee ID for Driver
-          maxLength: 100
-        license_number:
-          type: string
-          minLength: 1
-          description: License Number of Driver
-          maxLength: 15
-        phone:
-          type: string
-          minLength: 1
-          description: Phone Number of Driver
-          maxLength: 15
-        is_active:
-          type: boolean
-          title: Active
-          description: Is an active driver?
-      required:
-      - first_name
-      - last_name
-      - license_number
-      - metrc_employee_id
-      - phone
-    ComplianceLicense:
-      type: object
-      description: Serializer for License models via the v2 API
-      properties:
-        id:
-          type: integer
-          readOnly: true
-          description: id for license
-        number:
-          type: string
-          title: License Number
-          description: License Number
-          maxLength: 100
-        type:
-          type: string
-          readOnly: true
-          description: Type
-        display_type:
-          type: string
-          readOnly: true
-          description: Display type
-        classification:
-          type: string
-          readOnly: true
-          description: Classification
-      required:
-      - classification
-      - display_type
-      - id
-      - number
-      - type
-    InternalLogisticsCompanyRequest:
-      type: object
-      description: Internal serializer for the Company model to be used by L3 endpoints.
-      properties:
-        display_name:
-          type: string
-          minLength: 1
-      required:
-      - display_name
-    InternalLogisticsCompany:
-      type: object
-      description: Internal serializer for the Company model to be used by L3 endpoints.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        display_name:
-          type: string
-        licenses:
-          type: array
-          items:
-            $ref: '#/components/schemas/ComplianceLicense'
-          readOnly: true
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          readOnly: true
-        corporate_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          readOnly: true
-      required:
-      - corporate_address
-      - delivery_address
-      - display_name
-      - id
-      - licenses
-    PaymentMethod:
-      type: object
-      description: Serialize payment method.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_on:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        method:
-          type: string
-          title: Payment Method Name
-          description: Name of the Payment Method
-          maxLength: 80
-        description:
-          type: string
-          title: Payment Method Description
-          description: Description of the Payment Method
-          maxLength: 400
-      required:
-      - created_on
-      - description
-      - id
-      - method
-      - modified
   securitySchemes:
     bearerAuth:
       type: http

@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -173,6 +171,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats messages list
+      x-summary-source: derived
     post:
       operationId: chats_messages_create
       description: Get or post messages for a discussion
@@ -330,6 +330,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Chats messages create
+      x-summary-source: derived
 components:
   schemas:
     Message:
@@ -364,6 +366,46 @@ components:
       - message
       - read_by_recipient
       - read_by_sender
+    PaginatedMessageList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        current_page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    DiscussionCompany:
+      type: object
+      description: Company serializer
+      properties:
+        id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+        image_url:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+      required:
+      - id
+      - image_url
     MessageRequest:
       type: object
       description: Discussion Message serializer
@@ -397,46 +439,6 @@ components:
       - id
       - name
       - user
-    DiscussionCompany:
-      type: object
-      description: Company serializer
-      properties:
-        id:
-          type: integer
-        name:
-          type:
-          - string
-          - 'null'
-        image_url:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-      required:
-      - id
-      - image_url
-    PaginatedMessageList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 420
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        current_page:
-          type: integer
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
   securitySchemes:
     bearerAuth:
       type: http

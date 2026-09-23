@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -90,6 +88,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Managed companies list
+      x-summary-source: derived
   /managed_companies/{id}:
     get:
       operationId: managed_companies_retrieve
@@ -141,6 +141,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Managed companies retrieve
+      x-summary-source: derived
   /managed_companies/{id}/licenses:
     get:
       operationId: managed_companies_licenses_list
@@ -215,6 +217,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Managed companies licenses list
+      x-summary-source: derived
   /managed_companies/{marketplace_slug}:
     get:
       operationId: managed_companies_retrieve_2
@@ -265,6 +269,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Managed companies retrieve 2
+      x-summary-source: derived
 components:
   schemas:
     LegalEntity:
@@ -373,34 +379,65 @@ components:
       - id
       - number
       - state
+    VerificationStatusEnum:
+      enum:
+      - active
+      - pending
+      - applied
+      - expired
+      - inactive
+      - not_found
+      - invalid_format
+      - not_verified
+      type: string
+    Company:
+      type: object
+      description: Used to validate the company creation request.
+      properties:
+        id:
+          type: string
+          format: uuid
+        dba:
+          type: string
+          maxLength: 200
+        legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        has_linked_bank_account:
+          type: boolean
+          readOnly: true
+      required:
+      - dba
+      - has_linked_bank_account
+    BlankEnum:
+      enum:
+      - ''
+    State:
+      type: object
+      description: State Serializer
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
+    LicenseTypeEnum:
+      enum:
+      - medical
+      - combined
+      - ancillary_2
+      - ancillary
+      - adult_use
+      - cannabis
+      - medical_transporter
+      - ancillary_logisitics
+      type: string
     NullEnum:
       enum:
       - null
-    PaginatedCompanyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Company'
     PaginatedLicenseList:
       type: object
       required:
@@ -426,62 +463,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/License'
-    BlankEnum:
-      enum:
-      - ''
-    LicenseTypeEnum:
-      enum:
-      - medical
-      - combined
-      - ancillary_2
-      - ancillary
-      - adult_use
-      - cannabis
-      - medical_transporter
-      - ancillary_logisitics
-      type: string
-    Company:
+    PaginatedCompanyList:
       type: object
-      description: Used to validate the company creation request.
-      properties:
-        id:
-          type: string
-          format: uuid
-        dba:
-          type: string
-          maxLength: 200
-        legal_entity:
-          $ref: '#/components/schemas/LegalEntity'
-        has_linked_bank_account:
-          type: boolean
-          readOnly: true
       required:
-      - dba
-      - has_linked_bank_account
-    State:
-      type: object
-      description: State Serializer
+      - count
+      - results
       properties:
-        id:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
-    VerificationStatusEnum:
-      enum:
-      - active
-      - pending
-      - applied
-      - expired
-      - inactive
-      - not_found
-      - invalid_format
-      - not_verified
-      type: string
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
   securitySchemes:
     bearerAuth:
       type: http

@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: package
+- name: Package
 paths:
   /packages:
     get:
@@ -76,7 +74,7 @@ paths:
           type: string
           format: date
       tags:
-      - package
+      - Package
       security:
       - bearerAuth: []
       responses:
@@ -148,7 +146,7 @@ paths:
           type: string
           format: date
       tags:
-      - package
+      - Package
       requestBody:
         content:
           application/json:
@@ -209,44 +207,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    PaginatedUnifiedPackageList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedPackage'
-    PackageAssignmentInputRequest:
-      type: object
-      description: Serializer for a single package-to-product assignment.
-      properties:
-        package_id:
-          type: integer
-        product_id:
-          type:
-          - integer
-          - 'null'
-      required:
-      - package_id
-      - product_id
     UnifiedPackage:
       type: object
       description: Serializer for TraceabilityPackage - read/response only.
@@ -308,6 +268,44 @@ components:
       required:
       - count
       - results
+    PaginatedUnifiedPackageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedPackage'
+    PackageAssignmentInputRequest:
+      type: object
+      description: Serializer for a single package-to-product assignment.
+      properties:
+        package_id:
+          type: integer
+        product_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - package_id
+      - product_id
     PackageAssignRequest:
       type: object
       description: Serializer for bulk assigning packages to products.

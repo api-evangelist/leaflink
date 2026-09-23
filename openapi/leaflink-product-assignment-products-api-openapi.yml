@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -24,7 +22,9 @@ paths:
   /product-assignments:
     get:
       operationId: product_assignments_list
-      description: "List all products for a seller with their product assignments (buyer/group assignments).\n    Products without assignments will have empty assignments arrays.\n    "
+      description: 'List all products for a seller with their product assignments (buyer/group assignments).
+
+        Products without assignments will have empty assignments arrays.'
       summary: List Products with Product Assignments
       parameters:
       - in: query
@@ -124,50 +124,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedProductAssignmentBuyerItem:
-      type: object
-      description: Serializer for Product Assignment Buyer Item
-      properties:
-        buyer_id:
-          type: integer
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        call_to_action:
-          type:
-          - string
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
-    PaginatedUnifiedProductAssignmentProductList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductAssignmentProduct'
     UnifiedProductAssignmentGroupItem:
       type: object
       description: Serializer for Product Assignment Group Item
@@ -443,6 +399,50 @@ components:
       - unit_multiplier
       - unit_of_measure
       - wholesale_price
+    PaginatedUnifiedProductAssignmentProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentProduct'
+    UnifiedProductAssignmentBuyerItem:
+      type: object
+      description: Serializer for Product Assignment Buyer Item
+      properties:
+        buyer_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
   securitySchemes:
     bearerAuth:
       type: http

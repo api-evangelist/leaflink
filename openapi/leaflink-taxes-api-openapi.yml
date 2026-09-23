@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: taxes
+- name: Taxes
 paths:
   /taxes/tax_schedules:
     get:
@@ -64,7 +62,7 @@ paths:
           type: string
           format: date
       tags:
-      - taxes
+      - Taxes
       security:
       - bearerAuth: []
       responses:
@@ -98,6 +96,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Taxes tax schedules list
+      x-summary-source: derived
     post:
       operationId: taxes_tax_schedules_create
       description: Create a new TaxSchedule.
@@ -116,7 +116,7 @@ paths:
           type: string
           format: date
       tags:
-      - taxes
+      - Taxes
       requestBody:
         content:
           application/json:
@@ -156,6 +156,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Taxes tax schedules create
+      x-summary-source: derived
   /taxes/tax_schedules/{id}:
     get:
       operationId: taxes_tax_schedules_retrieve
@@ -181,7 +183,7 @@ paths:
           type: string
           format: date
       tags:
-      - taxes
+      - Taxes
       security:
       - bearerAuth: []
       responses:
@@ -215,6 +217,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Taxes tax schedules retrieve
+      x-summary-source: derived
     patch:
       operationId: taxes_tax_schedules_partial_update
       description: Update a TaxSchedule by marking it as archived and creating a new one.
@@ -239,7 +243,7 @@ paths:
           type: string
           format: date
       tags:
-      - taxes
+      - Taxes
       requestBody:
         content:
           application/json:
@@ -278,6 +282,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Taxes tax schedules partial update
+      x-summary-source: derived
     delete:
       operationId: taxes_tax_schedules_destroy
       description: Delete a TaxSchedule... well, mark it as archived.
@@ -302,7 +308,7 @@ paths:
           type: string
           format: date
       tags:
-      - taxes
+      - Taxes
       security:
       - bearerAuth: []
       responses:
@@ -332,36 +338,37 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Taxes tax schedules destroy
+      x-summary-source: derived
 components:
   schemas:
-    CreateUpdateSuccessResponse:
+    UnifiedTaxSchedule:
       type: object
+      description: TaxSchedule GET Serializer
       properties:
         id:
           type: integer
-      required:
-      - id
-    CreateInputRequest:
-      type: object
-      properties:
         name:
           type: string
-          minLength: 1
         tax_type:
-          type: integer
+          type: string
+          readOnly: true
         tax_rate:
           type: string
           format: decimal
           pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
         unit_type:
-          type: integer
-        product_category_ids:
+          type: string
+          readOnly: true
+        product_categories:
           type: array
           items:
-            type: integer
+            type: string
+          readOnly: true
       required:
+      - id
       - name
-      - product_category_ids
+      - product_categories
       - tax_rate
       - tax_type
       - unit_type
@@ -418,36 +425,37 @@ components:
           - 'null'
           items:
             type: integer
-    UnifiedTaxSchedule:
+    CreateInputRequest:
       type: object
-      description: TaxSchedule GET Serializer
       properties:
-        id:
-          type: integer
         name:
           type: string
+          minLength: 1
         tax_type:
-          type: string
-          readOnly: true
+          type: integer
         tax_rate:
           type: string
           format: decimal
           pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
         unit_type:
-          type: string
-          readOnly: true
-        product_categories:
+          type: integer
+        product_category_ids:
           type: array
           items:
-            type: string
-          readOnly: true
+            type: integer
       required:
-      - id
       - name
-      - product_categories
+      - product_category_ids
       - tax_rate
       - tax_type
       - unit_type
+    CreateUpdateSuccessResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+      - id
   securitySchemes:
     bearerAuth:
       type: http

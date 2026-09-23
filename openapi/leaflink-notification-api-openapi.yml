@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: notification
+- name: Notification
 paths:
   /notification/preferences/{id}:
     get:
@@ -40,7 +38,7 @@ paths:
           type: string
           format: date
       tags:
-      - notification
+      - Notification
       security:
       - bearerAuth: []
       responses:
@@ -74,27 +72,10 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Notification preferences retrieve
+      x-summary-source: derived
 components:
   schemas:
-    NotificationPreferences:
-      type: object
-      description: Schema for notification preferences payload.
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        display_description:
-          type: string
-          maxLength: 255
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTopic'
-          readOnly: true
-      required:
-      - display_description
-      - items
-      - name
     NotificationTopic:
       type: object
       description: Serializer for NotificationTopic model.
@@ -116,6 +97,25 @@ components:
       - available_medium
       - default_value
       - description
+      - name
+    NotificationPreferences:
+      type: object
+      description: Schema for notification preferences payload.
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        display_description:
+          type: string
+          maxLength: 255
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTopic'
+          readOnly: true
+      required:
+      - display_description
+      - items
       - name
   securitySchemes:
     bearerAuth:

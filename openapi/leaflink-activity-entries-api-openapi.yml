@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -56,7 +23,9 @@ paths:
     get:
       operationId: activity-entries_list
       summary: List
-      description: "List all `CompanyActivityEntry` objects of companies the requester has\n    CRM management access for."
+      description: 'List all `CompanyActivityEntry` objects of companies the requester has
+
+        CRM management access for.'
       parameters:
       - name: date__lt
         in: query
@@ -336,7 +305,9 @@ paths:
     post:
       operationId: activity-entries_create
       summary: Create
-      description: "Create a new `CompanyActivityEntry` object for a company you have CRM\n    management access for."
+      description: 'Create a new `CompanyActivityEntry` object for a company you have CRM
+
+        management access for.'
       requestBody:
         $ref: '#/components/requestBodies/CompanyActivityEntry'
       responses:
@@ -387,7 +358,9 @@ paths:
     delete:
       operationId: activity-entries_delete
       summary: Delete
-      description: "Set the `delete` flag on a `CompanyActivityEntry` to true. These can\n    be filtered out in list requests."
+      description: 'Set the `delete` flag on a `CompanyActivityEntry` to true. These can
+
+        be filtered out in list requests.'
       responses:
         '200':
           description: ''
@@ -398,6 +371,13 @@ paths:
       tags:
       - activity-entries
 components:
+  requestBodies:
+    CompanyActivityEntry:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CompanyActivityEntry'
+      required: true
   schemas:
     CompanyActivityEntry:
       required:
@@ -474,13 +454,6 @@ components:
           type:
           - integer
           - 'null'
-  requestBodies:
-    CompanyActivityEntry:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CompanyActivityEntry'
-      required: true
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

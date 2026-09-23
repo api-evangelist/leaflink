@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: settings
+- name: Settings
 paths:
   /settings/companies/buyer_notifications:
     get:
@@ -58,7 +56,7 @@ paths:
           type: string
           format: date
       tags:
-      - settings
+      - Settings
       security:
       - bearerAuth: []
       responses:
@@ -92,11 +90,13 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Settings companies buyer notifications list
+      x-summary-source: derived
     post:
       operationId: settings_companies_buyer_notifications_create
       description: Update buyer notification settings.
       tags:
-      - settings
+      - Settings
       requestBody:
         content:
           application/json:
@@ -135,6 +135,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Settings companies buyer notifications create
+      x-summary-source: derived
   /settings/companies/buyer_notifications/{id}:
     get:
       operationId: settings_companies_buyer_notifications_retrieve
@@ -154,7 +156,7 @@ paths:
           type: string
           format: date
       tags:
-      - settings
+      - Settings
       security:
       - bearerAuth: []
       responses:
@@ -188,25 +190,10 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Settings companies buyer notifications retrieve
+      x-summary-source: derived
 components:
   schemas:
-    User:
-      type: object
-      properties:
-        display_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-        id:
-          type:
-          - integer
-          - 'null'
     BuyerNotificationSetting:
       type: object
       description: Buyer Notification Setting Serializer for managing email notifications.
@@ -232,68 +219,6 @@ components:
         flower_available:
           allOf:
           - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
-    PaginatedBuyerNotificationSettingList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerNotificationSetting'
-    BuyerNotificationSettingEventRequest:
-      type: object
-      properties:
-        users:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/UserRequest'
-    UserRequest:
-      type: object
-      properties:
-        display_name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          minLength: 1
-        id:
-          type:
-          - integer
-          - 'null'
-    BuyerNotificationSettingEvent:
-      type: object
-      properties:
-        users:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/User'
     BuyerNotificationSettingRequest:
       type: object
       description: Buyer Notification Setting Serializer for managing email notifications.
@@ -319,6 +244,85 @@ components:
         flower_available:
           allOf:
           - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+    UserRequest:
+      type: object
+      properties:
+        display_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          minLength: 1
+        id:
+          type:
+          - integer
+          - 'null'
+    BuyerNotificationSettingEventRequest:
+      type: object
+      properties:
+        users:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UserRequest'
+    BuyerNotificationSettingEvent:
+      type: object
+      properties:
+        users:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedBuyerNotificationSettingList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerNotificationSetting'
+    User:
+      type: object
+      properties:
+        display_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+        id:
+          type:
+          - integer
+          - 'null'
   securitySchemes:
     bearerAuth:
       type: http

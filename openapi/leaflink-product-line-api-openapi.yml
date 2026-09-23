@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -327,58 +325,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedProductLine:
-      type: object
-      description: Base Unified ProductLine serializer.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time the resource was created
-        modified_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time of the last edit
-        name:
-          type: string
-          title: Product Line
-          description: Name of Product Line
-          maxLength: 100
-        display_name:
-          type: string
-          readOnly: true
-        brand:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedBrand'
-          readOnly: true
-          description: Brand of the product line
-        menu_position:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Product Line Menu Position
-          description: The position of ordering
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductLineProduct'
-          readOnly: true
-          description: Products associated with the product line
-      required:
-      - brand
-      - created_date
-      - display_name
-      - id
-      - modified_date
-      - name
-      - products
     PaginatedUnifiedProductLineList:
       type: object
       required:
@@ -404,66 +350,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedProductLine'
-    UnifiedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-      required:
-      - id
-      - name
-    UnifiedProductLineCreateRequest:
-      type: object
-      description: Serializer for creating product lines.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Product Line
-          description: Name of Product Line
-          maxLength: 100
-        brand_id:
-          type: integer
-          writeOnly: true
-          description: Brand ID for the product line
-        menu_position:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Product Line Menu Position
-          description: The position of ordering
-        product_ids:
-          type: array
-          items:
-            type: integer
-          writeOnly: true
-          description: List of product IDs associated with this product line
-      required:
-      - brand_id
-      - name
-    UnifiedProductLineProduct:
-      type: object
-      description: Serializer for a product in a product line.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-          title: Product
-          description: Product Name
-      required:
-      - id
-      - name
     UnifiedProductLineCreate:
       type: object
       description: Serializer for creating product lines.
@@ -544,6 +430,118 @@ components:
             type: integer
           writeOnly: true
           description: List of product IDs associated with this product line
+    UnifiedProductLineProduct:
+      type: object
+      description: Serializer for a product in a product line.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          title: Product
+          description: Product Name
+      required:
+      - id
+      - name
+    UnifiedProductLine:
+      type: object
+      description: Base Unified ProductLine serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        name:
+          type: string
+          title: Product Line
+          description: Name of Product Line
+          maxLength: 100
+        display_name:
+          type: string
+          readOnly: true
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+          description: Brand of the product line
+        menu_position:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product Line Menu Position
+          description: The position of ordering
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductLineProduct'
+          readOnly: true
+          description: Products associated with the product line
+      required:
+      - brand
+      - created_date
+      - display_name
+      - id
+      - modified_date
+      - name
+      - products
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
+    UnifiedProductLineCreateRequest:
+      type: object
+      description: Serializer for creating product lines.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Product Line
+          description: Name of Product Line
+          maxLength: 100
+        brand_id:
+          type: integer
+          writeOnly: true
+          description: Brand ID for the product line
+        menu_position:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Product Line Menu Position
+          description: The position of ordering
+        product_ids:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+          description: List of product IDs associated with this product line
+      required:
+      - brand_id
+      - name
   securitySchemes:
     bearerAuth:
       type: http

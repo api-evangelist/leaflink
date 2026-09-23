@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: payments
+- name: Payments
 paths:
   /payments:
     get:
@@ -68,7 +66,7 @@ paths:
           type: string
           format: date
       tags:
-      - payments
+      - Payments
       security:
       - bearerAuth: []
       responses:
@@ -102,11 +100,13 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Payments list
+      x-summary-source: derived
     post:
       operationId: payments_create
       description: ViewSet for handling requests related to order payments.
       tags:
-      - payments
+      - Payments
       requestBody:
         content:
           application/json:
@@ -146,6 +146,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Payments create
+      x-summary-source: derived
   /payments/{id}:
     get:
       operationId: payments_retrieve
@@ -165,7 +167,7 @@ paths:
           type: string
           format: date
       tags:
-      - payments
+      - Payments
       security:
       - bearerAuth: []
       responses:
@@ -199,86 +201,10 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Payments retrieve
+      x-summary-source: derived
 components:
   schemas:
-    OrderPaymentUnifiedCustomer:
-      type: object
-      description: Serializer for company data focusing on name and ID.
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
-      required:
-      - id
-      - name
-    PaymentTypeEnum:
-      enum:
-      - other
-      - cash
-      - check
-      - credit
-      - trade
-      - ach
-      - wire
-      - cashier
-      - leaflink_direct_payment
-      - leaflink_flexible_payment
-      - leaflink_financial
-      type: string
-    PaginatedUnifiedOrderPaymentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedOrderPayment'
-    UnifiedOrderPaymentRequest:
-      type: object
-      description: Serializer for handling order payment data and validations.
-      properties:
-        order:
-          type: string
-          format: uuid
-        payment_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the was submitted.
-        total:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: Total Paid
-        payment_type:
-          allOf:
-          - $ref: '#/components/schemas/PaymentTypeEnum'
-          description: How this payment was submitted.
-      required:
-      - order
-      - total
     UnifiedOrderPayment:
       type: object
       description: Serializer for handling order payment data and validations.
@@ -329,6 +255,84 @@ components:
       - modified_date
       - order
       - total
+    PaymentTypeEnum:
+      enum:
+      - other
+      - cash
+      - check
+      - credit
+      - trade
+      - ach
+      - wire
+      - cashier
+      - leaflink_direct_payment
+      - leaflink_flexible_payment
+      - leaflink_financial
+      type: string
+    UnifiedOrderPaymentRequest:
+      type: object
+      description: Serializer for handling order payment data and validations.
+      properties:
+        order:
+          type: string
+          format: uuid
+        payment_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the was submitted.
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Total Paid
+        payment_type:
+          allOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          description: How this payment was submitted.
+      required:
+      - order
+      - total
+    OrderPaymentUnifiedCustomer:
+      type: object
+      description: Serializer for company data focusing on name and ID.
+      properties:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - name
+    PaginatedUnifiedOrderPaymentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedOrderPayment'
   securitySchemes:
     bearerAuth:
       type: http

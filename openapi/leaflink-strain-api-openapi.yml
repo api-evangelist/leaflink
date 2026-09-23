@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -252,6 +250,17 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
+    Choice:
+      type: object
+      description: Unified Strain Classification serializer.
+      properties:
+        value:
+          type: string
+        display_value:
+          type: string
+      required:
+      - display_value
+      - value
     UnifiedStrain:
       type: object
       description: Unified Strain serializer.
@@ -289,6 +298,19 @@ components:
       - modified_date
       - name
       - strain_classification
+    StrainClassificationEnum:
+      enum:
+      - sativa
+      - indica
+      - hybrid
+      - 11-cbd
+      - high-cbd
+      - sativa-hybrid
+      - indica-hybrid
+      - 21-cbd
+      - thc
+      - na
+      type: string
     PaginatedUnifiedStrainList:
       type: object
       required:
@@ -314,30 +336,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedStrain'
-    StrainClassificationEnum:
-      enum:
-      - sativa
-      - indica
-      - hybrid
-      - 11-cbd
-      - high-cbd
-      - sativa-hybrid
-      - indica-hybrid
-      - 21-cbd
-      - thc
-      - na
-      type: string
-    Choice:
-      type: object
-      description: Unified Strain Classification serializer.
-      properties:
-        value:
-          type: string
-        display_value:
-          type: string
-      required:
-      - display_value
-      - value
     BlankEnum-unified-upstream-marketplace:
       enum:
       - ''

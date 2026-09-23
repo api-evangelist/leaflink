@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -357,6 +355,67 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
+    PaginatedDistributionZoneList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DistributionZone'
+    ZipCodeRequest:
+      type: object
+      description: Serializer for a zip code with optional polygon in a distribution zone.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          minLength: 1
+          description: ZIP code value (e.g. '80939')
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
+    FacilityRequest:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          description: Name of the facility
+      required:
+      - id
+      - name
     DistributionZone:
       type: object
       description: 'Serializer for a Distribution Zone.
@@ -409,100 +468,6 @@ components:
       - name
       - owner_id
       - zip_codes
-    ZipCodeRequest:
-      type: object
-      description: Serializer for a zip code with optional polygon in a distribution zone.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: State or region name (e.g. 'CO')
-        value:
-          type: string
-          minLength: 1
-          description: ZIP code value (e.g. '80939')
-        polygon:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-              format: double
-          description: List of [lat, lng] coordinates defining the polygon boundary
-      required:
-      - name
-      - value
-    PaginatedDistributionZoneList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DistributionZone'
-    ZipCode:
-      type: object
-      description: Serializer for a zip code with optional polygon in a distribution zone.
-      properties:
-        name:
-          type: string
-          description: State or region name (e.g. 'CO')
-        value:
-          type: string
-          description: ZIP code value (e.g. '80939')
-        polygon:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-              format: double
-          description: List of [lat, lng] coordinates defining the polygon boundary
-      required:
-      - name
-      - value
-    FacilityRequest:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          minLength: 1
-          description: Name of the facility
-      required:
-      - id
-      - name
-    Facility:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Name of the facility
-      required:
-      - id
-      - name
     PatchedDistributionZoneUpdateRequest:
       type: object
       description: 'Serializer to update a Distribution Zone.
@@ -526,6 +491,39 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZipCodeRequest'
+    Facility:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Name of the facility
+      required:
+      - id
+      - name
+    ZipCode:
+      type: object
+      description: Serializer for a zip code with optional polygon in a distribution zone.
+      properties:
+        name:
+          type: string
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          description: ZIP code value (e.g. '80939')
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
   securitySchemes:
     bearerAuth:
       type: http

@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -68,8 +66,17 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Poms orders approval create
+      x-summary-source: derived
 components:
   schemas:
+    CartOrderPomsStatusEnum:
+      enum:
+      - approved
+      - rejected
+      - completed
+      - error
+      type: string
     UnifiedPomsOrderApprovalRequestData:
       type: object
       description: Unified POMS Order Approval serializer for request data.
@@ -113,13 +120,6 @@ components:
       required:
       - purchase_order_number
       - status
-    CartOrderPomsStatusEnum:
-      enum:
-      - approved
-      - rejected
-      - completed
-      - error
-      type: string
   securitySchemes:
     bearerAuth:
       type: http

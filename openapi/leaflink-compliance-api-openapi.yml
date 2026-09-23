@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: compliance
+- name: Compliance
 paths:
   /compliance/license_types:
     get:
@@ -79,7 +77,7 @@ paths:
           type: string
           format: date
       tags:
-      - compliance
+      - Compliance
       security:
       - bearerAuth: []
       responses:
@@ -113,6 +111,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Compliance license types list
+      x-summary-source: derived
   /compliance/license_types/{id}:
     get:
       operationId: compliance_license_types_retrieve
@@ -132,7 +132,7 @@ paths:
           type: string
           format: date
       tags:
-      - compliance
+      - Compliance
       security:
       - bearerAuth: []
       responses:
@@ -166,6 +166,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Compliance license types retrieve
+      x-summary-source: derived
   /compliance/licenses:
     get:
       operationId: compliance_licenses_list
@@ -212,7 +214,7 @@ paths:
           type: string
           format: date
       tags:
-      - compliance
+      - Compliance
       security:
       - bearerAuth: []
       responses:
@@ -246,6 +248,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Compliance licenses list
+      x-summary-source: derived
     post:
       operationId: compliance_licenses_create
       description: Create new licenses from a list of licenses directly from a seed-to-sale vendor.
@@ -264,7 +268,7 @@ paths:
           type: string
           format: date
       tags:
-      - compliance
+      - Compliance
       requestBody:
         content:
           application/json:
@@ -306,6 +310,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Compliance licenses create
+      x-summary-source: derived
   /compliance/licenses/{id}:
     get:
       operationId: compliance_licenses_retrieve
@@ -325,7 +331,7 @@ paths:
           type: string
           format: date
       tags:
-      - compliance
+      - Compliance
       security:
       - bearerAuth: []
       responses:
@@ -359,8 +365,142 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Compliance licenses retrieve
+      x-summary-source: derived
 components:
   schemas:
+    PaginatedCompanyLicenseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyLicense'
+    PaginatedLicenseTypeInternalResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LicenseTypeInternalResponse'
+    LicensesCreateUpdateResponse:
+      type: object
+      description: Serializer for returning a list of created or updated license IDs.
+      properties:
+        license_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - license_ids
+    CompanyLicense:
+      type: object
+      description: Unified serializer for License models.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          $ref: '#/components/schemas/CompanyLicenseType'
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    LicenseCreateUpdateRequest:
+      type: object
+      properties:
+        number:
+          type: string
+          minLength: 1
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type: string
+          format: date
+        type_id:
+          type: integer
+      required:
+      - end_date
+      - number
+      - start_date
+      - type_id
+    UnifiedLicenseCreateUpdateRequest:
+      type: object
+      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
+      properties:
+        number:
+          type: string
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+        expiration_date:
+          type: string
+          format: date
+          readOnly: true
+        type:
+          type: integer
+          readOnly: true
+      required:
+      - expiration_date
+      - issue_date
+      - number
+      - type
     LicenseTypeInternalResponse:
       type: object
       description: Serializer for LicenseType models via the internal API
@@ -487,138 +627,6 @@ components:
       - modified
       - state_abbr
       - type
-    PaginatedLicenseTypeInternalResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/LicenseTypeInternalResponse'
-    LicensesCreateUpdateResponse:
-      type: object
-      description: Serializer for returning a list of created or updated license IDs.
-      properties:
-        license_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - license_ids
-    LicenseCreateUpdateRequest:
-      type: object
-      properties:
-        number:
-          type: string
-          minLength: 1
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type: string
-          format: date
-        type_id:
-          type: integer
-      required:
-      - end_date
-      - number
-      - start_date
-      - type_id
-    CompanyLicense:
-      type: object
-      description: Unified serializer for License models.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-          description: id for license
-        number:
-          type: string
-          title: License Number
-          description: License Number
-          maxLength: 100
-        type:
-          $ref: '#/components/schemas/CompanyLicenseType'
-        display_type:
-          type: string
-          readOnly: true
-          description: Display type
-        classification:
-          type: string
-          readOnly: true
-          description: Classification
-      required:
-      - classification
-      - display_type
-      - id
-      - number
-      - type
-    UnifiedLicenseCreateUpdateRequest:
-      type: object
-      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
-      properties:
-        number:
-          type: string
-        issue_date:
-          type: string
-          format: date
-          readOnly: true
-        expiration_date:
-          type: string
-          format: date
-          readOnly: true
-        type:
-          type: integer
-          readOnly: true
-      required:
-      - expiration_date
-      - issue_date
-      - number
-      - type
-    PaginatedCompanyLicenseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyLicense'
   securitySchemes:
     bearerAuth:
       type: http

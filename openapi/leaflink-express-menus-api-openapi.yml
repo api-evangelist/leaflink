@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -66,6 +64,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Express menus create
+      x-summary-source: derived
   /express_menus/{id}:
     get:
       operationId: express_menus_retrieve
@@ -119,6 +119,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Express menus retrieve
+      x-summary-source: derived
     put:
       operationId: express_menus_update
       description: LeafLink API for Marketplace Express Product Menus.
@@ -177,6 +179,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Express menus update
+      x-summary-source: derived
     patch:
       operationId: express_menus_partial_update
       description: LeafLink API for Marketplace Express Product Menus.
@@ -234,6 +238,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Express menus partial update
+      x-summary-source: derived
     delete:
       operationId: express_menus_destroy
       description: LeafLink API for Marketplace Express Product Menus.
@@ -282,8 +288,29 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Express menus destroy
+      x-summary-source: derived
 components:
   schemas:
+    UnifiedExpressProductMenuRequest:
+      type: object
+      properties:
+        brand:
+          type: integer
+          title: Express Menu Brand
+        price_schedule:
+          type: integer
+          title: Public Menu Price Schedule
+        products:
+          type: array
+          items:
+            type: integer
+            title: Public Menu Products
+          title: Public Menu Products
+      required:
+      - brand
+      - price_schedule
+      - products
     UnifiedExpressProductMenu:
       type: object
       properties:
@@ -335,25 +362,6 @@ components:
             type: integer
             title: Public Menu Products
           title: Public Menu Products
-    UnifiedExpressProductMenuRequest:
-      type: object
-      properties:
-        brand:
-          type: integer
-          title: Express Menu Brand
-        price_schedule:
-          type: integer
-          title: Public Menu Price Schedule
-        products:
-          type: array
-          items:
-            type: integer
-            title: Public Menu Products
-          title: Public Menu Products
-      required:
-      - brand
-      - price_schedule
-      - products
   securitySchemes:
     bearerAuth:
       type: http

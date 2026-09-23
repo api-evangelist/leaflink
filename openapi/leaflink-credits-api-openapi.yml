@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -49,7 +16,7 @@ security:
 - Token: []
 tags:
 - description: The Credit model represents credits granted by a seller company to a customer for use in future purchases. Read-only.
-  name: credits
+  name: Credits
 paths:
   /credits/:
     parameters: []
@@ -176,7 +143,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Credit'
       tags:
-      - credits
+      - Credits
   /credits/{id}/:
     parameters:
     - name: id
@@ -199,9 +166,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/Credit'
       tags:
-      - credits
+      - Credits
 components:
   schemas:
+    LightCompanyCustomer:
+      title: Customer
+      description: Seller's customer record for the company on the buyer side of the order
+      required:
+      - id
+      - delinquent
+      type: object
+      properties:
+        id:
+          title: Id
+          description: id for the customer
+          type: integer
+        display_name:
+          title: Display name
+          description: Customer nickname if one exists, else the customer name
+          type: string
+          readOnly: true
+        ext_acct_id:
+          title: Accounting Service External ID
+          description: ID of Customer in 3rd party accouting software
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        delinquent:
+          title: Delinquent
+          description: Is this account marked delinquent?
+          type: boolean
     Credit:
       type: object
       readOnly: true
@@ -303,34 +298,6 @@ components:
           type: boolean
           description: Whether the credit has been soft-deleted
           readOnly: true
-    LightCompanyCustomer:
-      title: Customer
-      description: Seller's customer record for the company on the buyer side of the order
-      required:
-      - id
-      - delinquent
-      type: object
-      properties:
-        id:
-          title: Id
-          description: id for the customer
-          type: integer
-        display_name:
-          title: Display name
-          description: Customer nickname if one exists, else the customer name
-          type: string
-          readOnly: true
-        ext_acct_id:
-          title: Accounting Service External ID
-          description: ID of Customer in 3rd party accouting software
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        delinquent:
-          title: Delinquent
-          description: Is this account marked delinquent?
-          type: boolean
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

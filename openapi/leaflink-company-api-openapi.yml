@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -25,7 +23,7 @@ paths:
     get:
       operationId: companies_stats_cashback_retrieve
       description: Returns cashback statistics for a company.
-      summary: Provide potential cashback earnings for the given marketplace company slug.
+      summary: Provide potential cashback earnings for the given marketplace company slug
       parameters:
       - in: path
         name: marketplace_slug

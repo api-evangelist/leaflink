@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -344,139 +342,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    NullEnum:
-      enum:
-      - null
-    DefaultFlexiblePaymentStrategyEnum:
-      enum:
-      - factored
-      - reverse_factored
-      type: string
-    PatchedContractRequest:
-      type: object
-      description: Serializer for Contract
-      properties:
-        docusign_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        status:
-          type: string
-          default: active
-        buyer_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        seller_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        default_payment_program:
-          allOf:
-          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
-          default: do_not_process
-        default_flexible_payment_strategy:
-          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
-        custom_direct_payment_term_type:
-          type: string
-          minLength: 1
-        custom_reverse_factor_auto_assignment:
-          type:
-          - boolean
-          - 'null'
-    CollectionDayPreferenceEnum:
-      enum:
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      type: string
-    ContractRequest:
-      type: object
-      description: Serializer for Contract
-      properties:
-        docusign_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        status:
-          type: string
-          default: active
-        buyer_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        seller_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        default_payment_program:
-          allOf:
-          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
-          default: do_not_process
-        default_flexible_payment_strategy:
-          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
-        custom_direct_payment_term_type:
-          type: string
-          minLength: 1
-        custom_reverse_factor_auto_assignment:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - buyer_id
-      - seller_id
-    BlankEnum:
-      enum:
-      - ''
-    Type7a8Enum:
-      enum:
-      - seller
-      - buyer
-      type: string
-    License:
-      type: object
-      description: Licenses Serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        number:
-          type: string
-          maxLength: 100
-        state:
-          $ref: '#/components/schemas/State'
-        verification_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date the license was verified by Leaflink. Not the date the license was verified by Cannabiz API.
-        verification_status:
-          $ref: '#/components/schemas/VerificationStatusEnum'
-        issued_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/LicenseTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-      required:
-      - id
-      - number
-      - state
     LegalEntity:
       type: object
       description: Serializer for LegalEntity
@@ -543,77 +408,161 @@ components:
           maxLength: 100
       required:
       - name
-    ContractStats:
-      type: object
-      description: Serializer for CompanyStats
-      properties:
-        first_completed_invoice_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        most_recent_eligible_invoice_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        most_recent_assigned_invoice_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        eligible_invoice_count:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        eligible_invoice_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -10000000000
-          exclusiveMaximum: 10000000000
-        funded_invoice_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -10000000000
-          exclusiveMaximum: 10000000000
-        funded_invoice_count:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        funded_invoice_percentage:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -1000
-          exclusiveMaximum: 1000
-        invoice_count:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        invoice_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -10000000000
-          exclusiveMaximum: 10000000000
-    PreferredPaymentProgramEnum:
+    StatusEnum:
+      enum:
+      - not_onboarded
+      - onboarded
+      - paused
+      - offboarded
+      type: string
+    BlankEnum:
+      enum:
+      - ''
+    DefaultPaymentProgramEnum:
       enum:
       - do_not_process
       - flexible
       - direct
+      - factoring
+      - b2b
       type: string
+    PatchedContractRequest:
+      type: object
+      description: Serializer for Contract
+      properties:
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        seller_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+          minLength: 1
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+    Contract:
+      type: object
+      description: Serializer for Contract
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/Buyer'
+          readOnly: true
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        contract_stats:
+          allOf:
+          - $ref: '#/components/schemas/ContractStats'
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - buyer
+      - contract_stats
+      - created_on
+      - id
+      - modified
+      - seller
+    ContractRequest:
+      type: object
+      description: Serializer for Contract
+      properties:
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        seller_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+          minLength: 1
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - buyer_id
+      - seller_id
+    State:
+      type: object
+      description: State Serializer
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
     LicenseTypeEnum:
       enum:
       - medical
@@ -624,6 +573,51 @@ components:
       - cannabis
       - medical_transporter
       - ancillary_logisitics
+      type: string
+    License:
+      type: object
+      description: Licenses Serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type: string
+          maxLength: 100
+        state:
+          $ref: '#/components/schemas/State'
+        verification_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the license was verified by Leaflink. Not the date the license was verified by Cannabiz API.
+        verification_status:
+          $ref: '#/components/schemas/VerificationStatusEnum'
+        issued_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/LicenseTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - id
+      - number
+      - state
+    DefaultFlexiblePaymentStrategyEnum:
+      enum:
+      - factored
+      - reverse_factored
       type: string
     Seller:
       type: object
@@ -775,6 +769,14 @@ components:
       - marketplace_dashboard_url
       - modified
       - type
+    Type7a8Enum:
+      enum:
+      - seller
+      - buyer
+      type: string
+    NullEnum:
+      enum:
+      - null
     VerificationStatusEnum:
       enum:
       - active
@@ -786,76 +788,85 @@ components:
       - invalid_format
       - not_verified
       type: string
-    Contract:
-      type: object
-      description: Serializer for Contract
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        docusign_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        status:
-          type: string
-          default: active
-        buyer:
-          allOf:
-          - $ref: '#/components/schemas/Buyer'
-          readOnly: true
-        seller:
-          allOf:
-          - $ref: '#/components/schemas/Seller'
-          readOnly: true
-        contract_stats:
-          allOf:
-          - $ref: '#/components/schemas/ContractStats'
-          readOnly: true
-        created_on:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        default_payment_program:
-          allOf:
-          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
-          default: do_not_process
-        default_flexible_payment_strategy:
-          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
-        custom_direct_payment_term_type:
-          type: string
-        custom_reverse_factor_auto_assignment:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - buyer
-      - contract_stats
-      - created_on
-      - id
-      - modified
-      - seller
-    DefaultPaymentProgramEnum:
+    CollectionDayPreferenceEnum:
+      enum:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      type: string
+    PreferredPaymentProgramEnum:
       enum:
       - do_not_process
       - flexible
       - direct
-      - factoring
-      - b2b
       type: string
-    StatusEnum:
-      enum:
-      - not_onboarded
-      - onboarded
-      - paused
-      - offboarded
-      type: string
+    ContractStats:
+      type: object
+      description: Serializer for CompanyStats
+      properties:
+        first_completed_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        most_recent_eligible_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        most_recent_assigned_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        eligible_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        eligible_invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+        funded_invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+        funded_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        funded_invoice_percentage:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
     PaginatedContractList:
       type: object
       required:
@@ -881,19 +892,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Contract'
-    State:
-      type: object
-      description: State Serializer
-      properties:
-        id:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
     Buyer:
       type: object
       description: Used to serialize buyer data (a buyer is a company where `type` = `buyer`)

@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -712,41 +710,6 @@ components:
       - facility_id
       - measurements
       - updated_at
-    MeasurementData:
-      type: object
-      description: Nested measurement quantities; field names match MeasurementData.
-      properties:
-        on_hand_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        available_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reserved_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        allocated_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        held_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        archived_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-      required:
-      - allocated_quantity
-      - archived_quantity
-      - available_quantity
-      - held_quantity
-      - on_hand_quantity
-      - reserved_quantity
     FacilityBatchMeasurementResponse:
       type: object
       description: Response shape for GET .../measurements/by-facility-and-batch.
@@ -764,24 +727,6 @@ components:
       - batch_id
       - facility_id
       - measurements
-      - updated_at
-    ProductFacilityMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-and-facility.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - facility_id
-      - measurements
-      - product_id
       - updated_at
     Reservation:
       type: object
@@ -821,6 +766,27 @@ components:
       - order_id
       - product_id
       - quantity
+    ProductFacilityBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-facility-and-batch.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - facility_id
+      - measurements
+      - product_id
+      - updated_at
     Allocation:
       type: object
       description: Serializes an ``AllocationItem`` for the API response.
@@ -869,6 +835,21 @@ components:
       - batch_id
       - measurements
       - updated_at
+    ProductMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product.
+      properties:
+        product_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - measurements
+      - product_id
+      - updated_at
     ProductBatchMeasurementResponse:
       type: object
       description: Response shape for GET .../measurements/by-product-and-batch.
@@ -887,42 +868,59 @@ components:
       - measurements
       - product_id
       - updated_at
-    ProductFacilityBatchMeasurementResponse:
+    ProductFacilityMeasurementResponse:
       type: object
-      description: Response shape for GET .../measurements/by-product-facility-and-batch.
+      description: Response shape for GET .../measurements/by-product-and-facility.
       properties:
         product_id:
           type: integer
         facility_id:
           type: integer
-        batch_id:
-          type: integer
         measurements:
           $ref: '#/components/schemas/MeasurementData'
         updated_at:
           type: string
           format: date-time
       required:
-      - batch_id
       - facility_id
       - measurements
       - product_id
       - updated_at
-    ProductMeasurementResponse:
+    MeasurementData:
       type: object
-      description: Response shape for GET .../measurements/by-product.
+      description: Nested measurement quantities; field names match MeasurementData.
       properties:
-        product_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
+        on_hand_quantity:
           type: string
-          format: date-time
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        available_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reserved_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        allocated_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        held_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        archived_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
       required:
-      - measurements
-      - product_id
-      - updated_at
+      - allocated_quantity
+      - archived_quantity
+      - available_quantity
+      - held_quantity
+      - on_hand_quantity
+      - reserved_quantity
   securitySchemes:
     bearerAuth:
       type: http

@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: inventory
+- name: Inventory
 paths:
   /inventory/commands/compare-inventory:
     post:
@@ -55,7 +53,7 @@ paths:
 
         the scan.'
       tags:
-      - inventory
+      - Inventory
       security:
       - bearerAuth: []
       responses:
@@ -85,6 +83,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory commands compare inventory create
+      x-summary-source: derived
   /inventory/commands/initialize-history:
     post:
       operationId: inventory_commands_initialize_history_create
@@ -96,9 +96,9 @@ paths:
         for a seller''s entire product catalog.
 
 
-        Body: {"seller_id": <int>}'
+        Body: {"seller_id": }'
       tags:
-      - inventory
+      - Inventory
       security:
       - bearerAuth: []
       responses:
@@ -128,6 +128,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory commands initialize history create
+      x-summary-source: derived
   /inventory/commands/initialize-product-streams:
     post:
       operationId: inventory_commands_initialize_product_streams_create
@@ -138,7 +140,7 @@ paths:
 
         _get_legacy_streams_for_product and passes to command service.'
       tags:
-      - inventory
+      - Inventory
       security:
       - bearerAuth: []
       responses:
@@ -168,6 +170,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory commands initialize product streams create
+      x-summary-source: derived
   /inventory/commands/initialize-streams-for-seller:
     post:
       operationId: inventory_commands_initialize_streams_for_seller_create
@@ -181,9 +185,9 @@ paths:
         task on the low-priority initialization queue.
 
 
-        Body: {"seller_id": <int>}'
+        Body: {"seller_id": }'
       tags:
-      - inventory
+      - Inventory
       security:
       - bearerAuth: []
       responses:
@@ -213,6 +217,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory commands initialize streams for seller create
+      x-summary-source: derived
 components:
   securitySchemes:
     bearerAuth:

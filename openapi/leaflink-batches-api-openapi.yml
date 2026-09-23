@@ -12,7 +12,7 @@ servers:
   description: LeafLink API staging URL.
 - url: https://app.leaflink.com/api/v2
 tags:
-- name: batches
+- name: Batches
 paths:
   /batches/{id}:
     patch:
@@ -33,7 +33,7 @@ paths:
           type: string
           format: date
       tags:
-      - batches
+      - Batches
       requestBody:
         content:
           application/json:
@@ -72,6 +72,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Batches partial update
+      x-summary-source: derived
     delete:
       operationId: batches_destroy
       description: LeafLink Unified API for Batches.
@@ -90,7 +92,7 @@ paths:
           type: string
           format: date
       tags:
-      - batches
+      - Batches
       security:
       - bearerAuth: []
       responses:
@@ -120,6 +122,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Batches destroy
+      x-summary-source: derived
     servers:
     - url: https://api.leaflink.com
       description: LeafLink API production URL.
@@ -130,7 +134,10 @@ paths:
     get:
       operationId: batches_list
       summary: List batches
-      description: List all batches. <br /> <br /> For legacy auth, retrieved per company with the owner query parameter or with the following path parameter, /companies/{company_id}/batches/
+      description: 'List all batches.
+
+
+        For legacy auth, retrieved per company with the owner query parameter or with the following path parameter, /companies/{company_id}/batches/'
       parameters:
       - name: batch_date__lt
         in: query
@@ -271,7 +278,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/BatchResponse'
       tags:
-      - batches
+      - Batches
       security:
       - Token: []
     post:
@@ -292,7 +299,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BatchResponse'
       tags:
-      - batches
+      - Batches
       security:
       - Token: []
     servers:
@@ -317,7 +324,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BatchResponse'
       tags:
-      - batches
+      - Batches
       security:
       - Token: []
     patch:
@@ -338,7 +345,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BatchResponse'
       tags:
-      - batches
+      - Batches
       security:
       - Token: []
     delete:
@@ -349,7 +356,7 @@ paths:
         '204':
           description: ''
       tags:
-      - batches
+      - Batches
       security:
       - Token: []
     servers:
@@ -567,91 +574,6 @@ components:
       - source
       - source_type
       - status
-    BatchUpdate:
-      type: object
-      properties:
-        production_batch_number:
-          type: string
-          maxLength: 50
-        batch_date:
-          type: string
-          format: date
-        thc:
-          type: string
-          format: decimal
-        thca:
-          type: string
-          format: decimal
-        total_thc:
-          type: string
-          format: decimal
-        cbd:
-          type: string
-          format: decimal
-        cbda:
-          type: string
-          format: decimal
-        cbg:
-          type: string
-          format: decimal
-        cbn:
-          type: string
-          format: decimal
-        total_cannabinoids:
-          type: string
-          format: decimal
-        cannabinoid_unit:
-          type: string
-          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
-    BatchCreate:
-      required:
-      - owner
-      - production_batch_number
-      - batch_date
-      - testing_source
-      type: object
-      properties:
-        owner:
-          description: id for the company
-          type: string
-        production_batch_number:
-          type: string
-          maxLength: 50
-        batch_date:
-          type: string
-          format: date
-        thc:
-          type: string
-          format: decimal
-        thca:
-          type: string
-          format: decimal
-        total_thc:
-          type: string
-          format: decimal
-        cbd:
-          type: string
-          format: decimal
-        cbda:
-          type: string
-          format: decimal
-        cbg:
-          type:
-          - string
-          - 'null'
-          format: decimal
-        cbn:
-          type: string
-          format: decimal
-        total_cannabinoids:
-          type: string
-          format: decimal
-        cannabinoid_unit:
-          type: string
-          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
-        testing_source:
-          type: string
-          description: Name of the source system for the test results
     BatchResponse:
       type: object
       properties:
@@ -721,6 +643,91 @@ components:
         is_from_api:
           type: boolean
           description: Describes whether this batch was created via an external system
+    BatchCreate:
+      required:
+      - owner
+      - production_batch_number
+      - batch_date
+      - testing_source
+      type: object
+      properties:
+        owner:
+          description: id for the company
+          type: string
+        production_batch_number:
+          type: string
+          maxLength: 50
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type:
+          - string
+          - 'null'
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
+        testing_source:
+          type: string
+          description: Name of the source system for the test results
+    BatchUpdate:
+      type: object
+      properties:
+        production_batch_number:
+          type: string
+          maxLength: 50
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type: string
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
   securitySchemes:
     bearerAuth:
       type: http

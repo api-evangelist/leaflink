@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -49,7 +16,7 @@ security:
 - Token: []
 tags:
 - description: The License model represents a single state-issued license held by a Company.
-  name: licenses
+  name: Licenses
 paths:
   /licenses/:
     parameters: []
@@ -58,9 +25,10 @@ paths:
       summary: List
       description: 'List all licenses for a user''s companies.
 
-        <br />You can list the licenses associated with
 
-        a company''s products at <b>/companies/{company_id}/licenses</b>'
+        You can list the licenses associated with
+
+        a company''s products at /companies/{company_id}/licenses'
       parameters:
       - name: number__in
         in: query
@@ -126,7 +94,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/ComplianceLicense'
       tags:
-      - licenses
+      - Licenses
   /licenses/{id}/:
     parameters:
     - name: id
@@ -147,7 +115,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComplianceLicense'
       tags:
-      - licenses
+      - Licenses
 components:
   schemas:
     ComplianceLicense:

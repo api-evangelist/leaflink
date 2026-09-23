@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -85,6 +83,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Company messages find seller list
+      x-summary-source: derived
   /company_messages/find_seller/{id}:
     get:
       operationId: company_messages_find_seller_retrieve
@@ -138,6 +138,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Company messages find seller retrieve
+      x-summary-source: derived
 components:
   schemas:
     UnifiedMessagingFindSeller:

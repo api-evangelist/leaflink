@@ -5,40 +5,7 @@ info:
 
     ## HTTP Request Notes
 
-    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.
-
-
-    Available domains
-
-
-    - `app.leaflink.com` - production environment
-
-
-    - `www.sandbox.leaflink.com` - sandbox environment
-
-
-    - `www.leaflink-integrations.leaflink.com` - integrations sandbox environment
-
-
-    [Learn more about sandbox environments](https://developer.leaflink.com/brands/api/authorization/#sandbox-environments)
-
-
-
-    Request paths must end in a slash character (''/''). Those that do not will return a 400 (Bad Request) response.
-
-
-    ## Dynamic Responses
-
-    Some of our API endpoints support dynamic responses. These
-
-    are responses that vary in content and/or object level payload size
-
-    according to request path or query parameters.
-
-
-    Available parameters are listed beneath endpoint definitions.
-
-    '
+    All endpoints covered in this document are preceded by `https://{{domain}}/api/v2/` unless otherwise noted.'
   termsOfService: https://leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -55,7 +22,10 @@ paths:
     get:
       operationId: orders-received_list
       summary: List orders
-      description: List received orders for all active companies where the user has the Manage Orders Received permission. <br /> <br />Per company via <b>/companies/{company_id}/orders-received/</b>
+      description: 'List received orders for all active companies where the user has the Manage Orders Received permission.
+
+
+        Per company via /companies/{company_id}/orders-received/'
       parameters:
       - name: fields_include
         in: query
@@ -506,9 +476,7 @@ paths:
       description: 'Create an Order. May create child LineItem objects in the same request.
 
 
-        __WARNING - BETA FEATURE:__ This API is in active development and is subject to change.
-
-        '
+        __WARNING - BETA FEATURE:__ This API is in active development and is subject to change.'
       requestBody:
         content:
           application/json:
@@ -622,7 +590,7 @@ paths:
     delete:
       operationId: orders-received_delete
       summary: Delete a draft order
-      description: Delete a draft order. This operation is <b>only available for draft orders</b>.
+      description: Delete a draft order. This operation is only available for draft orders.
       responses:
         '204':
           description: ''
@@ -678,20 +646,38 @@ paths:
       - orders-received
 components:
   schemas:
-    LightCompanyStaff:
-      description: Sales representatives associated with the order.
+    LightCompanyCustomer:
+      title: Customer
+      description: Seller's customer record for the company on the buyer side of the order
+      required:
+      - id
+      - delinquent
       type: object
       properties:
         id:
           title: Id
-          description: id for the company staff user assigned to this order
+          description: id for the customer
           type: integer
-          readOnly: true
-        user:
-          title: User
-          description: Concatenated string that contains the first name + last name of the company staff user
+        display_name:
+          title: Display name
+          description: Customer nickname if one exists, else the customer name
           type: string
           readOnly: true
+        ext_acct_id:
+          title: Accounting Service External ID
+          description: ID of Customer in 3rd party accouting software
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        delinquent:
+          title: Delinquent
+          description: Is this account marked delinquent?
+          type: boolean
+    OrderDeliveryInformation:
+      type: object
+      description: Order delivery information payload.
+      additionalProperties: true
     OrderResponse:
       type: object
       properties:
@@ -1145,56 +1131,18 @@ components:
           state: CO
           unit_number: 1A
           zipcode: '81143'
-    OrderDeliveryInformation:
-      type: object
-      description: Order delivery information payload.
-      additionalProperties: true
-    ExternalIds:
-      type: object
-      description: Set of key-value pairs for storing external system IDs.  Key value can be up to 36 characters long.
-    LightCompanyCustomerId:
-      title: Customer
-      description: Seller's customer record for the company on the buyer side of the order
-      required:
-      - id
+    LightCompanyStaff:
+      description: Sales representatives associated with the order.
       type: object
       properties:
         id:
           title: Id
-          description: id for the customer
-          type: integer
-    LightOrderTax:
-      description: Details about the taxes applied to the order
-      required:
-      - order
-      - tax
-      type: object
-      properties:
-        id:
-          title: Id
-          description: id for the tax type
+          description: id for the company staff user assigned to this order
           type: integer
           readOnly: true
-        order:
-          title: Order
-          type: integer
-        tax:
-          title: Tax
-          type: integer
-        name:
-          title: Name
-          type: string
-          readOnly: true
-        rate:
-          title: Rate
-          type: string
-          readOnly: true
-        state:
-          title: State
-          type: string
-          readOnly: true
-        auto_apply:
-          title: Auto apply
+        user:
+          title: User
+          description: Concatenated string that contains the first name + last name of the company staff user
           type: string
           readOnly: true
     OrderUpdate:
@@ -1371,76 +1319,6 @@ components:
           readOnly: true
         external_ids:
           $ref: '#/components/schemas/ExternalIds'
-    LightCompanyStaffId:
-      description: Sales representatives associated with the order.
-      type: object
-      title: CompanyStaff
-      properties:
-        id:
-          title: Id
-          description: id for the company staff user assigned to this order
-          type: integer
-    DeliveryProviderOrderInformation:
-      title: Delivery info
-      type: object
-      properties:
-        acquire_date:
-          title: Acquire date
-          description: Date the Trusted Delivery Provider will either `Pick Up` or get `Drop Off` the order. Must be `null` for `In Storage` type.
-          type:
-          - string
-          - 'null'
-          format: date-time
-        acquire_type:
-          title: Acquire type
-          description: 1 = Drop Off; 2 = Pick Up; 3 = In Storage. 4 = Will Call
-          type:
-          - integer
-          - 'null'
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-        get_acquire_type_display:
-          title: Get acquire type display
-          type: string
-          readOnly: true
-        manifest_number:
-          title: Manifest number
-          description: An identifier for the order's manifest document.
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-    LightCompanyCustomer:
-      title: Customer
-      description: Seller's customer record for the company on the buyer side of the order
-      required:
-      - id
-      - delinquent
-      type: object
-      properties:
-        id:
-          title: Id
-          description: id for the customer
-          type: integer
-        display_name:
-          title: Display name
-          description: Customer nickname if one exists, else the customer name
-          type: string
-          readOnly: true
-        ext_acct_id:
-          title: Accounting Service External ID
-          description: ID of Customer in 3rd party accouting software
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        delinquent:
-          title: Delinquent
-          description: Is this account marked delinquent?
-          type: boolean
     OrderCreate:
       type: object
       required:
@@ -1583,6 +1461,54 @@ components:
           type:
           - integer
           - 'null'
+    ExternalIds:
+      type: object
+      description: Set of key-value pairs for storing external system IDs.  Key value can be up to 36 characters long.
+    LightOrderTax:
+      description: Details about the taxes applied to the order
+      required:
+      - order
+      - tax
+      type: object
+      properties:
+        id:
+          title: Id
+          description: id for the tax type
+          type: integer
+          readOnly: true
+        order:
+          title: Order
+          type: integer
+        tax:
+          title: Tax
+          type: integer
+        name:
+          title: Name
+          type: string
+          readOnly: true
+        rate:
+          title: Rate
+          type: string
+          readOnly: true
+        state:
+          title: State
+          type: string
+          readOnly: true
+        auto_apply:
+          title: Auto apply
+          type: string
+          readOnly: true
+    LightCompanyCustomerId:
+      title: Customer
+      description: Seller's customer record for the company on the buyer side of the order
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          title: Id
+          description: id for the customer
+          type: integer
     LineItemCreate:
       required:
       - ordered_unit_price
@@ -1702,6 +1628,48 @@ components:
           - string
           - 'null'
           format: decimal
+    DeliveryProviderOrderInformation:
+      title: Delivery info
+      type: object
+      properties:
+        acquire_date:
+          title: Acquire date
+          description: Date the Trusted Delivery Provider will either `Pick Up` or get `Drop Off` the order. Must be `null` for `In Storage` type.
+          type:
+          - string
+          - 'null'
+          format: date-time
+        acquire_type:
+          title: Acquire type
+          description: 1 = Drop Off; 2 = Pick Up; 3 = In Storage. 4 = Will Call
+          type:
+          - integer
+          - 'null'
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+        get_acquire_type_display:
+          title: Get acquire type display
+          type: string
+          readOnly: true
+        manifest_number:
+          title: Manifest number
+          description: An identifier for the order's manifest document.
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+    LightCompanyStaffId:
+      description: Sales representatives associated with the order.
+      type: object
+      title: CompanyStaff
+      properties:
+        id:
+          title: Id
+          description: id for the company staff user assigned to this order
+          type: integer
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

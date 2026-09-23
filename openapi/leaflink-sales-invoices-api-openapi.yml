@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -19,7 +17,7 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: sales_invoices
+- name: Sales Invoices
 paths:
   /sales_invoices:
     get:
@@ -67,7 +65,7 @@ paths:
           type: string
           format: date
       tags:
-      - sales_invoices
+      - Sales Invoices
       security:
       - bearerAuth: []
       responses:
@@ -101,6 +99,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Sales invoices list
+      x-summary-source: derived
   /sales_invoices/{id}:
     get:
       operationId: sales_invoices_retrieve
@@ -119,7 +119,7 @@ paths:
           type: string
           format: date
       tags:
-      - sales_invoices
+      - Sales Invoices
       security:
       - bearerAuth: []
       responses:
@@ -153,33 +153,23 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Sales invoices retrieve
+      x-summary-source: derived
 components:
   schemas:
-    PaginatedUnifiedOrderAsSalesInvoiceList:
+    UnifiedInvoiceCustomer:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedOrderAsSalesInvoice'
+          readOnly: true
+      required:
+      - id
+      - name
     UnifiedOrderedProductAsInvoiceLineItem:
       type: object
       properties:
@@ -263,19 +253,31 @@ components:
       - line_items
       - modified_date
       - order
-    UnifiedInvoiceCustomer:
+    PaginatedUnifiedOrderAsSalesInvoiceList:
       type: object
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
       required:
-      - id
-      - name
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedOrderAsSalesInvoice'
   securitySchemes:
     bearerAuth:
       type: http

@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -874,119 +872,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    RebuildProjectionsStream:
-      type: object
-      description: Single stream identifier in the rebuild-projections response.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        batch_id:
-          type: integer
-      required:
-      - batch_id
-      - facility_id
-      - product_id
-    UnreserveRequestRequest:
-      type: object
-      description: Request body for POST .../commands/unreserve.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        order_id:
-          type: integer
-          minimum: 1
-        order_product_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - created_by
-      - order_id
-      - order_product_id
-      - product_id
-      - quantity
-    RebuildProjectionsRequestRequest:
-      type: object
-      description: 'Request body for POST .../commands/rebuild-projections.
-
-
-        Accepts any combination of seller_ids, product_ids, facility_ids, and
-
-        batch_ids. At least one filter list must be non-empty. seller_ids are
-
-        expanded to their products at the view layer (Django ORM) before stream
-
-        lookup.'
-      properties:
-        seller_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-        product_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-        facility_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-        batch_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-    ArchiveRequestRequest:
-      type: object
-      description: Request body for POST .../commands/archive.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - quantity
-      - reason
     UnfulfillmentRequestRequest:
       type: object
       description: Request body for POST .../commands/unfulfillment.
@@ -1034,26 +919,37 @@ components:
       - stream_count
       - streams
       - tasks_queued
-    UnholdRequestRequest:
+    RebuildProjectionsStream:
       type: object
-      description: Request body for POST .../commands/unhold.
+      description: Single stream identifier in the rebuild-projections response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+      required:
+      - batch_id
+      - facility_id
+      - product_id
+    UnreserveRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unreserve.
       properties:
         product_id:
           type: integer
           minimum: 1
-        facility_id:
+        order_id:
           type: integer
           minimum: 1
-        batch_id:
+        order_product_id:
           type: integer
           minimum: 1
         quantity:
           type: string
           format: decimal
           pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
         created_by:
           type: integer
           minimum: 0
@@ -1063,50 +959,50 @@ components:
             type: string
             minLength: 1
       required:
-      - batch_id
       - created_by
-      - facility_id
+      - order_id
+      - order_product_id
       - product_id
       - quantity
-      - reason
-    ReconcileRequestRequest:
+    CommandStatusResponse:
       type: object
-      description: Request body for POST .../commands/reconcile.
+      description: Response body for GET .../commands/<id>/status.
       properties:
-        product_id:
+        command_id:
           type: integer
-          minimum: 1
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        to_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
+        task_id:
+          type:
+          - string
+          - 'null'
+        result_status:
+          allOf:
+          - $ref: '#/components/schemas/ResultStatusEnum'
+          description: Pending | Success | Failed
+        result_metadata:
+          type:
+          - object
+          - 'null'
           additionalProperties:
             type: string
-            minLength: 1
+          description: Error/details when Failed
+        result_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        command_type:
+          type: string
+          description: Command type name
       required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - reason
-      - to_quantity
-    UnarchiveRequestRequest:
+      - command_id
+      - command_type
+      - result_metadata
+      - result_on
+      - result_status
+      - task_id
+    UnholdRequestRequest:
       type: object
-      description: Request body for POST .../commands/unarchive.
+      description: Request body for POST .../commands/unhold.
       properties:
         product_id:
           type: integer
@@ -1170,93 +1066,9 @@ components:
       - order_product_id
       - product_id
       - quantity
-    CommandAcceptedResponse:
+    ArchiveRequestRequest:
       type: object
-      description: Response body for 202 Accepted when a command is queued.
-      properties:
-        command_id:
-          type: integer
-          description: Persisted command ID for status polling
-      required:
-      - command_id
-    TransferRequestRequest:
-      type: object
-      description: Request body for POST .../commands/transfer.
-      properties:
-        from_product_id:
-          type: integer
-          minimum: 1
-        from_facility_id:
-          type: integer
-          minimum: 1
-        from_batch_id:
-          type: integer
-          minimum: 1
-        to_product_id:
-          type: integer
-          minimum: 1
-        to_facility_id:
-          type: integer
-          minimum: 1
-        to_batch_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - created_by
-      - from_batch_id
-      - from_facility_id
-      - from_product_id
-      - quantity
-      - to_batch_id
-      - to_facility_id
-      - to_product_id
-    PutawayRequestRequest:
-      type: object
-      description: Request body for POST .../commands/putaway.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        created_by:
-          type: integer
-          minimum: 0
-          description: User ID the command is on behalf of (e.g. company staff).
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - quantity
-    HoldRequestRequest:
-      type: object
-      description: Request body for POST .../commands/hold.
+      description: Request body for POST .../commands/archive.
       properties:
         product_id:
           type: integer
@@ -1324,48 +1136,234 @@ components:
       - product_id
       - quantity
       - reason
-    CommandStatusResponse:
+    ReconcileRequestRequest:
       type: object
-      description: Response body for GET .../commands/<id>/status.
+      description: Request body for POST .../commands/reconcile.
       properties:
-        command_id:
+        product_id:
           type: integer
-        task_id:
-          type:
-          - string
-          - 'null'
-        result_status:
-          allOf:
-          - $ref: '#/components/schemas/ResultStatusEnum'
-          description: Pending | Success | Failed
-        result_metadata:
-          type:
-          - object
-          - 'null'
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        to_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
           additionalProperties:
             type: string
-          description: Error/details when Failed
-        result_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        command_type:
-          type: string
-          description: Command type name
+            minLength: 1
       required:
-      - command_id
-      - command_type
-      - result_metadata
-      - result_on
-      - result_status
-      - task_id
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - reason
+      - to_quantity
     ResultStatusEnum:
       enum:
       - Pending
       - Success
       - Failed
       type: string
+    PutawayRequestRequest:
+      type: object
+      description: Request body for POST .../commands/putaway.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        created_by:
+          type: integer
+          minimum: 0
+          description: User ID the command is on behalf of (e.g. company staff).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+    TransferRequestRequest:
+      type: object
+      description: Request body for POST .../commands/transfer.
+      properties:
+        from_product_id:
+          type: integer
+          minimum: 1
+        from_facility_id:
+          type: integer
+          minimum: 1
+        from_batch_id:
+          type: integer
+          minimum: 1
+        to_product_id:
+          type: integer
+          minimum: 1
+        to_facility_id:
+          type: integer
+          minimum: 1
+        to_batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - created_by
+      - from_batch_id
+      - from_facility_id
+      - from_product_id
+      - quantity
+      - to_batch_id
+      - to_facility_id
+      - to_product_id
+    UnarchiveRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unarchive.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    CommandAcceptedResponse:
+      type: object
+      description: Response body for 202 Accepted when a command is queued.
+      properties:
+        command_id:
+          type: integer
+          description: Persisted command ID for status polling
+      required:
+      - command_id
+    HoldRequestRequest:
+      type: object
+      description: Request body for POST .../commands/hold.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    RebuildProjectionsRequestRequest:
+      type: object
+      description: 'Request body for POST .../commands/rebuild-projections.
+
+
+        Accepts any combination of seller_ids, product_ids, facility_ids, and
+
+        batch_ids. At least one filter list must be non-empty. seller_ids are
+
+        expanded to their products at the view layer (Django ORM) before stream
+
+        lookup.'
+      properties:
+        seller_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        product_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        facility_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        batch_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
   securitySchemes:
     bearerAuth:
       type: http

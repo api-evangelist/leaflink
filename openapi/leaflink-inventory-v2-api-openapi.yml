@@ -5,9 +5,7 @@ info:
   description: 'This reference specification outlines all the available HTTP operations of the LeafLink API.
 
 
-    See the [LeafLink Developer Hub](/api) for guides, how-to, and general information of the API.
-
-    '
+    See the LeafLink Developer Hub for guides, how-to, and general information of the API.'
   termsOfService: https://www.leaflink.com/terms-and-conditions/
   contact:
     email: support@leaflink.com
@@ -69,6 +67,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug celery tasks retrieve
+      x-summary-source: derived
   /inventory-v2/debug/commands/{command_id}:
     get:
       operationId: inventory_v2_debug_commands_retrieve
@@ -117,6 +117,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug commands retrieve
+      x-summary-source: derived
   /inventory-v2/debug/compare:
     get:
       operationId: inventory_v2_debug_compare_retrieve
@@ -152,6 +154,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug compare retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v1/inventory-item-audit-logs:
     get:
       operationId: inventory_v2_debug_v1_inventory_item_audit_logs_retrieve
@@ -187,6 +191,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v1 inventory item audit logs retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v1/inventory-items:
     get:
       operationId: inventory_v2_debug_v1_inventory_items_retrieve
@@ -222,6 +228,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v1 inventory items retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v1/ordered-products:
     get:
       operationId: inventory_v2_debug_v1_ordered_products_retrieve
@@ -257,6 +265,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v1 ordered products retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v1/product-audit-logs:
     get:
       operationId: inventory_v2_debug_v1_product_audit_logs_retrieve
@@ -292,6 +302,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v1 product audit logs retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v2/allocations:
     get:
       operationId: inventory_v2_debug_v2_allocations_retrieve
@@ -327,6 +339,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v2 allocations retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v2/commands:
     get:
       operationId: inventory_v2_debug_v2_commands_retrieve
@@ -362,6 +376,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v2 commands retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v2/events:
     get:
       operationId: inventory_v2_debug_v2_events_retrieve
@@ -397,6 +413,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v2 events retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v2/measurements:
     get:
       operationId: inventory_v2_debug_v2_measurements_retrieve
@@ -432,6 +450,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v2 measurements retrieve
+      x-summary-source: derived
   /inventory-v2/debug/v2/reservations:
     get:
       operationId: inventory_v2_debug_v2_reservations_retrieve
@@ -467,6 +487,8 @@ paths:
               schema:
                 type: integer
               description: The time remaining before the rejected request can be tried again, specified in seconds.
+      summary: Inventory v2 debug v2 reservations retrieve
+      x-summary-source: derived
 components:
   securitySchemes:
     bearerAuth:
