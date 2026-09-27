@@ -65,35 +65,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    RecordInvoicePayment:
-      type: object
-      description: Creating a recorded payment on an Invoice
-      properties:
-        amount:
-          type: string
-          description: Quantity in USD
-        payment_date:
-          type: string
-          format: date
-          description: Date payment was made in YYYY-MM-DD
-        payment_reason:
-          type: string
-          description: 'Reason payment was made. choices: [''invoice_purchase'', ''reversal'', ''adjustment'', ''principal'', ''extension_fee'', ''factor_fee'', ''direct_pay_fee'', ''direct_pay_fee_reversal'', ''direct_pay_fee_batch'', ''cashback_reward'', ''standard'', ''ach_error'', ''marketplace_payment'', ''other'', ''sell_through'']'
-        payment_method:
-          type: string
-          description: The way the payment was made. choices:['ach', 'wire', 'money_order', 'cash_pickup', 'check', 'other']
-        check_number:
-          type: string
-          description: Check number if the method is check
-        source_id:
-          type: string
-          description: The ID of this payment in your system
-      required:
-      - amount
-      - payment_date
-      - payment_method
-      - payment_reason
-      - source_id
     RecordInvoicePaymentRequest:
       type: object
       description: Creating a recorded payment on an Invoice
@@ -121,6 +92,35 @@ components:
         source_id:
           type: string
           minLength: 1
+          description: The ID of this payment in your system
+      required:
+      - amount
+      - payment_date
+      - payment_method
+      - payment_reason
+      - source_id
+    RecordInvoicePayment:
+      type: object
+      description: Creating a recorded payment on an Invoice
+      properties:
+        amount:
+          type: string
+          description: Quantity in USD
+        payment_date:
+          type: string
+          format: date
+          description: Date payment was made in YYYY-MM-DD
+        payment_reason:
+          type: string
+          description: 'Reason payment was made. choices: [''invoice_purchase'', ''reversal'', ''adjustment'', ''principal'', ''extension_fee'', ''factor_fee'', ''direct_pay_fee'', ''direct_pay_fee_reversal'', ''direct_pay_fee_batch'', ''cashback_reward'', ''standard'', ''ach_error'', ''marketplace_payment'', ''other'', ''sell_through'']'
+        payment_method:
+          type: string
+          description: The way the payment was made. choices:['ach', 'wire', 'money_order', 'cash_pickup', 'check', 'other']
+        check_number:
+          type: string
+          description: Check number if the method is check
+        source_id:
+          type: string
           description: The ID of this payment in your system
       required:
       - amount

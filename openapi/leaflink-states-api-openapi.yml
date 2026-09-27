@@ -160,26 +160,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    State-unified-upstream-marketplace:
-      type: object
-      description: Serializer for State models via the internal API
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        abbr:
-          type: string
-          maxLength: 2
-        name:
-          type: string
-          maxLength: 100
-        country:
-          $ref: '#/components/schemas/Country'
-      required:
-      - abbr
-      - country
-      - id
-      - name
     PaginatedStateList:
       type: object
       required:
@@ -224,6 +204,26 @@ components:
       - abbr
       - id
       - iso_code
+      - name
+    State-unified-upstream-marketplace:
+      type: object
+      description: Serializer for State models via the internal API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        abbr:
+          type: string
+          maxLength: 2
+        name:
+          type: string
+          maxLength: 100
+        country:
+          $ref: '#/components/schemas/Country'
+      required:
+      - abbr
+      - country
+      - id
       - name
   securitySchemes:
     bearerAuth:

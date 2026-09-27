@@ -360,7 +360,7 @@ paths:
       description: LeafLink API staging URL.
   /inventory/facilities/:
     get:
-      operationId: facilities_list
+      operationId: getInventoryFacilities
       summary: List
       description: 'List all facilities.
 
@@ -394,6 +394,8 @@ paths:
       - Facilities
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: facilities_list
     servers:
     - url: https://app.leaflink.com/api/v2
   /inventory/facilities/{id}/:
@@ -426,6 +428,43 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
+    PaginatedFacilityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+    Facility:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Name of the facility
+      required:
+      - id
+      - name
     FacilityCreateRequest:
       type: object
       description: Serializer for creating a facility.
@@ -515,43 +554,6 @@ components:
       - city
       - state
       - zipcode
-    PaginatedFacilityList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Facility'
-    Facility:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Name of the facility
-      required:
-      - id
-      - name
     Facility_2:
       type: object
       properties:

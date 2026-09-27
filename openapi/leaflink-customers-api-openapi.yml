@@ -1196,7 +1196,7 @@ paths:
       security:
       - Token: []
     post:
-      operationId: customers_create
+      operationId: postCustomers
       summary: Create a customer
       description: Create a new customer.
       requestBody:
@@ -1216,6 +1216,8 @@ paths:
       - Customers
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: customers_create
     servers:
     - url: https://app.leaflink.com/api/v2
   /customers/{id}/:
@@ -1258,7 +1260,7 @@ paths:
       security:
       - Token: []
     patch:
-      operationId: customers_partial_update
+      operationId: patchCustomersById
       summary: Update a customer
       description: Update a customer by ID.
       requestBody:
@@ -1278,6 +1280,8 @@ paths:
       - Customers
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: customers_partial_update
     delete:
       operationId: customers_delete
       summary: Archive a customer
@@ -1297,256 +1301,6 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
-    ServiceZone:
-      type: object
-      description: Serializer for the ServiceZone model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Service Zone Name
-          description: Service Zone Name
-          maxLength: 300
-        description:
-          type:
-          - string
-          - 'null'
-          description: Detailed description of the service zone.
-          maxLength: 1500
-        company:
-          type: integer
-      required:
-      - company
-      - id
-      - name
-    NullEnum-unified-upstream-marketplace:
-      enum:
-      - null
-    UnifiedCompanyCustomerStatus:
-      type: object
-      description: Unified serializer for the CompanyCustomerStatus model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        state:
-          type: string
-          title: Customer Status
-          description: Customer Status State
-          maxLength: 40
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 1
-          title: Sort Order
-          description: Sort order, lower is first.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of status
-          maxLength: 1500
-        owner:
-          type:
-          - integer
-          - 'null'
-          title: Company
-          description: The Company that created the custom status.
-        is_stock:
-          type: boolean
-          title: Is a LeafLink Stock Status
-          description: Is this a stock LeafLink status?
-        hex_color:
-          type:
-          - string
-          - 'null'
-          description: Hex color for customer status
-          pattern: ^#[0-9a-fA-F]{6}$
-          maxLength: 40
-      required:
-      - id
-      - state
-    UnifiedAddressRequest:
-      type: object
-      description: Inherits AddressSerializer but sets the FK relation on the resource Model
-      properties:
-        address:
-          type: string
-          minLength: 1
-          description: Address
-          maxLength: 400
-        unit_number:
-          type: string
-          title: 'Unit #'
-          description: 'Unit #'
-          maxLength: 400
-        city:
-          type: string
-          minLength: 1
-          description: City
-          maxLength: 400
-        county:
-          type: string
-          description: County
-          maxLength: 400
-        state:
-          type: string
-          minLength: 1
-        zipcode:
-          type: string
-          minLength: 1
-          description: Zipcode
-          maxLength: 7
-      required:
-      - address
-      - city
-      - state
-      - zipcode
-    PatchedUnifiedCustomerRequest:
-      type: object
-      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
-      properties:
-        managers:
-          type: array
-          items:
-            type: integer
-        phone:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        phone_extension:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          title: Email address
-          maxLength: 255
-        website:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        next_contact_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        tier:
-          title: Company customer tier
-          description: Company customer tier
-          minimum: -2147483648
-          maximum: 2147483647
-          oneOf:
-          - $ref: '#/components/schemas/TierEnum'
-          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
-        name:
-          type: string
-          minLength: 1
-        license_number:
-          type: string
-          minLength: 1
-        old_license_number:
-          type:
-          - string
-          - 'null'
-          title: Old License Number (stored after a transfer)
-          description: Old License Number (stored after a transfer)
-          maxLength: 100
-        is_license_inactive:
-          type: boolean
-          default: false
-          description: License inactive or transferred for this customer
-        business_identifier:
-          type:
-          - string
-          - 'null'
-          title: Business Identifier / UBI
-          description: Company identifier distinct from license numbers
-          maxLength: 100
-        directions:
-          type:
-          - string
-          - 'null'
-          description: (Driving) Directions to the Customer location for deliveries
-          maxLength: 6000
-        delivery_preferences:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        shipping_charge:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: Additional Shipping Charge
-        brand:
-          type:
-          - string
-          - 'null'
-          title: Brand Name
-          description: Known Brand name of Company or Parent Company
-          maxLength: 400
-        business_license_name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Other information on customer
-          maxLength: 3000
-        is_archived:
-          type: boolean
-          default: false
-          description: Is the customer a relevent part of your CRM
-        is_delinquent:
-          type: boolean
-          default: false
-          description: Is this account delinquent on billing
-        discount_percent:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
-          description: Discount percent for orders of company customer
-        external_ids:
-          type: object
-          additionalProperties:
-            type: string
-          description: External IDs mapped by integration name
-        owner_id:
-          type: integer
-          description: Owner ID for customer
-        partner_id:
-          type: integer
-          description: Partner ID for customer
-        price_schedule_id:
-          type: integer
-          description: Price schedule ID for the customer
-        service_zone_id:
-          type: integer
-          writeOnly: true
-          description: Service zone ID for the customer
-        status_id:
-          type: integer
-          writeOnly: true
-          description: Status ID for the customer
     PatchedUnifiedAddressRequest:
       type: object
       description: Inherits AddressSerializer but sets the FK relation on the resource Model
@@ -1578,189 +1332,53 @@ components:
           minLength: 1
           description: Zipcode
           maxLength: 7
-    ShortPaymentTerm:
+    CustomerPaymentOptionSerializerV2:
       type: object
-      description: Short serializer for payment terms.
+      description: External serializer class for Customers payment options.
       properties:
         id:
           type: integer
-          readOnly: true
-        term:
-          type: string
-          title: Payment Term Name
-          description: Name of the Payment Term
-          maxLength: 80
-        days:
-          type: integer
-        code:
-          type:
-          - string
-          - 'null'
-          title: Payment Term (code)
-          description: Term of Payment (code)
-          maxLength: 20
-      required:
-      - days
-      - id
-      - term
+        is_default:
+          type: boolean
+          default: false
+        payment_method:
+          $ref: '#/components/schemas/ShortPaymentMethod'
+        payment_program:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentProgramEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        payment_strategy:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentStrategyEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        payment_term:
+          $ref: '#/components/schemas/ShortPaymentTerm'
+    PaymentProgramEnum:
+      enum:
+      - direct
+      - flexible
+      type: string
     PaymentStrategyEnum:
       enum:
       - direct
       - factored
       - reverse_factored
       type: string
-    TierEnum:
-      enum:
-      - 1
-      - 2
-      - 3
-      type: integer
-    UnifiedCustomerRequest:
+    ShortPaymentMethod:
       type: object
-      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
+      description: Short serializer for payment methods.
       properties:
-        managers:
-          type: array
-          items:
-            type: integer
-        phone:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        phone_extension:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          title: Email address
-          maxLength: 255
-        website:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        next_contact_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        tier:
-          title: Company customer tier
-          description: Company customer tier
-          minimum: -2147483648
-          maximum: 2147483647
-          oneOf:
-          - $ref: '#/components/schemas/TierEnum'
-          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
-        name:
+        id:
+          type: integer
+          readOnly: true
+        method:
           type: string
-          minLength: 1
-        license_number:
-          type: string
-          minLength: 1
-        old_license_number:
-          type:
-          - string
-          - 'null'
-          title: Old License Number (stored after a transfer)
-          description: Old License Number (stored after a transfer)
-          maxLength: 100
-        is_license_inactive:
-          type: boolean
-          default: false
-          description: License inactive or transferred for this customer
-        business_identifier:
-          type:
-          - string
-          - 'null'
-          title: Business Identifier / UBI
-          description: Company identifier distinct from license numbers
-          maxLength: 100
-        directions:
-          type:
-          - string
-          - 'null'
-          description: (Driving) Directions to the Customer location for deliveries
-          maxLength: 6000
-        delivery_preferences:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        shipping_charge:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: Additional Shipping Charge
-        brand:
-          type:
-          - string
-          - 'null'
-          title: Brand Name
-          description: Known Brand name of Company or Parent Company
-          maxLength: 400
-        business_license_name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Other information on customer
-          maxLength: 3000
-        is_archived:
-          type: boolean
-          default: false
-          description: Is the customer a relevent part of your CRM
-        is_delinquent:
-          type: boolean
-          default: false
-          description: Is this account delinquent on billing
-        discount_percent:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
-          description: Discount percent for orders of company customer
-        external_ids:
-          type: object
-          additionalProperties:
-            type: string
-          description: External IDs mapped by integration name
-        owner_id:
-          type: integer
-          description: Owner ID for customer
-        partner_id:
-          type: integer
-          description: Partner ID for customer
-        price_schedule_id:
-          type: integer
-          description: Price schedule ID for the customer
-        service_zone_id:
-          type: integer
-          writeOnly: true
-          description: Service zone ID for the customer
-        status_id:
-          type: integer
-          writeOnly: true
-          description: Status ID for the customer
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
       required:
-      - name
-      - owner_id
+      - id
+      - method
     UnifiedAddress:
       type: object
       description: Inherits AddressSerializer but sets the FK relation on the resource Model
@@ -1793,27 +1411,6 @@ components:
       - city
       - state
       - zipcode
-    CustomerPaymentOptionSerializerV2:
-      type: object
-      description: External serializer class for Customers payment options.
-      properties:
-        id:
-          type: integer
-        is_default:
-          type: boolean
-          default: false
-        payment_method:
-          $ref: '#/components/schemas/ShortPaymentMethod'
-        payment_program:
-          oneOf:
-          - $ref: '#/components/schemas/PaymentProgramEnum'
-          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
-        payment_strategy:
-          oneOf:
-          - $ref: '#/components/schemas/PaymentStrategyEnum'
-          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
-        payment_term:
-          $ref: '#/components/schemas/ShortPaymentTerm'
     UnifiedCustomer:
       type: object
       description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
@@ -2029,52 +1626,434 @@ components:
       - owner_id
       - service_zone
       - status
-    PaymentProgramEnum:
-      enum:
-      - direct
-      - flexible
-      type: string
-    ShortPaymentMethod:
+    UnifiedCompanyCustomerStatus:
       type: object
-      description: Short serializer for payment methods.
+      description: Unified serializer for the CompanyCustomerStatus model.
       properties:
         id:
           type: integer
           readOnly: true
-        method:
+        state:
           type: string
-          title: Payment Method Name
-          description: Name of the Payment Method
-          maxLength: 80
+          title: Customer Status
+          description: Customer Status State
+          maxLength: 40
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          title: Sort Order
+          description: Sort order, lower is first.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of status
+          maxLength: 1500
+        owner:
+          type:
+          - integer
+          - 'null'
+          title: Company
+          description: The Company that created the custom status.
+        is_stock:
+          type: boolean
+          title: Is a LeafLink Stock Status
+          description: Is this a stock LeafLink status?
+        hex_color:
+          type:
+          - string
+          - 'null'
+          description: Hex color for customer status
+          pattern: ^#[0-9a-fA-F]{6}$
+          maxLength: 40
       required:
       - id
-      - method
-    Address:
+      - state
+    ServiceZone:
       type: object
+      description: Serializer for the ServiceZone model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Service Zone Name
+          description: Service Zone Name
+          maxLength: 300
+        description:
+          type:
+          - string
+          - 'null'
+          description: Detailed description of the service zone.
+          maxLength: 1500
+        company:
+          type: integer
+      required:
+      - company
+      - id
+      - name
+    TierEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: integer
+    UnifiedAddressRequest:
+      type: object
+      description: Inherits AddressSerializer but sets the FK relation on the resource Model
       properties:
         address:
-          title: Address
           type: string
+          minLength: 1
+          description: Address
+          maxLength: 400
         unit_number:
-          title: Unit Number
           type: string
+          title: 'Unit #'
+          description: 'Unit #'
+          maxLength: 400
         city:
-          title: City
           type: string
+          minLength: 1
+          description: City
+          maxLength: 400
         county:
-          title: County
           type: string
+          description: County
+          maxLength: 400
         state:
-          title: State
-          description: State abbreviation
           type: string
+          minLength: 1
         zipcode:
-          title: Zip Code
           type: string
-    CustomerCreate:
+          minLength: 1
+          description: Zipcode
+          maxLength: 7
       required:
-      - owner
+      - address
+      - city
+      - state
+      - zipcode
+    PatchedUnifiedCustomerRequest:
+      type: object
+      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
+      properties:
+        managers:
+          type: array
+          items:
+            type: integer
+        phone:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        next_contact_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        tier:
+          title: Company customer tier
+          description: Company customer tier
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/TierEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        name:
+          type: string
+          minLength: 1
+        license_number:
+          type: string
+          minLength: 1
+        old_license_number:
+          type:
+          - string
+          - 'null'
+          title: Old License Number (stored after a transfer)
+          description: Old License Number (stored after a transfer)
+          maxLength: 100
+        is_license_inactive:
+          type: boolean
+          default: false
+          description: License inactive or transferred for this customer
+        business_identifier:
+          type:
+          - string
+          - 'null'
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          maxLength: 100
+        directions:
+          type:
+          - string
+          - 'null'
+          description: (Driving) Directions to the Customer location for deliveries
+          maxLength: 6000
+        delivery_preferences:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipping_charge:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Additional Shipping Charge
+        brand:
+          type:
+          - string
+          - 'null'
+          title: Brand Name
+          description: Known Brand name of Company or Parent Company
+          maxLength: 400
+        business_license_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Other information on customer
+          maxLength: 3000
+        is_archived:
+          type: boolean
+          default: false
+          description: Is the customer a relevent part of your CRM
+        is_delinquent:
+          type: boolean
+          default: false
+          description: Is this account delinquent on billing
+        discount_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+          description: Discount percent for orders of company customer
+        external_ids:
+          type: object
+          additionalProperties:
+            type: string
+          description: External IDs mapped by integration name
+        owner_id:
+          type: integer
+          description: Owner ID for customer
+        partner_id:
+          type: integer
+          description: Partner ID for customer
+        price_schedule_id:
+          type: integer
+          description: Price schedule ID for the customer
+        service_zone_id:
+          type: integer
+          writeOnly: true
+          description: Service zone ID for the customer
+        status_id:
+          type: integer
+          writeOnly: true
+          description: Status ID for the customer
+    UnifiedCustomerRequest:
+      type: object
+      description: UnifiedCustomerSerializer inherits existing v2 CompanyCustomerSerializer for validations
+      properties:
+        managers:
+          type: array
+          items:
+            type: integer
+        phone:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        website:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        next_contact_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        tier:
+          title: Company customer tier
+          description: Company customer tier
+          minimum: -2147483648
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/TierEnum'
+          - $ref: '#/components/schemas/NullEnum-unified-upstream-marketplace'
+        name:
+          type: string
+          minLength: 1
+        license_number:
+          type: string
+          minLength: 1
+        old_license_number:
+          type:
+          - string
+          - 'null'
+          title: Old License Number (stored after a transfer)
+          description: Old License Number (stored after a transfer)
+          maxLength: 100
+        is_license_inactive:
+          type: boolean
+          default: false
+          description: License inactive or transferred for this customer
+        business_identifier:
+          type:
+          - string
+          - 'null'
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          maxLength: 100
+        directions:
+          type:
+          - string
+          - 'null'
+          description: (Driving) Directions to the Customer location for deliveries
+          maxLength: 6000
+        delivery_preferences:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipping_charge:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Additional Shipping Charge
+        brand:
+          type:
+          - string
+          - 'null'
+          title: Brand Name
+          description: Known Brand name of Company or Parent Company
+          maxLength: 400
+        business_license_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Other information on customer
+          maxLength: 3000
+        is_archived:
+          type: boolean
+          default: false
+          description: Is the customer a relevent part of your CRM
+        is_delinquent:
+          type: boolean
+          default: false
+          description: Is this account delinquent on billing
+        discount_percent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+          description: Discount percent for orders of company customer
+        external_ids:
+          type: object
+          additionalProperties:
+            type: string
+          description: External IDs mapped by integration name
+        owner_id:
+          type: integer
+          description: Owner ID for customer
+        partner_id:
+          type: integer
+          description: Partner ID for customer
+        price_schedule_id:
+          type: integer
+          description: Price schedule ID for the customer
+        service_zone_id:
+          type: integer
+          writeOnly: true
+          description: Service zone ID for the customer
+        status_id:
+          type: integer
+          writeOnly: true
+          description: Status ID for the customer
+      required:
       - name
+      - owner_id
+    NullEnum-unified-upstream-marketplace:
+      enum:
+      - null
+    ShortPaymentTerm:
+      type: object
+      description: Short serializer for payment terms.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        term:
+          type: string
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
+        days:
+          type: integer
+        code:
+          type:
+          - string
+          - 'null'
+          title: Payment Term (code)
+          description: Term of Payment (code)
+          maxLength: 20
+      required:
+      - days
+      - id
+      - term
+    CustomerUpdate:
       type: object
       properties:
         state:
@@ -2236,14 +2215,9 @@ components:
           maxLength: 3000
         leaflink_last_views:
           title: Last shop time
-          description: The last time this customer viewed your products on LeafLink
+          description: The last time this customer viewed your products.
           type: string
           format: date-time
-          readOnly: true
-        leaflink_source:
-          title: Added by LeafLink
-          description: Was this customer added to your CRM by LeafLink
-          type: boolean
           readOnly: true
         archived:
           title: Is Archived
@@ -2277,12 +2251,12 @@ components:
           title: Business License Type
           description: Customer's business license type
           type: integer
+        available_payment_options:
+          $ref: '#/components/parameters/AvailablePaymentOptionsCustomer'
         payment_term:
           $ref: '#/components/parameters/PaymentTerm'
         payment_methods:
           $ref: '#/components/parameters/PaymentMethods'
-        available_payment_options:
-          $ref: '#/components/parameters/AvailablePaymentOptionsCustomer'
         status:
           title: Customer Account Status
           description: Id for the customer's status
@@ -2526,10 +2500,35 @@ components:
           $ref: '#/components/schemas/Address'
         delivery_address:
           $ref: '#/components/schemas/Address'
+    Address:
+      type: object
+      properties:
+        address:
+          title: Address
+          type: string
+        unit_number:
+          title: Unit Number
+          type: string
+        city:
+          title: City
+          type: string
+        county:
+          title: County
+          type: string
+        state:
+          title: State
+          description: State abbreviation
+          type: string
+        zipcode:
+          title: Zip Code
+          type: string
     ExternalIds:
       type: object
       description: Set of key-value pairs for storing external system IDs.  Key value can be up to 36 characters long.
-    CustomerUpdate:
+    CustomerCreate:
+      required:
+      - owner
+      - name
       type: object
       properties:
         state:
@@ -2691,9 +2690,14 @@ components:
           maxLength: 3000
         leaflink_last_views:
           title: Last shop time
-          description: The last time this customer viewed your products.
+          description: The last time this customer viewed your products on LeafLink
           type: string
           format: date-time
+          readOnly: true
+        leaflink_source:
+          title: Added by LeafLink
+          description: Was this customer added to your CRM by LeafLink
+          type: boolean
           readOnly: true
         archived:
           title: Is Archived
@@ -2727,12 +2731,12 @@ components:
           title: Business License Type
           description: Customer's business license type
           type: integer
-        available_payment_options:
-          $ref: '#/components/parameters/AvailablePaymentOptionsCustomer'
         payment_term:
           $ref: '#/components/parameters/PaymentTerm'
         payment_methods:
           $ref: '#/components/parameters/PaymentMethods'
+        available_payment_options:
+          $ref: '#/components/parameters/AvailablePaymentOptionsCustomer'
         status:
           title: Customer Account Status
           description: Id for the customer's status
@@ -2744,19 +2748,54 @@ components:
         delivery_address:
           $ref: '#/components/schemas/Address'
   parameters:
-    PaymentMethodFilter:
-      name: payment_method
-      in: query
-      description: Filter by the customer's payment method
-      required: false
+    AvailablePaymentOptionsCustomer:
+      name: available_payment_options
+      title: Customer Payment Option
+      required:
+      - payment_term_id
+      - payment_method_id
+      description: Payment option available for customer
       schema:
-        type: integer
-    PaymentMethod:
-      name: payment_method
-      tile: Payment Method
-      Description: Payment method chosen for payment option
+        type: array
+        items:
+          properties:
+            id:
+              title: Id test for Customer
+              description: id for payment option
+              type: integer
+              readOnly: true
+            is_default:
+              title: Is that payment option a deafult one
+              type: bool
+              default: false
+            payment_method:
+              $ref: '#/components/parameters/PaymentMethod'
+            payment_method_id:
+              title: Payment method id for payment option
+              type: integer
+            payment_program:
+              title: Payment program for payment option
+              type: object
+            payment_strategy:
+              title: Payment strategy for payment option
+              type: object
+            payment_term:
+              $ref: '#/components/parameters/PaymentTerm'
+            payment_term_id:
+              title: Payment term id for payment option
+              type: integer
+    PaymentMethods:
+      name: payment_methods
+      title: Payment Methods
+      description: 'Deprecated field, please use payment_option instead<br>
+
+        Customer''s payment method<br>
+
+        Enum: <code>"cash"</code> <code>"check"</code> <code>"wire"</code> <code>"ach"</code>'
       schema:
-        type: string
+        type: array
+        items:
+          type: string
     PaymentTerm:
       name: payment_term
       title: Payment Term
@@ -2814,54 +2853,19 @@ components:
       required: false
       schema:
         type: integer
-    PaymentMethods:
-      name: payment_methods
-      title: Payment Methods
-      description: 'Deprecated field, please use payment_option instead<br>
-
-        Customer''s payment method<br>
-
-        Enum: <code>"cash"</code> <code>"check"</code> <code>"wire"</code> <code>"ach"</code>'
+    PaymentMethod:
+      name: payment_method
+      tile: Payment Method
+      Description: Payment method chosen for payment option
       schema:
-        type: array
-        items:
-          type: string
-    AvailablePaymentOptionsCustomer:
-      name: available_payment_options
-      title: Customer Payment Option
-      required:
-      - payment_term_id
-      - payment_method_id
-      description: Payment option available for customer
+        type: string
+    PaymentMethodFilter:
+      name: payment_method
+      in: query
+      description: Filter by the customer's payment method
+      required: false
       schema:
-        type: array
-        items:
-          properties:
-            id:
-              title: Id test for Customer
-              description: id for payment option
-              type: integer
-              readOnly: true
-            is_default:
-              title: Is that payment option a deafult one
-              type: bool
-              default: false
-            payment_method:
-              $ref: '#/components/parameters/PaymentMethod'
-            payment_method_id:
-              title: Payment method id for payment option
-              type: integer
-            payment_program:
-              title: Payment program for payment option
-              type: object
-            payment_strategy:
-              title: Payment strategy for payment option
-              type: object
-            payment_term:
-              $ref: '#/components/parameters/PaymentTerm'
-            payment_term_id:
-              title: Payment term id for payment option
-              type: integer
+        type: integer
   securitySchemes:
     bearerAuth:
       type: http

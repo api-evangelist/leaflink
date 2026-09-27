@@ -124,25 +124,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedProductAssignmentGroupItem:
-      type: object
-      description: Serializer for Product Assignment Group Item
-      properties:
-        customer_group_id:
-          type: integer
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        call_to_action:
-          type:
-          - string
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
     UnifiedProductAssignmentWithItems:
       type: object
       description: Serializer for Product Assignment with buyer and group items
@@ -167,6 +148,50 @@ components:
       - is_exclusive
       - product_id
       - seller_id
+    PaginatedUnifiedProductAssignmentProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentProduct'
+    UnifiedProductAssignmentGroupItem:
+      type: object
+      description: Serializer for Product Assignment Group Item
+      properties:
+        customer_group_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
     UnifiedProductAssignmentProduct:
       type: object
       description: 'Serializer for ProductListing (product + assignment) to API shape.
@@ -399,31 +424,6 @@ components:
       - unit_multiplier
       - unit_of_measure
       - wholesale_price
-    PaginatedUnifiedProductAssignmentProductList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductAssignmentProduct'
     UnifiedProductAssignmentBuyerItem:
       type: object
       description: Serializer for Product Assignment Buyer Item

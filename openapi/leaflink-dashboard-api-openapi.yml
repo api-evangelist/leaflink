@@ -146,22 +146,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    SponsorshipItem:
-      type: object
-      description: Serializer for ll.ads.data_models.SponsorshipItem
-      properties:
-        id:
-          type: string
-        impression_url:
-          type: string
-          format: uri
-        click_url:
-          type: string
-          format: uri
-      required:
-      - click_url
-      - id
-      - impression_url
     SponsorshipPayload:
       type: object
       description: "Serializer for sponsorship content.\n\n\"sponsorships\": {\n    \"banners\": [\n        {\"sponsorship\": {}},\n        {\"sponsorship\": {}},\n        …\n    ],\n    \"listing\": [\n        {\"resource\": {}, \"sponsorship\": {}},\n        {\"resource\": {}, \"sponsorship\": {}},\n        …\n    ],\n    \"skyscrapers\": [\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...},\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...}\n    ]\n}"
@@ -182,6 +166,73 @@ components:
       - banners
       - listing
       - skyscrapers
+    SponsorshipContent:
+      type: object
+      description: Serializer for an individual sponsorship result.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+      required:
+      - sponsorship
+    SponsorshipResource:
+      type: object
+      description: Serializer for an individual sponsorship with Brand details.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+        resource:
+          $ref: '#/components/schemas/BrandResource'
+      required:
+      - resource
+      - sponsorship
+    _SponsorshipsContent:
+      type: object
+      properties:
+        sponsorships:
+          $ref: '#/components/schemas/SponsorshipPayload'
+      required:
+      - sponsorships
+    Badge:
+      type: object
+      description: Serializer for Badges.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        code:
+          type: string
+          maxLength: 32
+        self_identify:
+          type: boolean
+          description: This badge can be added or removed by an external user.
+      required:
+      - code
+      - id
+      - name
+    SponsorshipsContent:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/_SponsorshipsContent'
+      required:
+      - content
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
     SkyscraperSponsorshipItem:
       type: object
       description: Serializer for ll.ads.data_models.SkyscraperSponsorshipItem
@@ -208,163 +259,6 @@ components:
       - image_url
       - impression_url
       - name
-    SponsorshipResource:
-      type: object
-      description: Serializer for an individual sponsorship with Brand details.
-      properties:
-        sponsorship:
-          $ref: '#/components/schemas/Sponsorship'
-        resource:
-          $ref: '#/components/schemas/BrandResource'
-      required:
-      - resource
-      - sponsorship
-    Sponsorship:
-      type: object
-      description: Serializer for ll.ads.data_models.Sponsorship
-      properties:
-        rank:
-          type: integer
-        provider_id:
-          type: string
-        ad_id:
-          type: string
-        campaign_id:
-          type: string
-        target_url:
-          type: string
-        click_url:
-          type: string
-        creative:
-          type: object
-          additionalProperties: {}
-        impression_url:
-          type: string
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SponsorshipItem'
-        page_load_id:
-          type: string
-        placement:
-          $ref: '#/components/schemas/AdPlacement'
-        target_company_id:
-          type: integer
-        target_user_id:
-          type: integer
-        target_resource_id:
-          type: string
-        target_resource_name:
-          type: string
-      required:
-      - ad_id
-      - campaign_id
-      - click_url
-      - creative
-      - impression_url
-      - items
-      - page_load_id
-      - placement
-      - provider_id
-      - rank
-      - target_company_id
-      - target_resource_id
-      - target_resource_name
-      - target_url
-      - target_user_id
-    Badge:
-      type: object
-      description: Serializer for Badges.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        code:
-          type: string
-          maxLength: 32
-        self_identify:
-          type: boolean
-          description: This badge can be added or removed by an external user.
-      required:
-      - code
-      - id
-      - name
-    SkyscraperSponsorshipContent:
-      type: object
-      description: Serializer for an individual Skyscraper style sponsorship result.
-      properties:
-        ad_id:
-          type: string
-        campaign_id:
-          type: string
-        creative:
-          type: object
-          additionalProperties: {}
-          readOnly: true
-        creative_id:
-          type: string
-        custom_text:
-          type: string
-        page_load_id:
-          type: string
-        placement_name:
-          type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/SkyscraperSponsorshipItem'
-          readOnly: true
-        provider_id:
-          type: string
-        target_company_id:
-          type: integer
-        target_user_id:
-          type: integer
-        banner:
-          type: object
-          additionalProperties: {}
-        brand:
-          allOf:
-          - $ref: '#/components/schemas/SkyscraperBrand'
-      required:
-      - ad_id
-      - banner
-      - brand
-      - campaign_id
-      - creative
-      - creative_id
-      - custom_text
-      - page_load_id
-      - placement_name
-      - products
-      - provider_id
-      - target_company_id
-      - target_user_id
-    SponsorshipsContent:
-      type: object
-      properties:
-        content:
-          $ref: '#/components/schemas/_SponsorshipsContent'
-      required:
-      - content
-    SponsorshipContent:
-      type: object
-      description: Serializer for an individual sponsorship result.
-      properties:
-        sponsorship:
-          $ref: '#/components/schemas/Sponsorship'
-      required:
-      - sponsorship
-    _SponsorshipsContent:
-      type: object
-      properties:
-        sponsorships:
-          $ref: '#/components/schemas/SponsorshipPayload'
-      required:
-      - sponsorships
     SkyscraperBrand:
       type: object
       description: Serializer for Brand resource.
@@ -449,20 +343,22 @@ components:
       - social_equity_programs
       - sponsored
       - tagline
-    AdPlacement:
+    SponsorshipItem:
       type: object
-      description: Serializer for ll.ads.data_models.AdPlacement
+      description: Serializer for ll.ads.data_models.SponsorshipItem
       properties:
         id:
           type: string
-        style:
+        impression_url:
           type: string
-        provider:
+          format: uri
+        click_url:
           type: string
+          format: uri
       required:
+      - click_url
       - id
-      - provider
-      - style
+      - impression_url
     CompanyResource:
       type: object
       description: Serializer for Company resource.
@@ -487,6 +383,110 @@ components:
       - name
       - resource_id
       - resource_name
+    SkyscraperSponsorshipContent:
+      type: object
+      description: Serializer for an individual Skyscraper style sponsorship result.
+      properties:
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        creative_id:
+          type: string
+        custom_text:
+          type: string
+        page_load_id:
+          type: string
+        placement_name:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkyscraperSponsorshipItem'
+          readOnly: true
+        provider_id:
+          type: string
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        banner:
+          type: object
+          additionalProperties: {}
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/SkyscraperBrand'
+      required:
+      - ad_id
+      - banner
+      - brand
+      - campaign_id
+      - creative
+      - creative_id
+      - custom_text
+      - page_load_id
+      - placement_name
+      - products
+      - provider_id
+      - target_company_id
+      - target_user_id
+    Sponsorship:
+      type: object
+      description: Serializer for ll.ads.data_models.Sponsorship
+      properties:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
+          type: string
+      required:
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
   securitySchemes:
     bearerAuth:
       type: http

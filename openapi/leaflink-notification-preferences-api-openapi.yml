@@ -254,53 +254,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    NotificationPreferencesPayloadSchema:
-      type: object
-      properties:
-        topic:
-          type: string
-        medium:
-          type: string
-        enabled_timestamp:
-          type: boolean
-      required:
-      - enabled_timestamp
-      - medium
-      - topic
-    MultipleErrors:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-        code:
-          type: string
-        title:
-          type: string
-        detail:
-          type: string
-        source:
-          $ref: '#/components/schemas/ErrorSource'
-        meta: {}
-      required:
-      - status
-    ErrorSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-        parameter:
-          type: string
     NotificationPreferences:
       type: object
       description: Schema for notification preferences payload.
@@ -320,6 +273,24 @@ components:
       - display_description
       - items
       - name
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        code:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        source:
+          $ref: '#/components/schemas/ErrorSource'
+        meta: {}
+      required:
+      - status
     PaginatedNotificationPreferencesList:
       type: object
       required:
@@ -345,6 +316,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotificationPreferences'
+    NotificationPreferencesPayloadSchema:
+      type: object
+      properties:
+        topic:
+          type: string
+        medium:
+          type: string
+        enabled_timestamp:
+          type: boolean
+      required:
+      - enabled_timestamp
+      - medium
+      - topic
+    ErrorSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+        parameter:
+          type: string
     NotificationPreferences-unified-upstream-notification-service:
       type: object
       properties:
@@ -361,6 +352,15 @@ components:
       - enabled_timestamp
       - medium
       - topic
+    MultipleErrors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
     NotificationTopic:
       type: object
       description: Serializer for NotificationTopic model.

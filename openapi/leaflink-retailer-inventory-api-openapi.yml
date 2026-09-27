@@ -139,6 +139,52 @@ paths:
       - retailer-inventory
 components:
   schemas:
+    RetailerInventoryCreate:
+      required:
+      - is_low
+      - source
+      - name
+      - sku
+      - brand
+      - quantity
+      - company
+      - unit_of_measure
+      type: object
+      properties:
+        is_low:
+          description: Indicates if the inventory level is low.
+          type: boolean
+        source:
+          description: Describes the source system providing the data.
+          type: string
+          maxLength: 400
+          minLength: 1
+        name:
+          description: Product name
+          type: string
+          maxLength: 400
+          minLength: 1
+        sku:
+          type: string
+          description: Product sku
+          maxLength: 400
+          minLength: 1
+        brand:
+          type: string
+          description: Product brand
+          maxLength: 400
+          minLength: 1
+        quantity:
+          description: Product inventory level
+          type: integer
+        company:
+          description: Company id
+          type: integer
+        unit_of_measure:
+          description: Product unit of measure
+          type: string
+          maxLength: 400
+          minLength: 1
     RetailerInventoryUpdate:
       type: object
       properties:
@@ -227,52 +273,6 @@ components:
           format: date-time
           readOnly: true
           description: Date and time the product was last modified.
-    RetailerInventoryCreate:
-      required:
-      - is_low
-      - source
-      - name
-      - sku
-      - brand
-      - quantity
-      - company
-      - unit_of_measure
-      type: object
-      properties:
-        is_low:
-          description: Indicates if the inventory level is low.
-          type: boolean
-        source:
-          description: Describes the source system providing the data.
-          type: string
-          maxLength: 400
-          minLength: 1
-        name:
-          description: Product name
-          type: string
-          maxLength: 400
-          minLength: 1
-        sku:
-          type: string
-          description: Product sku
-          maxLength: 400
-          minLength: 1
-        brand:
-          type: string
-          description: Product brand
-          maxLength: 400
-          minLength: 1
-        quantity:
-          description: Product inventory level
-          type: integer
-        company:
-          description: Company id
-          type: integer
-        unit_of_measure:
-          description: Product unit of measure
-          type: string
-          maxLength: 400
-          minLength: 1
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

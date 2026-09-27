@@ -186,6 +186,20 @@ components:
       - click_url
       - id
       - impression_url
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
     UnifiedRecommendedBrand:
       type: object
       properties:
@@ -207,20 +221,6 @@ components:
       - image
       - name
       - sponsorship
-    AdPlacement:
-      type: object
-      description: Serializer for ll.ads.data_models.AdPlacement
-      properties:
-        id:
-          type: string
-        style:
-          type: string
-        provider:
-          type: string
-      required:
-      - id
-      - provider
-      - style
     Sponsorship:
       type: object
       description: Serializer for ll.ads.data_models.Sponsorship

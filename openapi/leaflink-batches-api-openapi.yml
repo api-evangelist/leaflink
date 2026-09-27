@@ -574,6 +574,42 @@ components:
       - source
       - source_type
       - status
+    BatchUpdate:
+      type: object
+      properties:
+        production_batch_number:
+          type: string
+          maxLength: 50
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type: string
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
     BatchResponse:
       type: object
       properties:
@@ -692,42 +728,6 @@ components:
         testing_source:
           type: string
           description: Name of the source system for the test results
-    BatchUpdate:
-      type: object
-      properties:
-        production_batch_number:
-          type: string
-          maxLength: 50
-        batch_date:
-          type: string
-          format: date
-        thc:
-          type: string
-          format: decimal
-        thca:
-          type: string
-          format: decimal
-        total_thc:
-          type: string
-          format: decimal
-        cbd:
-          type: string
-          format: decimal
-        cbda:
-          type: string
-          format: decimal
-        cbg:
-          type: string
-          format: decimal
-        cbn:
-          type: string
-          format: decimal
-        total_cannabinoids:
-          type: string
-          format: decimal
-        cannabinoid_unit:
-          type: string
-          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
   securitySchemes:
     bearerAuth:
       type: http

@@ -892,128 +892,42 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    Sponsorship:
+    FeaturedBrand:
       type: object
-      description: Serializer for ll.ads.data_models.Sponsorship
-      properties:
-        rank:
-          type: integer
-        provider_id:
-          type: string
-        ad_id:
-          type: string
-        campaign_id:
-          type: string
-        target_url:
-          type: string
-        click_url:
-          type: string
-        creative:
-          type: object
-          additionalProperties: {}
-        impression_url:
-          type: string
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SponsorshipItem'
-        page_load_id:
-          type: string
-        placement:
-          $ref: '#/components/schemas/AdPlacement'
-        target_company_id:
-          type: integer
-        target_user_id:
-          type: integer
-        target_resource_id:
-          type: string
-        target_resource_name:
-          type: string
-      required:
-      - ad_id
-      - campaign_id
-      - click_url
-      - creative
-      - impression_url
-      - items
-      - page_load_id
-      - placement
-      - provider_id
-      - rank
-      - target_company_id
-      - target_resource_id
-      - target_resource_name
-      - target_url
-      - target_user_id
-    PaginatedProductAuditLogResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Total number of entries
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: URL to the next page
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: URL to the previous page
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductAuditLogEntry'
-      required:
-      - count
-      - next
-      - previous
-      - results
-    ProductBulkUpdateResponse:
-      type: object
-      properties:
-        updated:
-          type: integer
-        expected:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/ProductBulkUpdateResponseErrorDetail'
-      required:
-      - errors
-      - expected
-      - updated
-    FieldEnum:
-      enum:
-      - maximum_order
-      - product_line_id
-      - minimum_order
-      - brand_id
-      - retail_price
-      - wholesale_price
-      - listing_state
-      - show_quantity
-      - sale_price
-      type: string
-    ProductBulkUpdateResponseProduct:
-      type: object
+      description: Serializer for Product Spotlight brands
       properties:
         id:
           type: integer
+          readOnly: true
         name:
           type: string
-        display_name:
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+      - name
+    ProductBulkUpdateResponseErrorDetail:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductBulkUpdateResponseProduct'
+        message:
           type: string
       required:
-      - display_name
-      - id
-      - name
+      - message
+      - products
+    SelectorEnum:
+      enum:
+      - product_line
+      - product
+      type: string
     FeaturedProduct:
       type: object
       description: Serializer for Product Spotlight featured products
@@ -1215,18 +1129,139 @@ components:
       - spotlight_badges
       - sub_category
       - unit_price
-    ProductBulkUpdateResponseErrorDetail:
+    Sponsorship:
       type: object
+      description: Serializer for ll.ads.data_models.Sponsorship
       properties:
-        products:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
           type: array
           items:
-            $ref: '#/components/schemas/ProductBulkUpdateResponseProduct'
-        message:
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
           type: string
       required:
-      - message
-      - products
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
+    TypeEnum:
+      enum:
+      - percentage_delta
+      - delta
+      - absolute
+      type: string
+    PaginatedProductAuditLogResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of entries
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: URL to the next page
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: URL to the previous page
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductAuditLogEntry'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    ProductBulkUpdateResponseProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        display_name:
+          type: string
+      required:
+      - display_name
+      - id
+      - name
+    UnifiedProductBulkUpdateRequest:
+      type: object
+      description: Unified Product Bulk Update Serializer
+      properties:
+        selector:
+          allOf:
+          - $ref: '#/components/schemas/SelectorEnum'
+          description: association or field to select products. Supports 'product_line' and 'product'.
+        selector_values:
+          type: array
+          items:
+            type: integer
+        update_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductBulkUpdateDataRequest'
+      required:
+      - selector
+      - selector_values
+      - update_data
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
     PaginatedRecommendedProductList:
       type: object
       required:
@@ -1252,51 +1287,43 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RecommendedProduct'
-    AdPlacement:
+    ProductBulkUpdateResponse:
       type: object
-      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        updated:
+          type: integer
+        expected:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductBulkUpdateResponseErrorDetail'
+      required:
+      - errors
+      - expected
+      - updated
+    SubCategory:
+      type: object
       properties:
         id:
-          type: string
-        style:
-          type: string
-        provider:
-          type: string
-      required:
-      - id
-      - provider
-      - style
-    SpotlightBadgesEnum:
-      enum:
-      - deal
-      - new
-      - sponsored
-      type: string
-    PaginatedFeaturedProductList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
           type: integer
-          example: 123
-        next:
+        name:
+          type: string
+        base_unit_of_measure:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+        base_unit_of_measure_short_name:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeaturedProduct'
+      required:
+      - base_unit_of_measure
+      - base_unit_of_measure_short_name
+      - id
+      - name
     ProductAuditLogEntry:
       type: object
       description: Polymorphic serializer for product audit log entries.
@@ -1354,100 +1381,24 @@ components:
       - source
       - source_data
       - source_detail
-    UnifiedProductBulkUpdateDataRequest:
-      type: object
-      description: Unified Product Bulk Update Data Serializer
-      properties:
-        type:
-          $ref: '#/components/schemas/TypeEnum'
-        field:
-          $ref: '#/components/schemas/FieldEnum'
-        value:
-          oneOf:
-          - type: boolean
-          - type: integer
-          - type: number
-          - type: string
-          - type: 'null'
-      required:
-      - field
-      - type
-      - value
-    SubCategory:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        base_unit_of_measure:
-          type:
-          - string
-          - 'null'
-        base_unit_of_measure_short_name:
-          type:
-          - string
-          - 'null'
-      required:
-      - base_unit_of_measure
-      - base_unit_of_measure_short_name
-      - id
-      - name
-    UnifiedProductBulkUpdateRequest:
-      type: object
-      description: Unified Product Bulk Update Serializer
-      properties:
-        selector:
-          allOf:
-          - $ref: '#/components/schemas/SelectorEnum'
-          description: association or field to select products. Supports 'product_line' and 'product'.
-        selector_values:
-          type: array
-          items:
-            type: integer
-        update_data:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductBulkUpdateDataRequest'
-      required:
-      - selector
-      - selector_values
-      - update_data
-    SponsorshipItem:
-      type: object
-      description: Serializer for ll.ads.data_models.SponsorshipItem
-      properties:
-        id:
-          type: string
-        impression_url:
-          type: string
-          format: uri
-        click_url:
-          type: string
-          format: uri
-      required:
-      - click_url
-      - id
-      - impression_url
-    FeaturedBrand:
-      type: object
-      description: Serializer for Product Spotlight brands
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-        image:
-          type: string
-          format: uri
-      required:
-      - id
-      - image
-      - name
+    SpotlightBadgesEnum:
+      enum:
+      - deal
+      - new
+      - sponsored
+      type: string
+    FieldEnum:
+      enum:
+      - maximum_order
+      - product_line_id
+      - minimum_order
+      - brand_id
+      - retail_price
+      - wholesale_price
+      - listing_state
+      - show_quantity
+      - sale_price
+      type: string
     RecommendedProduct:
       type: object
       description: Serializer for Recommended Products
@@ -1657,17 +1608,66 @@ components:
       - spotlight_badges
       - sub_category
       - unit_price
-    TypeEnum:
-      enum:
-      - percentage_delta
-      - delta
-      - absolute
-      type: string
-    SelectorEnum:
-      enum:
-      - product_line
-      - product
-      type: string
+    SponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+      required:
+      - click_url
+      - id
+      - impression_url
+    UnifiedProductBulkUpdateDataRequest:
+      type: object
+      description: Unified Product Bulk Update Data Serializer
+      properties:
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        field:
+          $ref: '#/components/schemas/FieldEnum'
+        value:
+          oneOf:
+          - type: boolean
+          - type: integer
+          - type: number
+          - type: string
+          - type: 'null'
+      required:
+      - field
+      - type
+      - value
+    PaginatedFeaturedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeaturedProduct'
   securitySchemes:
     bearerAuth:
       type: http

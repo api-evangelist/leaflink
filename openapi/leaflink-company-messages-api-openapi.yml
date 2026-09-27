@@ -142,6 +142,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedUnifiedMessagingFindSellerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedMessagingFindSeller'
     UnifiedMessagingFindSeller:
       type: object
       properties:
@@ -192,31 +217,6 @@ components:
       - id
       - name
       - zipcode
-    PaginatedUnifiedMessagingFindSellerList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedMessagingFindSeller'
   securitySchemes:
     bearerAuth:
       type: http

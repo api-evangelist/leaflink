@@ -700,7 +700,7 @@ paths:
       security:
       - Token: []
     post:
-      operationId: products_create
+      operationId: postProducts
       summary: Create a product
       description: Create a new product.
       requestBody:
@@ -719,6 +719,8 @@ paths:
       - Products
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: products_create
     servers:
     - url: https://app.leaflink.com/api/v2
   /products/{id}/:
@@ -761,7 +763,7 @@ paths:
       security:
       - Token: []
     patch:
-      operationId: products_partial_update
+      operationId: patchProductsById
       summary: Update a product
       description: Update an existing product.
       requestBody:
@@ -780,6 +782,8 @@ paths:
       - Products
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: products_partial_update
     delete:
       operationId: products_delete
       summary: Archive a product
@@ -799,126 +803,6 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
-    UnifiedProductRequest:
-      type: object
-      description: Unified Product serializer.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Product name
-        description:
-          type: string
-          minLength: 1
-          description: Product details
-        category_id:
-          type: integer
-          writeOnly: true
-          description: Product category ID for the product
-        listing_state:
-          allOf:
-          - $ref: '#/components/schemas/ListingStateEnum'
-          description: Product listing state. Values available at the /listing-states/ endpoint.
-        wholesale_price:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-          description: Wholesale price displayed in the LeafLink marketplace
-        unit_multiplier:
-          type: integer
-          description: How many individual units are sold when compared to the assigned unit of measure
-        unit_denomination:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
-          title: Unit Denomination Value
-          description: The amount of individual products in one sale unit
-        sku:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Stock keeping unit for the product
-          maxLength: 255
-        brand_id:
-          type: integer
-          writeOnly: true
-          description: Brand ID for the product
-        manufacturer_id:
-          type: integer
-          writeOnly: true
-          description: ID of the Company that manufactured the product
-        seller_id:
-          type: integer
-          description: Company who is selling the Product
-        unit_of_measure:
-          type: string
-          minLength: 1
-          description: Base unit of measure for this product
-        custom_menu:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomMenuItemRequest'
-          writeOnly: true
-          description: Assign or update custom menu (Price Schedule) prices for this product. Custom menus not included here are left unchanged.
-      required:
-      - brand_id
-      - category_id
-      - description
-      - listing_state
-      - manufacturer_id
-      - name
-      - seller_id
-      - unit_denomination
-      - unit_of_measure
-      - wholesale_price
-    UnifiedProductInventory:
-      type: object
-      description: Unified Product inventory serializer
-      properties:
-        total_qty:
-          type: number
-          format: double
-          exclusiveMinimum: -1.0e+95
-          exclusiveMaximum: 1.0e+95
-        reserved_qty:
-          type: number
-          format: double
-          readOnly: true
-      required:
-      - reserved_qty
-      - total_qty
-    ListingStateEnum:
-      enum:
-      - Available
-      - Archived
-      - Sample
-      - Backorder
-      - Internal
-      - Unavailable
-      type: string
-    CustomMenuItemRequest:
-      type: object
-      description: A single custom menu (Price Schedule) price assignment for a product.
-      properties:
-        id:
-          type: integer
-          description: Custom Menu ID
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: Custom price for the product on this custom menu
-        currency:
-          type: string
-          minLength: 1
-          description: ISO currency code. Defaults to the seller's currency.
-      required:
-      - amount
-      - id
     UnifiedProduct:
       type: object
       description: Unified Product serializer.
@@ -1029,6 +913,22 @@ components:
       required:
       - id
       - name
+    UnifiedProductInventory:
+      type: object
+      description: Unified Product inventory serializer
+      properties:
+        total_qty:
+          type: number
+          format: double
+          exclusiveMinimum: -1.0e+95
+          exclusiveMaximum: 1.0e+95
+        reserved_qty:
+          type: number
+          format: double
+          readOnly: true
+      required:
+      - reserved_qty
+      - total_qty
     UnifiedProductCategory:
       type: object
       description: Unified Product category serializer
@@ -1044,6 +944,91 @@ components:
       required:
       - id
       - name
+    UnifiedProductRequest:
+      type: object
+      description: Unified Product serializer.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Product name
+        description:
+          type: string
+          minLength: 1
+          description: Product details
+        category_id:
+          type: integer
+          writeOnly: true
+          description: Product category ID for the product
+        listing_state:
+          allOf:
+          - $ref: '#/components/schemas/ListingStateEnum'
+          description: Product listing state. Values available at the /listing-states/ endpoint.
+        wholesale_price:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+          description: Wholesale price displayed in the LeafLink marketplace
+        unit_multiplier:
+          type: integer
+          description: How many individual units are sold when compared to the assigned unit of measure
+        unit_denomination:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
+          title: Unit Denomination Value
+          description: The amount of individual products in one sale unit
+        sku:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Stock keeping unit for the product
+          maxLength: 255
+        brand_id:
+          type: integer
+          writeOnly: true
+          description: Brand ID for the product
+        manufacturer_id:
+          type: integer
+          writeOnly: true
+          description: ID of the Company that manufactured the product
+        seller_id:
+          type: integer
+          description: Company who is selling the Product
+        unit_of_measure:
+          type: string
+          minLength: 1
+          description: Base unit of measure for this product
+        custom_menu:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomMenuItemRequest'
+          writeOnly: true
+          description: Assign or update custom menu (Price Schedule) prices for this product. Custom menus not included here are left unchanged.
+      required:
+      - brand_id
+      - category_id
+      - description
+      - listing_state
+      - manufacturer_id
+      - name
+      - seller_id
+      - unit_denomination
+      - unit_of_measure
+      - wholesale_price
+    ListingStateEnum:
+      enum:
+      - Available
+      - Archived
+      - Sample
+      - Backorder
+      - Internal
+      - Unavailable
+      type: string
     PatchedUnifiedProductRequest:
       type: object
       description: Unified Product serializer.
@@ -1109,7 +1094,57 @@ components:
             $ref: '#/components/schemas/CustomMenuItemRequest'
           writeOnly: true
           description: Assign or update custom menu (Price Schedule) prices for this product. Custom menus not included here are left unchanged.
-    ProductArchiveResponse:
+    CustomMenuItemRequest:
+      type: object
+      description: A single custom menu (Price Schedule) price assignment for a product.
+      properties:
+        id:
+          type: integer
+          description: Custom Menu ID
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Custom price for the product on this custom menu
+        currency:
+          type: string
+          minLength: 1
+          description: ISO currency code. Defaults to the seller's currency.
+      required:
+      - amount
+      - id
+    ComplianceLicense:
+      required:
+      - number
+      type: object
+      properties:
+        id:
+          title: Id
+          description: id for license
+          type: integer
+          readOnly: true
+        number:
+          title: License Number
+          description: License Number
+          type: string
+          maxLength: 100
+          minLength: 1
+        type:
+          title: Type
+          description: Type
+          type: string
+          readOnly: true
+        display_type:
+          title: Display type
+          description: Display type
+          type: string
+          readOnly: true
+        classification:
+          title: Classification
+          description: Classification
+          type: string
+          readOnly: true
+    ProductUpdateResponse:
       type: object
       properties:
         id:
@@ -1374,7 +1409,7 @@ components:
         name: Swiss Masters Chocolate Bar (Dark)
         sku: SWI-BAR-DAR-100
         description: <p>Our premium Swiss Masters chocolate bars are bold, rich, and steeped in chocolate tradition.  The Swiss Master dark chocolate has 70% dark chocolate paired with 100mg THC.</p>
-        quantity: '800.0000'
+        quantity: '2000.0000'
         reserved_qty: '120.0000'
         display_name: Swiss Masters Chocolate Bar (Dark)
         unit_multiplier: 12
@@ -1398,8 +1433,8 @@ components:
         featured_on_deals: false
         allow_fractional_quantities: false
         parent: null
-        listing_state: Archived
-        display_listing_state: Archived
+        listing_state: Available
+        display_listing_state: Available
         inventory_management: 1
         unit_of_measure: Unit
         sell_in_unit_of_measure: Case
@@ -1422,7 +1457,7 @@ components:
           type: Recreational
           display_type: Adult Use
           classification: MIPS
-        available_inventory: 680
+        available_inventory: 1880
         children_count: 0
         strains: []
         price_schedule_price:
@@ -1810,37 +1845,233 @@ components:
         - spec_type: thc
           dosage_unit: '%'
           decimal_value: '20.0'
-    ComplianceLicense:
-      required:
-      - number
+    ProductUpdate:
       type: object
       properties:
-        id:
-          title: Id
-          description: id for license
+        drop_date:
+          description: Date and time the product is scheduled to transition to Available, if applicable.
+          type: string
+          format: date-time
+        name:
+          type: string
+        sku:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        quantity:
+          description: Inventory level
+          type: string
+        available_inventory:
+          description: Inventory available for sale (quantity - reserved_qty).
+          type: string
+        unit_multiplier:
+          description: If sold in multiples, the number of units sold per case
+          default: 1
           type: integer
-          readOnly: true
-        number:
-          title: License Number
-          description: License Number
+        retail_price:
+          description: Manufacturer's Suggested Retail Price (MSRP)
+          required:
+          - amount
+          - currency
+          type: object
+          properties:
+            amount:
+              title: Amount
+              type: string
+              format: decimal
+            currency:
+              title: Currency
+              type: string
+              minLength: 1
+        wholesale_price:
+          description: Wholesale price displayed to buyers in the LeafLink marketplace
+          required:
+          - amount
+          - currency
+          type: object
+          properties:
+            amount:
+              title: Amount
+              type: string
+              format: decimal
+            currency:
+              title: Currency
+              type: string
+              minLength: 1
+        sale_price:
+          description: Sale price displayed to buyers in the LeafLink marketplace
+          required:
+          - amount
+          - currency
+          type: object
+          properties:
+            amount:
+              title: Amount
+              type: string
+              format: decimal
+            currency:
+              title: Currency
+              type: string
+              minLength: 1
+        minimum_order:
+          description: Minimum units required for an order
           type: string
-          maxLength: 100
-          minLength: 1
-        type:
-          title: Type
-          description: Type
+        maximum_order:
+          description: Maximum units allowed for an order
           type: string
-          readOnly: true
-        display_type:
-          title: Display type
-          description: Display type
+        AVAILABLE_FOR_SAMPLES:
+          description: Is this product available for samples?
+          type: boolean
+        extern_acct_id:
+          description: Id of the product in QuickBooks Online.
           type: string
-          readOnly: true
-        classification:
-          title: Classification
-          description: Classification
+        extern_income_acct_id:
+          description: The id for the QuickBooks Online income account.
           type: string
-          readOnly: true
+        featured:
+          description: Is the product a featured product?
+          type: boolean
+        tagline:
+          description: One-liner that displayed when the product is featured
+          type: string
+        allow_fractional_quantities:
+          description: Does this product allow fractional quantities to be ordered?
+          type: boolean
+        parent:
+          $ref: '#/components/schemas/ParentProduct'
+        listing_state:
+          type: string
+          enum:
+          - Available
+          - Archived
+          - Sample
+          - Backorder
+          - Internal
+          - Unavailable
+        display_listing_state:
+          description: The listing state string displayed in the marketplace.
+          type: string
+        inventory_management:
+          description: 'id for the inventory setting [1: "Managed", 2: "Unlimited", 3: "Inherited"]'
+          type: string
+        unit_of_measure:
+          type: string
+          enum:
+          - Milligram
+          - Gram
+          - Kilogram
+          - Ounce
+          - Pound
+          - Unit
+          - Liter
+          - Milliliter
+        sell_in_unit_of_measure:
+          description: If selling the product in cases as opposed to individual units, set this field to Case.
+          type: string
+          enum:
+          - Case
+        unit_denomination:
+          description: 'id for the unit denomination [1: "1", 2: "1/2", 3: "1/4", 4: "1/8", 5: "3/4", 6: "2", 7: "3 1/2", 8: "7", 9: "14", 10: "6", 11: "28", 12: "5 1/4", 13: "4", 14: "2 1/2", 15: "8", 16: "3 3/4", 17: "1/10", 18: "6/5", 19: "3/2", 20: "2/10", 21: "1/5", 22: "1/3", 23: "1/6", 24: "3/10", 25: "4/10"]'
+          type: integer
+        category:
+          description: Id for the category. See `id` in the product-categories response.
+          type: integer
+        sub_category:
+          description: Id for the subcategory. See `id` in the product-subcategories response.
+          type: integer
+        grow_type:
+          description: If a flower product, the id for the type of grow operation.
+          type: integer
+        seller:
+          description: Id for the company listing the product. See `id` in the companies response.
+          type: integer
+        seller_internal_id:
+          description: Internal Product ID
+          type: string
+        brand:
+          description: Id for the brand. See `id` in the brands response.
+          type: integer
+        product_line:
+          description: Id for the product line. See `id` in the product-lines response.
+          type: integer
+        manufacturer:
+          description: Id for the company that manufactured the product. See `id` in the companies response.  Can be the same id as the seller field.
+          type: integer
+        strain_classification:
+          description: If not applicable to the product, use `na`.
+          type: string
+          enum:
+          - sativa
+          - indica
+          - hybrid
+          - na
+          - 11-cbd
+          - high-cbd
+          - sativa-hybrid
+          - indica-hybrid
+        license:
+          $ref: '#/components/schemas/ComplianceLicense'
+        strains:
+          description: The strains associated with the product.  This field is required for products with the `Flower` category.
+          type: array
+          items:
+            description: Id for the strains associated with the product. See `id` in the strains response.
+            type: integer
+          uniqueItems: true
+        extern_sts_ids:
+          description: Id used by the Metrc add on.
+          type: array
+          items:
+            type: string
+        base_units_per_unit:
+          description: If the product `unit_of_measure` is `Unit`, this describes the number of base units in each unit of the product.  The base unit is defined by the product category.<br>`Cartridges = Grams`<br>`Topicals = Milligrams of Cannabinoids`<br>`Concentrates = Grams`<br>`Flower (excluding Seeds and Clones) = Grams`<br>`Edibles & Ingestibles = Milligrams of Cannabinoids`<br>`Pre-Rolls = Grams`<br>`Accessories = N/A`
+          type: string
+          format: decimal
+        external_ids:
+          $ref: '#/components/schemas/ExternalIds'
+        threshold_value:
+          description: When product inventory quantity reaches below this value, take various actions.
+          type: integer
+        threshold_action:
+          description: Action to take when product inventory quantity reaches below a specified value. Available values include `default`, `backorder`, `unavailable`, and `internal`.
+          type: string
+        reverse_threshold_value:
+          description: When product inventory quantity reaches above this value, take various actions.
+          type: integer
+        reverse_threshold_action:
+          description: Action to take when product inventory quantity reaches above a specified value. Available values include `default`, `available`, and `internal`.
+          type: string
+        show_quantity:
+          description: Show inventory quantities to buyers?
+          type: boolean
+        product_data_items:
+          description: Product specifications.  The list in the request will replace any existing product data items.
+          type: array
+          items:
+            required:
+            - spec_type
+            type: object
+            properties:
+              spec_type:
+                description: The slug of the product specificaiton type.  Available values include `thc`, `thca`, `cbn`, `cbg`, `cbd`, `solvents`, `flowering`, `growth`, `cannabinoids`, `terpenes`, `nugget`, `other`, `yield`, `cbc`, `thcv`, `cbda`, `delta-8-thc`, `total-thc`, `total-cbd`, `cbl`, `delta-9-thc`, `cbga`, `cbdv`.
+                type: string
+              dosage_unit:
+                description: Dosage unit of the specification.  Available options are `mg` and `%`.  Required only if `decimal_value` is sent.
+                type: string
+              decimal_value:
+                description: Value of the product specification.  Required if `text_value` is not sent.
+                type: string
+                format: decimal
+              max_decimal_value:
+                description: If there is a range of values for the specification, the maximum value.
+                type: string
+                format: decimal
+              text_value:
+                description: The text value of the specification.  Required if `decimal_value` is not sent.
+                type: string
+      example:
+        quantity: 2000
     UnitDenomination:
       required:
       - value
@@ -1858,21 +2089,7 @@ components:
         label:
           description: '"1", "1/2", "1/4", "1/8", "3/4", "2", "3 1/2", "7", "14", "6", "28", "5 1/4", "4", "2 1/2", "8", "3 3/4", "1/10", "6/5", "3/2", "2/10", "1/5", "1/3", "1/6", "3/10", or "4/10"'
           type: string
-    ExternalIds:
-      type: object
-      description: Set of key-value pairs for storing external system IDs.  Key value can be up to 36 characters long.
-    ParentProduct:
-      title: Parent
-      description: Parent product to which this product belongs. Required if creating a variety (child product) of a parent product. Varieties are useful when selling a single product in various sizes (i.e. as eighths, grams, and half ounces).
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          title: Id
-          description: id of the product
-          type: integer
-    ProductUpdateResponse:
+    ProductArchiveResponse:
       type: object
       properties:
         id:
@@ -2137,7 +2354,7 @@ components:
         name: Swiss Masters Chocolate Bar (Dark)
         sku: SWI-BAR-DAR-100
         description: <p>Our premium Swiss Masters chocolate bars are bold, rich, and steeped in chocolate tradition.  The Swiss Master dark chocolate has 70% dark chocolate paired with 100mg THC.</p>
-        quantity: '2000.0000'
+        quantity: '800.0000'
         reserved_qty: '120.0000'
         display_name: Swiss Masters Chocolate Bar (Dark)
         unit_multiplier: 12
@@ -2161,8 +2378,8 @@ components:
         featured_on_deals: false
         allow_fractional_quantities: false
         parent: null
-        listing_state: Available
-        display_listing_state: Available
+        listing_state: Archived
+        display_listing_state: Archived
         inventory_management: 1
         unit_of_measure: Unit
         sell_in_unit_of_measure: Case
@@ -2185,7 +2402,7 @@ components:
           type: Recreational
           display_type: Adult Use
           classification: MIPS
-        available_inventory: 1880
+        available_inventory: 680
         children_count: 0
         strains: []
         price_schedule_price:
@@ -2208,6 +2425,20 @@ components:
         reverse_threshold_value: 1
         reverse_threshold_action: available
         show_quantity: true
+    ExternalIds:
+      type: object
+      description: Set of key-value pairs for storing external system IDs.  Key value can be up to 36 characters long.
+    ParentProduct:
+      title: Parent
+      description: Parent product to which this product belongs. Required if creating a variety (child product) of a parent product. Varieties are useful when selling a single product in various sizes (i.e. as eighths, grams, and half ounces).
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          title: Id
+          description: id of the product
+          type: integer
     ProductCreate:
       required:
       - name
@@ -2491,233 +2722,6 @@ components:
         reverse_threshold_value: 1
         reverse_threshold_action: available
         show_quantity: true
-    ProductUpdate:
-      type: object
-      properties:
-        drop_date:
-          description: Date and time the product is scheduled to transition to Available, if applicable.
-          type: string
-          format: date-time
-        name:
-          type: string
-        sku:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-        quantity:
-          description: Inventory level
-          type: string
-        available_inventory:
-          description: Inventory available for sale (quantity - reserved_qty).
-          type: string
-        unit_multiplier:
-          description: If sold in multiples, the number of units sold per case
-          default: 1
-          type: integer
-        retail_price:
-          description: Manufacturer's Suggested Retail Price (MSRP)
-          required:
-          - amount
-          - currency
-          type: object
-          properties:
-            amount:
-              title: Amount
-              type: string
-              format: decimal
-            currency:
-              title: Currency
-              type: string
-              minLength: 1
-        wholesale_price:
-          description: Wholesale price displayed to buyers in the LeafLink marketplace
-          required:
-          - amount
-          - currency
-          type: object
-          properties:
-            amount:
-              title: Amount
-              type: string
-              format: decimal
-            currency:
-              title: Currency
-              type: string
-              minLength: 1
-        sale_price:
-          description: Sale price displayed to buyers in the LeafLink marketplace
-          required:
-          - amount
-          - currency
-          type: object
-          properties:
-            amount:
-              title: Amount
-              type: string
-              format: decimal
-            currency:
-              title: Currency
-              type: string
-              minLength: 1
-        minimum_order:
-          description: Minimum units required for an order
-          type: string
-        maximum_order:
-          description: Maximum units allowed for an order
-          type: string
-        AVAILABLE_FOR_SAMPLES:
-          description: Is this product available for samples?
-          type: boolean
-        extern_acct_id:
-          description: Id of the product in QuickBooks Online.
-          type: string
-        extern_income_acct_id:
-          description: The id for the QuickBooks Online income account.
-          type: string
-        featured:
-          description: Is the product a featured product?
-          type: boolean
-        tagline:
-          description: One-liner that displayed when the product is featured
-          type: string
-        allow_fractional_quantities:
-          description: Does this product allow fractional quantities to be ordered?
-          type: boolean
-        parent:
-          $ref: '#/components/schemas/ParentProduct'
-        listing_state:
-          type: string
-          enum:
-          - Available
-          - Archived
-          - Sample
-          - Backorder
-          - Internal
-          - Unavailable
-        display_listing_state:
-          description: The listing state string displayed in the marketplace.
-          type: string
-        inventory_management:
-          description: 'id for the inventory setting [1: "Managed", 2: "Unlimited", 3: "Inherited"]'
-          type: string
-        unit_of_measure:
-          type: string
-          enum:
-          - Milligram
-          - Gram
-          - Kilogram
-          - Ounce
-          - Pound
-          - Unit
-          - Liter
-          - Milliliter
-        sell_in_unit_of_measure:
-          description: If selling the product in cases as opposed to individual units, set this field to Case.
-          type: string
-          enum:
-          - Case
-        unit_denomination:
-          description: 'id for the unit denomination [1: "1", 2: "1/2", 3: "1/4", 4: "1/8", 5: "3/4", 6: "2", 7: "3 1/2", 8: "7", 9: "14", 10: "6", 11: "28", 12: "5 1/4", 13: "4", 14: "2 1/2", 15: "8", 16: "3 3/4", 17: "1/10", 18: "6/5", 19: "3/2", 20: "2/10", 21: "1/5", 22: "1/3", 23: "1/6", 24: "3/10", 25: "4/10"]'
-          type: integer
-        category:
-          description: Id for the category. See `id` in the product-categories response.
-          type: integer
-        sub_category:
-          description: Id for the subcategory. See `id` in the product-subcategories response.
-          type: integer
-        grow_type:
-          description: If a flower product, the id for the type of grow operation.
-          type: integer
-        seller:
-          description: Id for the company listing the product. See `id` in the companies response.
-          type: integer
-        seller_internal_id:
-          description: Internal Product ID
-          type: string
-        brand:
-          description: Id for the brand. See `id` in the brands response.
-          type: integer
-        product_line:
-          description: Id for the product line. See `id` in the product-lines response.
-          type: integer
-        manufacturer:
-          description: Id for the company that manufactured the product. See `id` in the companies response.  Can be the same id as the seller field.
-          type: integer
-        strain_classification:
-          description: If not applicable to the product, use `na`.
-          type: string
-          enum:
-          - sativa
-          - indica
-          - hybrid
-          - na
-          - 11-cbd
-          - high-cbd
-          - sativa-hybrid
-          - indica-hybrid
-        license:
-          $ref: '#/components/schemas/ComplianceLicense'
-        strains:
-          description: The strains associated with the product.  This field is required for products with the `Flower` category.
-          type: array
-          items:
-            description: Id for the strains associated with the product. See `id` in the strains response.
-            type: integer
-          uniqueItems: true
-        extern_sts_ids:
-          description: Id used by the Metrc add on.
-          type: array
-          items:
-            type: string
-        base_units_per_unit:
-          description: If the product `unit_of_measure` is `Unit`, this describes the number of base units in each unit of the product.  The base unit is defined by the product category.<br>`Cartridges = Grams`<br>`Topicals = Milligrams of Cannabinoids`<br>`Concentrates = Grams`<br>`Flower (excluding Seeds and Clones) = Grams`<br>`Edibles & Ingestibles = Milligrams of Cannabinoids`<br>`Pre-Rolls = Grams`<br>`Accessories = N/A`
-          type: string
-          format: decimal
-        external_ids:
-          $ref: '#/components/schemas/ExternalIds'
-        threshold_value:
-          description: When product inventory quantity reaches below this value, take various actions.
-          type: integer
-        threshold_action:
-          description: Action to take when product inventory quantity reaches below a specified value. Available values include `default`, `backorder`, `unavailable`, and `internal`.
-          type: string
-        reverse_threshold_value:
-          description: When product inventory quantity reaches above this value, take various actions.
-          type: integer
-        reverse_threshold_action:
-          description: Action to take when product inventory quantity reaches above a specified value. Available values include `default`, `available`, and `internal`.
-          type: string
-        show_quantity:
-          description: Show inventory quantities to buyers?
-          type: boolean
-        product_data_items:
-          description: Product specifications.  The list in the request will replace any existing product data items.
-          type: array
-          items:
-            required:
-            - spec_type
-            type: object
-            properties:
-              spec_type:
-                description: The slug of the product specificaiton type.  Available values include `thc`, `thca`, `cbn`, `cbg`, `cbd`, `solvents`, `flowering`, `growth`, `cannabinoids`, `terpenes`, `nugget`, `other`, `yield`, `cbc`, `thcv`, `cbda`, `delta-8-thc`, `total-thc`, `total-cbd`, `cbl`, `delta-9-thc`, `cbga`, `cbdv`.
-                type: string
-              dosage_unit:
-                description: Dosage unit of the specification.  Available options are `mg` and `%`.  Required only if `decimal_value` is sent.
-                type: string
-              decimal_value:
-                description: Value of the product specification.  Required if `text_value` is not sent.
-                type: string
-                format: decimal
-              max_decimal_value:
-                description: If there is a range of values for the specification, the maximum value.
-                type: string
-                format: decimal
-              text_value:
-                description: The text value of the specification.  Required if `decimal_value` is not sent.
-                type: string
-      example:
-        quantity: 2000
   securitySchemes:
     bearerAuth:
       type: http

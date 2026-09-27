@@ -205,56 +205,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UnifiedOrderPayment:
-      type: object
-      description: Serializer for handling order payment data and validations.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time the resource was created
-        modified_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time of the last edit
-        order:
-          type: string
-          format: uuid
-        payment_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the was submitted.
-        total:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: Total Paid
-        currency:
-          type: string
-          readOnly: true
-        payment_type:
-          allOf:
-          - $ref: '#/components/schemas/PaymentTypeEnum'
-          description: How this payment was submitted.
-        customer:
-          allOf:
-          - $ref: '#/components/schemas/OrderPaymentUnifiedCustomer'
-          readOnly: true
-      required:
-      - created_date
-      - currency
-      - customer
-      - id
-      - modified_date
-      - order
-      - total
     PaymentTypeEnum:
       enum:
       - other
@@ -308,6 +258,56 @@ components:
       required:
       - id
       - name
+    UnifiedOrderPayment:
+      type: object
+      description: Serializer for handling order payment data and validations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        order:
+          type: string
+          format: uuid
+        payment_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the was submitted.
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Total Paid
+        currency:
+          type: string
+          readOnly: true
+        payment_type:
+          allOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          description: How this payment was submitted.
+        customer:
+          allOf:
+          - $ref: '#/components/schemas/OrderPaymentUnifiedCustomer'
+          readOnly: true
+      required:
+      - created_date
+      - currency
+      - customer
+      - id
+      - modified_date
+      - order
+      - total
     PaginatedUnifiedOrderPaymentList:
       type: object
       required:

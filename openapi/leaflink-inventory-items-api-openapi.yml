@@ -167,6 +167,16 @@ paths:
       - Inventory Items
 components:
   schemas:
+    InventoryItemUpdate:
+      type: object
+      properties:
+        is_archived:
+          type: boolean
+          description: Indicated whether the inventory item is active.
+        quantity:
+          type: number
+          format: decimal
+          description: Number of inventory items available.
     InventoryItemCreate:
       required:
       - batch
@@ -229,16 +239,6 @@ components:
         is_archived:
           type: boolean
           description: Indicated whether the inventory item is active.
-    InventoryItemUpdate:
-      type: object
-      properties:
-        is_archived:
-          type: boolean
-          description: Indicated whether the inventory item is active.
-        quantity:
-          type: number
-          format: decimal
-          description: Number of inventory items available.
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

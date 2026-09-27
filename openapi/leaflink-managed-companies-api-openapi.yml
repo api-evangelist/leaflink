@@ -273,6 +273,89 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    License:
+      type: object
+      description: Licenses Serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        number:
+          type: string
+          maxLength: 100
+        state:
+          $ref: '#/components/schemas/State'
+        verification_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date the license was verified by Leaflink. Not the date the license was verified by Cannabiz API.
+        verification_status:
+          $ref: '#/components/schemas/VerificationStatusEnum'
+        issued_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/LicenseTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+      required:
+      - id
+      - number
+      - state
+    BlankEnum:
+      enum:
+      - ''
+    LicenseTypeEnum:
+      enum:
+      - medical
+      - combined
+      - ancillary_2
+      - ancillary
+      - adult_use
+      - cannabis
+      - medical_transporter
+      - ancillary_logisitics
+      type: string
+    VerificationStatusEnum:
+      enum:
+      - active
+      - pending
+      - applied
+      - expired
+      - inactive
+      - not_found
+      - invalid_format
+      - not_verified
+      type: string
+    Company:
+      type: object
+      description: Used to validate the company creation request.
+      properties:
+        id:
+          type: string
+          format: uuid
+        dba:
+          type: string
+          maxLength: 200
+        legal_entity:
+          $ref: '#/components/schemas/LegalEntity'
+        has_linked_bank_account:
+          type: boolean
+          readOnly: true
+      required:
+      - dba
+      - has_linked_bank_account
     LegalEntity:
       type: object
       description: Serializer for LegalEntity
@@ -339,102 +422,31 @@ components:
           maxLength: 100
       required:
       - name
-    License:
+    PaginatedCompanyList:
       type: object
-      description: Licenses Serializer
+      required:
+      - count
+      - results
       properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        number:
-          type: string
-          maxLength: 100
-        state:
-          $ref: '#/components/schemas/State'
-        verification_date:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          format: date-time
-          description: Date the license was verified by Leaflink. Not the date the license was verified by Cannabiz API.
-        verification_status:
-          $ref: '#/components/schemas/VerificationStatusEnum'
-        issued_date:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
           - string
           - 'null'
-          format: date-time
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/LicenseTypeEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
-      required:
-      - id
-      - number
-      - state
-    VerificationStatusEnum:
-      enum:
-      - active
-      - pending
-      - applied
-      - expired
-      - inactive
-      - not_found
-      - invalid_format
-      - not_verified
-      type: string
-    Company:
-      type: object
-      description: Used to validate the company creation request.
-      properties:
-        id:
-          type: string
-          format: uuid
-        dba:
-          type: string
-          maxLength: 200
-        legal_entity:
-          $ref: '#/components/schemas/LegalEntity'
-        has_linked_bank_account:
-          type: boolean
-          readOnly: true
-      required:
-      - dba
-      - has_linked_bank_account
-    BlankEnum:
-      enum:
-      - ''
-    State:
-      type: object
-      description: State Serializer
-      properties:
-        id:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
-    LicenseTypeEnum:
-      enum:
-      - medical
-      - combined
-      - ancillary_2
-      - ancillary
-      - adult_use
-      - cannabis
-      - medical_transporter
-      - ancillary_logisitics
-      type: string
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
     NullEnum:
       enum:
       - null
@@ -463,31 +475,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/License'
-    PaginatedCompanyList:
+    State:
       type: object
-      required:
-      - count
-      - results
+      description: State Serializer
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Company'
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
   securitySchemes:
     bearerAuth:
       type: http

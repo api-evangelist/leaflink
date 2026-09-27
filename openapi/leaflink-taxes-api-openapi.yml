@@ -342,6 +342,90 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    CreateUpdateSuccessResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+      - id
+    PaginatedUnifiedTaxScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedTaxSchedule'
+    CreateInputRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        tax_type:
+          type: integer
+        tax_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
+        unit_type:
+          type: integer
+        product_category_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - name
+      - product_category_ids
+      - tax_rate
+      - tax_type
+      - unit_type
+    PatchedUpdateInputRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        tax_type:
+          type:
+          - integer
+          - 'null'
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
+        unit_type:
+          type:
+          - integer
+          - 'null'
+        product_category_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
     UnifiedTaxSchedule:
       type: object
       description: TaxSchedule GET Serializer
@@ -372,90 +456,6 @@ components:
       - tax_rate
       - tax_type
       - unit_type
-    PaginatedUnifiedTaxScheduleList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedTaxSchedule'
-    PatchedUpdateInputRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        tax_type:
-          type:
-          - integer
-          - 'null'
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
-        unit_type:
-          type:
-          - integer
-          - 'null'
-        product_category_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: integer
-    CreateInputRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-        tax_type:
-          type: integer
-        tax_rate:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
-        unit_type:
-          type: integer
-        product_category_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - name
-      - product_category_ids
-      - tax_rate
-      - tax_type
-      - unit_type
-    CreateUpdateSuccessResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-      required:
-      - id
   securitySchemes:
     bearerAuth:
       type: http

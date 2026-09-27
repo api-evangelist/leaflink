@@ -76,6 +76,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    NotificationPreferences:
+      type: object
+      description: Schema for notification preferences payload.
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        display_description:
+          type: string
+          maxLength: 255
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTopic'
+          readOnly: true
+      required:
+      - display_description
+      - items
+      - name
     NotificationTopic:
       type: object
       description: Serializer for NotificationTopic model.
@@ -97,25 +116,6 @@ components:
       - available_medium
       - default_value
       - description
-      - name
-    NotificationPreferences:
-      type: object
-      description: Schema for notification preferences payload.
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        display_description:
-          type: string
-          maxLength: 255
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTopic'
-          readOnly: true
-      required:
-      - display_description
-      - items
       - name
   securitySchemes:
     bearerAuth:

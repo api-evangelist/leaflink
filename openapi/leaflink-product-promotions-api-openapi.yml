@@ -132,12 +132,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
     ProductPromotionRequest:
       type: object
       properties:
@@ -220,26 +214,6 @@ components:
       required:
       - id
       - name
-    PromotionStatusEnum:
-      enum:
-      - Pending
-      - Approved
-      - Completed
-      type: string
-    UnifiedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-      required:
-      - id
-      - name
     ProductPromotion:
       type: object
       properties:
@@ -315,6 +289,32 @@ components:
       - products
       - start_date
       - status
+    PromotionStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Completed
+      type: string
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
   securitySchemes:
     bearerAuth:
       type: http

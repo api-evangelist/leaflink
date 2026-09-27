@@ -404,7 +404,7 @@ paths:
       security:
       - Token: []
     post:
-      operationId: contacts_create
+      operationId: postContacts
       summary: Create
       description: Create a new contact.
       requestBody:
@@ -420,6 +420,8 @@ paths:
       - Contacts
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: contacts_create
     servers:
     - url: https://app.leaflink.com/api/v2
   /contacts/{id}/:
@@ -446,7 +448,7 @@ paths:
       security:
       - Token: []
     patch:
-      operationId: contacts_partial_update
+      operationId: patchContactsById
       summary: Update
       description: Update an existing contact by ID.
       requestBody:
@@ -462,6 +464,8 @@ paths:
       - Contacts
       security:
       - Token: []
+      x-operation-id-source: normalized
+      x-operation-id-original: contacts_partial_update
     delete:
       operationId: contacts_delete
       summary: Delete

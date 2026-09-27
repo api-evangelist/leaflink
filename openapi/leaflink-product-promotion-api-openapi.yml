@@ -250,12 +250,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
     ProductPromotionRequest:
       type: object
       properties:
@@ -325,25 +319,6 @@ components:
       - products
       - start_date
       - status
-    UnifiedCompany:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-      required:
-      - id
-      - name
-    PromotionStatusEnum:
-      enum:
-      - Pending
-      - Approved
-      - Completed
-      type: string
     PatchedProductPromotionRequest:
       type: object
       properties:
@@ -404,32 +379,7 @@ components:
           type: array
           items:
             type: integer
-    PaginatedProductPromotionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPromotion'
-    UnifiedBrand:
+    UnifiedCompany:
       type: object
       properties:
         id:
@@ -437,8 +387,7 @@ components:
           readOnly: true
         name:
           type: string
-          title: Brand Name
-          description: Name of the Brand
+          description: Name of Company (Note this is not the same as Brand)
           maxLength: 400
       required:
       - id
@@ -518,6 +467,57 @@ components:
       - products
       - start_date
       - status
+    PaginatedProductPromotionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPromotion'
+    PromotionStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Completed
+      type: string
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
   securitySchemes:
     bearerAuth:
       type: http
