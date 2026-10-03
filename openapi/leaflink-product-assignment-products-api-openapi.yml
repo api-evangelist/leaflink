@@ -124,30 +124,25 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedProductAssignmentWithItems:
+    UnifiedProductAssignmentBuyerItem:
       type: object
-      description: Serializer for Product Assignment with buyer and group items
+      description: Serializer for Product Assignment Buyer Item
       properties:
-        seller_id:
+        buyer_id:
           type: integer
-        product_id:
-          type: integer
-        is_exclusive:
-          type: boolean
-        assigned_buyers:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItem'
-        assigned_groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItem'
-      required:
-      - assigned_buyers
-      - assigned_groups
-      - is_exclusive
-      - product_id
-      - seller_id
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
     PaginatedUnifiedProductAssignmentProductList:
       type: object
       required:
@@ -173,25 +168,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedProductAssignmentProduct'
-    UnifiedProductAssignmentGroupItem:
+    UnifiedProductAssignmentWithItems:
       type: object
-      description: Serializer for Product Assignment Group Item
+      description: Serializer for Product Assignment with buyer and group items
       properties:
-        customer_group_id:
+        seller_id:
           type: integer
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        call_to_action:
-          type:
-          - string
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
+        product_id:
+          type: integer
+        is_exclusive:
+          type: boolean
+        assigned_buyers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItem'
+        assigned_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItem'
+      required:
+      - assigned_buyers
+      - assigned_groups
+      - is_exclusive
+      - product_id
+      - seller_id
     UnifiedProductAssignmentProduct:
       type: object
       description: 'Serializer for ProductListing (product + assignment) to API shape.
@@ -424,11 +424,11 @@ components:
       - unit_multiplier
       - unit_of_measure
       - wholesale_price
-    UnifiedProductAssignmentBuyerItem:
+    UnifiedProductAssignmentGroupItem:
       type: object
-      description: Serializer for Product Assignment Buyer Item
+      description: Serializer for Product Assignment Group Item
       properties:
-        buyer_id:
+        customer_group_id:
           type: integer
         expiration_date:
           type:

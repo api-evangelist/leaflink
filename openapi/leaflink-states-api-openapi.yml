@@ -160,31 +160,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedStateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/State-unified-upstream-marketplace'
     Country:
       type: object
       description: "Serializer for Country models via the internal API\n\nNote:\n    The code -> iso_code is alias is intentional"
@@ -225,6 +200,31 @@ components:
       - country
       - id
       - name
+    PaginatedStateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/State-unified-upstream-marketplace'
   securitySchemes:
     bearerAuth:
       type: http

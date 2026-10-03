@@ -872,26 +872,23 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnholdRequestRequest:
+    UnfulfillmentRequestRequest:
       type: object
-      description: Request body for POST .../commands/unhold.
+      description: Request body for POST .../commands/unfulfillment.
       properties:
         product_id:
           type: integer
           minimum: 1
-        facility_id:
+        order_id:
           type: integer
           minimum: 1
-        batch_id:
+        order_product_id:
           type: integer
           minimum: 1
         quantity:
           type: string
           format: decimal
           pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
         created_by:
           type: integer
           minimum: 0
@@ -901,283 +898,11 @@ components:
             type: string
             minLength: 1
       required:
-      - batch_id
       - created_by
-      - facility_id
+      - order_id
+      - order_product_id
       - product_id
       - quantity
-      - reason
-    PutawayRequestRequest:
-      type: object
-      description: Request body for POST .../commands/putaway.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        created_by:
-          type: integer
-          minimum: 0
-          description: User ID the command is on behalf of (e.g. company staff).
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - quantity
-    ReconcileRequestRequest:
-      type: object
-      description: Request body for POST .../commands/reconcile.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        to_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - reason
-      - to_quantity
-    UnarchiveRequestRequest:
-      type: object
-      description: Request body for POST .../commands/unarchive.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - quantity
-      - reason
-    RebuildProjectionsRequestRequest:
-      type: object
-      description: 'Request body for POST .../commands/rebuild-projections.
-
-
-        Accepts any combination of seller_ids, product_ids, facility_ids, and
-
-        batch_ids. At least one filter list must be non-empty. seller_ids are
-
-        expanded to their products at the view layer (Django ORM) before stream
-
-        lookup.'
-      properties:
-        seller_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-        product_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-        facility_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-        batch_ids:
-          type: array
-          items:
-            type: integer
-            minimum: 1
-    DestroyRequestRequest:
-      type: object
-      description: Request body for POST .../commands/destroy.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - quantity
-      - reason
-    HoldRequestRequest:
-      type: object
-      description: Request body for POST .../commands/hold.
-      properties:
-        product_id:
-          type: integer
-          minimum: 1
-        facility_id:
-          type: integer
-          minimum: 1
-        batch_id:
-          type: integer
-          minimum: 1
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reason:
-          type: string
-          minLength: 1
-        created_by:
-          type: integer
-          minimum: 0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-            minLength: 1
-      required:
-      - batch_id
-      - created_by
-      - facility_id
-      - product_id
-      - quantity
-      - reason
-    RebuildProjectionsStream:
-      type: object
-      description: Single stream identifier in the rebuild-projections response.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        batch_id:
-          type: integer
-      required:
-      - batch_id
-      - facility_id
-      - product_id
-    RebuildProjectionsResponse:
-      type: object
-      description: Response body for POST .../commands/rebuild-projections.
-      properties:
-        stream_count:
-          type: integer
-        tasks_queued:
-          type: integer
-        streams:
-          type: array
-          items:
-            $ref: '#/components/schemas/RebuildProjectionsStream'
-      required:
-      - stream_count
-      - streams
-      - tasks_queued
-    CommandStatusResponse:
-      type: object
-      description: Response body for GET .../commands/<id>/status.
-      properties:
-        command_id:
-          type: integer
-        task_id:
-          type:
-          - string
-          - 'null'
-        result_status:
-          allOf:
-          - $ref: '#/components/schemas/ResultStatusEnum'
-          description: Pending | Success | Failed
-        result_metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Error/details when Failed
-        result_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        command_type:
-          type: string
-          description: Command type name
-      required:
-      - command_id
-      - command_type
-      - result_metadata
-      - result_on
-      - result_status
-      - task_id
     TransferRequestRequest:
       type: object
       description: Request body for POST .../commands/transfer.
@@ -1230,29 +955,42 @@ components:
           description: Persisted command ID for status polling
       required:
       - command_id
-    ResultStatusEnum:
-      enum:
-      - Pending
-      - Success
-      - Failed
-      type: string
-    FulfillmentRequestRequest:
+    RebuildProjectionsResponse:
       type: object
-      description: Request body for POST .../commands/fulfillment.
+      description: Response body for POST .../commands/rebuild-projections.
+      properties:
+        stream_count:
+          type: integer
+        tasks_queued:
+          type: integer
+        streams:
+          type: array
+          items:
+            $ref: '#/components/schemas/RebuildProjectionsStream'
+      required:
+      - stream_count
+      - streams
+      - tasks_queued
+    HoldRequestRequest:
+      type: object
+      description: Request body for POST .../commands/hold.
       properties:
         product_id:
           type: integer
           minimum: 1
-        order_id:
+        facility_id:
           type: integer
           minimum: 1
-        order_product_id:
+        batch_id:
           type: integer
           minimum: 1
         quantity:
           type: string
           format: decimal
           pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
         created_by:
           type: integer
           minimum: 0
@@ -1262,11 +1000,155 @@ components:
             type: string
             minLength: 1
       required:
+      - batch_id
       - created_by
-      - order_id
-      - order_product_id
+      - facility_id
       - product_id
       - quantity
+      - reason
+    ResultStatusEnum:
+      enum:
+      - Pending
+      - Success
+      - Failed
+      type: string
+    ReconcileRequestRequest:
+      type: object
+      description: Request body for POST .../commands/reconcile.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        to_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - reason
+      - to_quantity
+    PutawayRequestRequest:
+      type: object
+      description: Request body for POST .../commands/putaway.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        created_by:
+          type: integer
+          minimum: 0
+          description: User ID the command is on behalf of (e.g. company staff).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+    DestroyRequestRequest:
+      type: object
+      description: Request body for POST .../commands/destroy.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
+    UnarchiveRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unarchive.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
     UnreserveRequestRequest:
       type: object
       description: Request body for POST .../commands/unreserve.
@@ -1298,6 +1180,110 @@ components:
       - order_product_id
       - product_id
       - quantity
+    CommandStatusResponse:
+      type: object
+      description: Response body for GET .../commands/<id>/status.
+      properties:
+        command_id:
+          type: integer
+        task_id:
+          type:
+          - string
+          - 'null'
+        result_status:
+          allOf:
+          - $ref: '#/components/schemas/ResultStatusEnum'
+          description: Pending | Success | Failed
+        result_metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Error/details when Failed
+        result_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        command_type:
+          type: string
+          description: Command type name
+      required:
+      - command_id
+      - command_type
+      - result_metadata
+      - result_on
+      - result_status
+      - task_id
+    RebuildProjectionsRequestRequest:
+      type: object
+      description: 'Request body for POST .../commands/rebuild-projections.
+
+
+        Accepts any combination of seller_ids, product_ids, facility_ids, and
+
+        batch_ids. At least one filter list must be non-empty. seller_ids are
+
+        expanded to their products at the view layer (Django ORM) before stream
+
+        lookup.'
+      properties:
+        seller_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        product_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        facility_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        batch_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+    UnholdRequestRequest:
+      type: object
+      description: Request body for POST .../commands/unhold.
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+        facility_id:
+          type: integer
+          minimum: 1
+        batch_id:
+          type: integer
+          minimum: 1
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reason:
+          type: string
+          minLength: 1
+        created_by:
+          type: integer
+          minimum: 0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+      required:
+      - batch_id
+      - created_by
+      - facility_id
+      - product_id
+      - quantity
+      - reason
     ArchiveRequestRequest:
       type: object
       description: Request body for POST .../commands/archive.
@@ -1333,9 +1319,23 @@ components:
       - product_id
       - quantity
       - reason
-    UnfulfillmentRequestRequest:
+    RebuildProjectionsStream:
       type: object
-      description: Request body for POST .../commands/unfulfillment.
+      description: Single stream identifier in the rebuild-projections response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+      required:
+      - batch_id
+      - facility_id
+      - product_id
+    FulfillmentRequestRequest:
+      type: object
+      description: Request body for POST .../commands/fulfillment.
       properties:
         product_id:
           type: integer

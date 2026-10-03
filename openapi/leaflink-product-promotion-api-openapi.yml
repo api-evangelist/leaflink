@@ -250,12 +250,40 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    ProductPromotionRequest:
+    UnifiedBrand:
       type: object
       properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
+    PromotionStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Completed
+      type: string
+    ProductPromotion:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
         moloco_id:
           type: string
-          minLength: 1
         status:
           $ref: '#/components/schemas/PromotionStatusEnum'
         period:
@@ -296,24 +324,28 @@ components:
           - string
           - 'null'
           format: email
-          minLength: 1
-        brand_id:
-          type: integer
-          writeOnly: true
-        company_id:
-          type: integer
-          writeOnly: true
-        billing_company_id:
-          type: integer
-          writeOnly: true
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+        company:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompany'
+          readOnly: true
+        billing_company:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompany'
+          readOnly: true
         products:
           type: array
           items:
             type: integer
       required:
-      - brand_id
+      - billing_company
+      - brand
       - budget_per_period
-      - company_id
+      - company
+      - id
       - max_budget
       - max_cpc
       - products
@@ -392,14 +424,37 @@ components:
       required:
       - id
       - name
-    ProductPromotion:
+    PaginatedProductPromotionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPromotion'
+    ProductPromotionRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         moloco_id:
           type: string
+          minLength: 1
         status:
           $ref: '#/components/schemas/PromotionStatusEnum'
         period:
@@ -440,84 +495,29 @@ components:
           - string
           - 'null'
           format: email
-        brand:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedBrand'
-          readOnly: true
-        company:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedCompany'
-          readOnly: true
-        billing_company:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedCompany'
-          readOnly: true
+          minLength: 1
+        brand_id:
+          type: integer
+          writeOnly: true
+        company_id:
+          type: integer
+          writeOnly: true
+        billing_company_id:
+          type: integer
+          writeOnly: true
         products:
           type: array
           items:
             type: integer
       required:
-      - billing_company
-      - brand
+      - brand_id
       - budget_per_period
-      - company
-      - id
+      - company_id
       - max_budget
       - max_cpc
       - products
       - start_date
       - status
-    PaginatedProductPromotionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPromotion'
-    PromotionStatusEnum:
-      enum:
-      - Pending
-      - Approved
-      - Completed
-      type: string
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
-    UnifiedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-      required:
-      - id
-      - name
   securitySchemes:
     bearerAuth:
       type: http

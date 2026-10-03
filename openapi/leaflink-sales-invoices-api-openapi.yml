@@ -219,27 +219,19 @@ components:
       - line_items
       - modified_date
       - order
-    UnifiedOrderedProductAsInvoiceLineItem:
+    UnifiedInvoiceCustomer:
       type: object
       properties:
-        description:
-          type: string
         name:
           type: string
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-          description: The number of units ordered
-        ordered_unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: The price at the time of order.
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
+          type: integer
+          readOnly: true
       required:
-      - description
+      - id
       - name
-      - quantity
     PaginatedUnifiedOrderAsSalesInvoiceList:
       type: object
       required:
@@ -265,19 +257,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedOrderAsSalesInvoice'
-    UnifiedInvoiceCustomer:
+    UnifiedOrderedProductAsInvoiceLineItem:
       type: object
       properties:
+        description:
+          type: string
         name:
           type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+          description: The number of units ordered
+        ordered_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: The price at the time of order.
       required:
-      - id
+      - description
       - name
+      - quantity
   securitySchemes:
     bearerAuth:
       type: http

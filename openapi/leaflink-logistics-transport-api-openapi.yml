@@ -818,93 +818,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    PaginatedVehicleList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Vehicle'
-    CompanyTransportPartnerRequest:
-      type: object
-      description: Seriazlier for Company Transport Partner Model.
-      properties:
-        transport_company_id:
-          type: integer
-          writeOnly: true
-        company_id:
-          type: integer
-          writeOnly: true
-      required:
-      - transport_company_id
-    Vehicle:
-      type: object
-      description: Internal serializer for Vehicle Model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        make:
-          type:
-          - string
-          - 'null'
-          title: Vehicle Make
-          description: Vehicle Make
-          maxLength: 255
-        model_year:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Vehicle Model Year
-        model_name:
-          type:
-          - string
-          - 'null'
-          description: Vehicle Model Name
-          maxLength: 255
-        license_number:
-          type:
-          - string
-          - 'null'
-          description: License Number of Vehicle
-          maxLength: 15
-        capacity:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Vehicle Capacity
-        has_air_conditioner:
-          type: boolean
-          description: Vehicle Has Air Conditioner
-        state:
-          allOf:
-          - $ref: '#/components/schemas/State-unified-upstream-marketplace'
-          readOnly: true
-      required:
-      - id
-      - state
     Country:
       type: object
       description: "Serializer for Country models via the internal API\n\nNote:\n    The code -> iso_code is alias is intentional"
@@ -969,6 +882,263 @@ components:
       - metrc_employee_id
       - phone
       - transport_company
+    PaginatedUnifiedL3OrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedL3Order'
+    PatchedCompanyTransportPartnerRequest:
+      type: object
+      description: Seriazlier for Company Transport Partner Model.
+      properties:
+        transport_company_id:
+          type: integer
+          writeOnly: true
+        company_id:
+          type: integer
+          writeOnly: true
+    PaymentMethod:
+      type: object
+      description: Serialize payment method.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        method:
+          type: string
+          title: Payment Method Name
+          description: Name of the Payment Method
+          maxLength: 80
+        description:
+          type: string
+          title: Payment Method Description
+          description: Description of the Payment Method
+          maxLength: 400
+      required:
+      - created_on
+      - description
+      - id
+      - method
+      - modified
+    PaginatedTransportCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransportCompany'
+    Company-unified-upstream-marketplace:
+      type: object
+      description: API v2 serializer for the Company model.
+      properties:
+        address:
+          type: string
+        announcement:
+          type:
+          - string
+          - 'null'
+          description: Company Announcement
+          maxLength: 2000
+        apply_ancillary_tax:
+          type: boolean
+          readOnly: true
+        apply_arms_length_tax:
+          type: boolean
+          readOnly: true
+        batch_enabled:
+          type: boolean
+          readOnly: true
+          default: true
+        business_identifier:
+          type:
+          - string
+          - 'null'
+          title: Business Identifier / UBI
+          description: Company identifier distinct from license numbers
+          maxLength: 100
+        business_license_name:
+          type:
+          - string
+          - 'null'
+          description: Business License Name
+          maxLength: 400
+        buyer:
+          type: boolean
+          title: Is a Buyer
+          description: Company buys on LeafLink
+        can_access_shop_brands:
+          type: boolean
+          readOnly: true
+        city:
+          type: string
+        dba:
+          type: string
+          description: DBA of company
+          maxLength: 400
+        description:
+          type: string
+        has_accting:
+          type: boolean
+          title: Enable Accounting Service integration
+          description: When true can access Accounting Services
+        hide_attached_packages:
+          type: boolean
+          title: Hide attached packages?
+          description: Hide seed to sale packages that are mapped to a LeafLink resource?
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        seller:
+          type: boolean
+          title: Is a Seller
+          description: Company sells on LeafLink
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        state:
+          type: string
+        sts_enabled:
+          type: boolean
+        zipcode:
+          type: string
+        available_languages:
+          type: array
+          items: {}
+        available_languages_translated:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+            minLength: 2
+            maxLength: 2
+          readOnly: true
+        default_language:
+          type: array
+          items: {}
+        default_language_translated:
+          type: array
+          items:
+            type: string
+          minLength: 2
+          maxLength: 2
+          readOnly: true
+        enable_post:
+          type: boolean
+          title: Enable LL PoST
+          description: Whether this company has opted in to Payment on Sell Through
+        current_plan_id:
+          type: string
+          readOnly: true
+        default_payment_on_sell_through_payment_term:
+          $ref: '#/components/schemas/PaymentTerm'
+        is_payment_on_sell_through_default:
+          type: boolean
+          title: Default Payment on Sell-Through
+          description: Is Payment on Sellthrough the default payment method
+        always_share_sell_through_data:
+          type: boolean
+          title: Global override for companies_buyersellerpreferences.sell_through_data_shared
+          description: Enable sell-through data sharing for all sellers in a buyer's CRM
+      required:
+      - address
+      - apply_ancillary_tax
+      - apply_arms_length_tax
+      - available_languages
+      - available_languages_translated
+      - batch_enabled
+      - can_access_shop_brands
+      - city
+      - current_plan_id
+      - dba
+      - default_language
+      - default_language_translated
+      - default_payment_on_sell_through_payment_term
+      - id
+      - name
+      - sts_enabled
+      - zipcode
+    TransportCompany:
+      type: object
+      description: Serializer for TransportCompany model
+      properties:
+        transport_company_id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        medical_license_number:
+          type: string
+          readOnly: true
+        adult_use_license_number:
+          type: string
+          readOnly: true
+        state:
+          type: string
+          readOnly: true
+      required:
+      - adult_use_license_number
+      - medical_license_number
+      - name
+      - state
+      - transport_company_id
     Address:
       type: object
       description: 'Serializer for Address models via the internal API.
@@ -1003,6 +1173,278 @@ components:
       - city
       - state
       - zipcode
+    InternalVehicle:
+      type: object
+      description: Internal serializer for Vehicle Model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        make:
+          type:
+          - string
+          - 'null'
+          title: Vehicle Make
+          description: Vehicle Make
+          maxLength: 255
+        model_year:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Model Year
+        model_name:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Model Name
+          maxLength: 255
+        license_number:
+          type:
+          - string
+          - 'null'
+          description: License Number of Vehicle
+          maxLength: 15
+        capacity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Capacity
+        has_air_conditioner:
+          type: boolean
+          description: Vehicle Has Air Conditioner
+      required:
+      - id
+    CompanyTransportPartner:
+      type: object
+      description: Seriazlier for Company Transport Partner Model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company:
+          allOf:
+          - $ref: '#/components/schemas/Company-unified-upstream-marketplace'
+          readOnly: true
+        transport_company:
+          allOf:
+          - $ref: '#/components/schemas/TransportCompany'
+          readOnly: true
+      required:
+      - company
+      - id
+      - transport_company
+    InternalLogisticsCompany:
+      type: object
+      description: Internal serializer for the Company model to be used by L3 endpoints.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComplianceLicense'
+          readOnly: true
+        delivery_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+        corporate_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+      required:
+      - corporate_address
+      - delivery_address
+      - display_name
+      - id
+      - licenses
+    UnifiedL3OrderStatusEnum:
+      enum:
+      - uploaded
+      - created
+      - assigned
+      - planned
+      - shipped
+      - delivered
+      - deleted
+      type: string
+    PaginatedInternalDriverList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalDriver'
+    ComplianceLicense:
+      type: object
+      description: Serializer for License models via the v2 API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+          description: Type
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    PaginatedCompanyTransportPartnerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyTransportPartner'
+    Driver:
+      type: object
+      description: serializer for Driver Model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          title: First Name of Driver
+          description: First Name
+          maxLength: 100
+        last_name:
+          type: string
+          description: Last Name of Driver
+          maxLength: 100
+        metrc_employee_id:
+          type: string
+          description: METRC Employee ID for Driver
+          maxLength: 100
+        license_number:
+          type: string
+          description: License Number of Driver
+          maxLength: 15
+        phone:
+          type: string
+          description: Phone Number of Driver
+          maxLength: 15
+        is_active:
+          type: boolean
+          title: Active
+          description: Is an active driver?
+        transport_company_id:
+          type: integer
+          description: Transport company driver is associated to.
+          readOnly: true
+      required:
+      - first_name
+      - id
+      - last_name
+      - license_number
+      - metrc_employee_id
+      - phone
+      - transport_company_id
+    State-unified-upstream-marketplace:
+      type: object
+      description: Serializer for State models via the internal API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        abbr:
+          type: string
+          maxLength: 2
+        name:
+          type: string
+          maxLength: 100
+        country:
+          $ref: '#/components/schemas/Country'
+      required:
+      - abbr
+      - country
+      - id
+      - name
+    PaginatedVehicleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehicle'
     UnifiedL3Order:
       type: object
       description: Internal serializer for L3Order Model.
@@ -1179,261 +1621,56 @@ components:
       - pickup_vehicle
       - transport_company
       - transport_order_id
-    PaginatedCompanyTransportPartnerList:
+    Vehicle:
       type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyTransportPartner'
-    CompanyTransportPartner:
-      type: object
-      description: Seriazlier for Company Transport Partner Model.
+      description: Internal serializer for Vehicle Model.
       properties:
         id:
           type: integer
           readOnly: true
-        company:
-          allOf:
-          - $ref: '#/components/schemas/Company-unified-upstream-marketplace'
-          readOnly: true
-        transport_company:
-          allOf:
-          - $ref: '#/components/schemas/TransportCompany'
-          readOnly: true
-      required:
-      - company
-      - id
-      - transport_company
-    Driver:
-      type: object
-      description: serializer for Driver Model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        first_name:
-          type: string
-          title: First Name of Driver
-          description: First Name
-          maxLength: 100
-        last_name:
-          type: string
-          description: Last Name of Driver
-          maxLength: 100
-        metrc_employee_id:
-          type: string
-          description: METRC Employee ID for Driver
-          maxLength: 100
+        make:
+          type:
+          - string
+          - 'null'
+          title: Vehicle Make
+          description: Vehicle Make
+          maxLength: 255
+        model_year:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Model Year
+        model_name:
+          type:
+          - string
+          - 'null'
+          description: Vehicle Model Name
+          maxLength: 255
         license_number:
-          type: string
-          description: License Number of Driver
+          type:
+          - string
+          - 'null'
+          description: License Number of Vehicle
           maxLength: 15
-        phone:
-          type: string
-          description: Phone Number of Driver
-          maxLength: 15
-        is_active:
+        capacity:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Vehicle Capacity
+        has_air_conditioner:
           type: boolean
-          title: Active
-          description: Is an active driver?
-        transport_company_id:
-          type: integer
-          description: Transport company driver is associated to.
-          readOnly: true
-      required:
-      - first_name
-      - id
-      - last_name
-      - license_number
-      - metrc_employee_id
-      - phone
-      - transport_company_id
-    PaymentTerm:
-      type: object
-      description: Serialize payment term.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_on:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        term:
-          type: string
-          title: Payment Term Name
-          description: Name of the Payment Term
-          maxLength: 80
-        description:
-          type: string
-          title: Payment Term description
-          description: Description of the Payment Term
-          maxLength: 400
-        days:
-          type: integer
-      required:
-      - created_on
-      - days
-      - description
-      - id
-      - modified
-      - term
-    TransportCompany:
-      type: object
-      description: Serializer for TransportCompany model
-      properties:
-        transport_company_id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        medical_license_number:
-          type: string
-          readOnly: true
-        adult_use_license_number:
-          type: string
-          readOnly: true
+          description: Vehicle Has Air Conditioner
         state:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/State-unified-upstream-marketplace'
           readOnly: true
       required:
-      - adult_use_license_number
-      - medical_license_number
-      - name
+      - id
       - state
-      - transport_company_id
-    PatchedCompanyTransportPartnerRequest:
-      type: object
-      description: Seriazlier for Company Transport Partner Model.
-      properties:
-        transport_company_id:
-          type: integer
-          writeOnly: true
-        company_id:
-          type: integer
-          writeOnly: true
-    InternalDriverRequest:
-      type: object
-      description: Internal serializer for Driver Model.
-      properties:
-        first_name:
-          type: string
-          minLength: 1
-          title: First Name of Driver
-          description: First Name
-          maxLength: 100
-        last_name:
-          type: string
-          minLength: 1
-          description: Last Name of Driver
-          maxLength: 100
-        metrc_employee_id:
-          type: string
-          minLength: 1
-          description: METRC Employee ID for Driver
-          maxLength: 100
-        license_number:
-          type: string
-          minLength: 1
-          description: License Number of Driver
-          maxLength: 15
-        phone:
-          type: string
-          minLength: 1
-          description: Phone Number of Driver
-          maxLength: 15
-        is_active:
-          type: boolean
-          title: Active
-          description: Is an active driver?
-      required:
-      - first_name
-      - last_name
-      - license_number
-      - metrc_employee_id
-      - phone
-    State-unified-upstream-marketplace:
-      type: object
-      description: Serializer for State models via the internal API
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        abbr:
-          type: string
-          maxLength: 2
-        name:
-          type: string
-          maxLength: 100
-        country:
-          $ref: '#/components/schemas/Country'
-      required:
-      - abbr
-      - country
-      - id
-      - name
-    InternalLogisticsCompany:
-      type: object
-      description: Internal serializer for the Company model to be used by L3 endpoints.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        display_name:
-          type: string
-        licenses:
-          type: array
-          items:
-            $ref: '#/components/schemas/ComplianceLicense'
-          readOnly: true
-        delivery_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          readOnly: true
-        corporate_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          readOnly: true
-      required:
-      - corporate_address
-      - delivery_address
-      - display_name
-      - id
-      - licenses
-    UnifiedL3OrderStatusEnum:
-      enum:
-      - uploaded
-      - created
-      - assigned
-      - planned
-      - shipped
-      - delivered
-      - deleted
-      type: string
     VehicleRequest:
       type: object
       description: Internal serializer for Vehicle Model.
@@ -1474,273 +1711,52 @@ components:
         has_air_conditioner:
           type: boolean
           description: Vehicle Has Air Conditioner
-    ComplianceLicense:
+    CompanyTransportPartnerRequest:
       type: object
-      description: Serializer for License models via the v2 API
+      description: Seriazlier for Company Transport Partner Model.
+      properties:
+        transport_company_id:
+          type: integer
+          writeOnly: true
+        company_id:
+          type: integer
+          writeOnly: true
+      required:
+      - transport_company_id
+    PaymentTerm:
+      type: object
+      description: Serialize payment term.
       properties:
         id:
           type: integer
           readOnly: true
-          description: id for license
-        number:
+        created_on:
           type: string
-          title: License Number
-          description: License Number
-          maxLength: 100
-        type:
+          format: date-time
+          readOnly: true
+        modified:
           type: string
+          format: date-time
           readOnly: true
-          description: Type
-        display_type:
+        term:
           type: string
-          readOnly: true
-          description: Display type
-        classification:
-          type: string
-          readOnly: true
-          description: Classification
-      required:
-      - classification
-      - display_type
-      - id
-      - number
-      - type
-    PaginatedTransportCompanyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransportCompany'
-    Company-unified-upstream-marketplace:
-      type: object
-      description: API v2 serializer for the Company model.
-      properties:
-        address:
-          type: string
-        announcement:
-          type:
-          - string
-          - 'null'
-          description: Company Announcement
-          maxLength: 2000
-        apply_ancillary_tax:
-          type: boolean
-          readOnly: true
-        apply_arms_length_tax:
-          type: boolean
-          readOnly: true
-        batch_enabled:
-          type: boolean
-          readOnly: true
-          default: true
-        business_identifier:
-          type:
-          - string
-          - 'null'
-          title: Business Identifier / UBI
-          description: Company identifier distinct from license numbers
-          maxLength: 100
-        business_license_name:
-          type:
-          - string
-          - 'null'
-          description: Business License Name
-          maxLength: 400
-        buyer:
-          type: boolean
-          title: Is a Buyer
-          description: Company buys on LeafLink
-        can_access_shop_brands:
-          type: boolean
-          readOnly: true
-        city:
-          type: string
-        dba:
-          type: string
-          description: DBA of company
-          maxLength: 400
+          title: Payment Term Name
+          description: Name of the Payment Term
+          maxLength: 80
         description:
           type: string
-        has_accting:
-          type: boolean
-          title: Enable Accounting Service integration
-          description: When true can access Accounting Services
-        hide_attached_packages:
-          type: boolean
-          title: Hide attached packages?
-          description: Hide seed to sale packages that are mapped to a LeafLink resource?
-        id:
-          type: integer
-          readOnly: true
-        image:
-          type:
-          - string
-          - 'null'
-          format: uri
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
+          title: Payment Term description
+          description: Description of the Payment Term
           maxLength: 400
-        seller:
-          type: boolean
-          title: Is a Seller
-          description: Company sells on LeafLink
-        slug:
-          type: string
-          maxLength: 50
-          pattern: ^[-a-zA-Z0-9_]+$
-        state:
-          type: string
-        sts_enabled:
-          type: boolean
-        zipcode:
-          type: string
-        available_languages:
-          type: array
-          items: {}
-        available_languages_translated:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-            minLength: 2
-            maxLength: 2
-          readOnly: true
-        default_language:
-          type: array
-          items: {}
-        default_language_translated:
-          type: array
-          items:
-            type: string
-          minLength: 2
-          maxLength: 2
-          readOnly: true
-        enable_post:
-          type: boolean
-          title: Enable LL PoST
-          description: Whether this company has opted in to Payment on Sell Through
-        current_plan_id:
-          type: string
-          readOnly: true
-        default_payment_on_sell_through_payment_term:
-          $ref: '#/components/schemas/PaymentTerm'
-        is_payment_on_sell_through_default:
-          type: boolean
-          title: Default Payment on Sell-Through
-          description: Is Payment on Sellthrough the default payment method
-        always_share_sell_through_data:
-          type: boolean
-          title: Global override for companies_buyersellerpreferences.sell_through_data_shared
-          description: Enable sell-through data sharing for all sellers in a buyer's CRM
-      required:
-      - address
-      - apply_ancillary_tax
-      - apply_arms_length_tax
-      - available_languages
-      - available_languages_translated
-      - batch_enabled
-      - can_access_shop_brands
-      - city
-      - current_plan_id
-      - dba
-      - default_language
-      - default_language_translated
-      - default_payment_on_sell_through_payment_term
-      - id
-      - name
-      - sts_enabled
-      - zipcode
-    InternalVehicle:
-      type: object
-      description: Internal serializer for Vehicle Model.
-      properties:
-        id:
+        days:
           type: integer
-          readOnly: true
-        make:
-          type:
-          - string
-          - 'null'
-          title: Vehicle Make
-          description: Vehicle Make
-          maxLength: 255
-        model_year:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Vehicle Model Year
-        model_name:
-          type:
-          - string
-          - 'null'
-          description: Vehicle Model Name
-          maxLength: 255
-        license_number:
-          type:
-          - string
-          - 'null'
-          description: License Number of Vehicle
-          maxLength: 15
-        capacity:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Vehicle Capacity
-        has_air_conditioner:
-          type: boolean
-          description: Vehicle Has Air Conditioner
       required:
+      - created_on
+      - days
+      - description
       - id
-    PaginatedUnifiedL3OrderList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedL3Order'
+      - modified
+      - term
     InternalTransportCompany:
       type: object
       description: Internal serializer for TransportCompany Model.
@@ -1769,62 +1785,46 @@ components:
           maxLength: 100
       required:
       - id
-    PaymentMethod:
+    InternalDriverRequest:
       type: object
-      description: Serialize payment method.
+      description: Internal serializer for Driver Model.
       properties:
-        id:
-          type: integer
-          readOnly: true
-        created_on:
+        first_name:
           type: string
-          format: date-time
-          readOnly: true
-        modified:
+          minLength: 1
+          title: First Name of Driver
+          description: First Name
+          maxLength: 100
+        last_name:
           type: string
-          format: date-time
-          readOnly: true
-        method:
+          minLength: 1
+          description: Last Name of Driver
+          maxLength: 100
+        metrc_employee_id:
           type: string
-          title: Payment Method Name
-          description: Name of the Payment Method
-          maxLength: 80
-        description:
+          minLength: 1
+          description: METRC Employee ID for Driver
+          maxLength: 100
+        license_number:
           type: string
-          title: Payment Method Description
-          description: Description of the Payment Method
-          maxLength: 400
+          minLength: 1
+          description: License Number of Driver
+          maxLength: 15
+        phone:
+          type: string
+          minLength: 1
+          description: Phone Number of Driver
+          maxLength: 15
+        is_active:
+          type: boolean
+          title: Active
+          description: Is an active driver?
       required:
-      - created_on
-      - description
-      - id
-      - method
-      - modified
-    PaginatedInternalDriverList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalDriver'
+      - first_name
+      - last_name
+      - license_number
+      - metrc_employee_id
+      - phone
   securitySchemes:
     bearerAuth:
       type: http

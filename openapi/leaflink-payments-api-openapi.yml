@@ -205,20 +205,20 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaymentTypeEnum:
-      enum:
-      - other
-      - cash
-      - check
-      - credit
-      - trade
-      - ach
-      - wire
-      - cashier
-      - leaflink_direct_payment
-      - leaflink_flexible_payment
-      - leaflink_financial
-      type: string
+    OrderPaymentUnifiedCustomer:
+      type: object
+      description: Serializer for company data focusing on name and ID.
+      properties:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - name
     UnifiedOrderPaymentRequest:
       type: object
       description: Serializer for handling order payment data and validations.
@@ -244,20 +244,6 @@ components:
       required:
       - order
       - total
-    OrderPaymentUnifiedCustomer:
-      type: object
-      description: Serializer for company data focusing on name and ID.
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
-      required:
-      - id
-      - name
     UnifiedOrderPayment:
       type: object
       description: Serializer for handling order payment data and validations.
@@ -308,6 +294,20 @@ components:
       - modified_date
       - order
       - total
+    PaymentTypeEnum:
+      enum:
+      - other
+      - cash
+      - check
+      - credit
+      - trade
+      - ach
+      - wire
+      - cashier
+      - leaflink_direct_payment
+      - leaflink_flexible_payment
+      - leaflink_financial
+      type: string
     PaginatedUnifiedOrderPaymentList:
       type: object
       required:

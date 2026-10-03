@@ -428,91 +428,6 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
-    PaginatedFacilityList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Facility'
-    Facility:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Name of the facility
-      required:
-      - id
-      - name
-    FacilityCreateRequest:
-      type: object
-      description: Serializer for creating a facility.
-      properties:
-        company_id:
-          type: integer
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        description:
-          type: string
-          default: ''
-        address:
-          allOf:
-          - $ref: '#/components/schemas/AddressInputRequest'
-        external_id:
-          type:
-          - integer
-          - 'null'
-        is_archived:
-          type: boolean
-          default: false
-      required:
-      - company_id
-      - name
-    PatchedFacilityPatchRequest:
-      type: object
-      description: Serializer for patching a facility.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        description:
-          type: string
-        address_id:
-          type:
-          - integer
-          - 'null'
-        external_id:
-          type:
-          - integer
-          - 'null'
-        is_archived:
-          type:
-          - boolean
-          - 'null'
     AddressInputRequest:
       type: object
       description: Nested serializer for the address payload required on facility creation.
@@ -554,6 +469,91 @@ components:
       - city
       - state
       - zipcode
+    FacilityCreateRequest:
+      type: object
+      description: Serializer for creating a facility.
+      properties:
+        company_id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          default: ''
+        address:
+          allOf:
+          - $ref: '#/components/schemas/AddressInputRequest'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type: boolean
+          default: false
+      required:
+      - company_id
+      - name
+    Facility:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Name of the facility
+      required:
+      - id
+      - name
+    PatchedFacilityPatchRequest:
+      type: object
+      description: Serializer for patching a facility.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+        address_id:
+          type:
+          - integer
+          - 'null'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type:
+          - boolean
+          - 'null'
+    PaginatedFacilityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
     Facility_2:
       type: object
       properties:

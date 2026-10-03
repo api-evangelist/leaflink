@@ -207,6 +207,19 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
+    PackageAssignmentInputRequest:
+      type: object
+      description: Serializer for a single package-to-product assignment.
+      properties:
+        package_id:
+          type: integer
+        product_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - package_id
+      - product_id
     PackageAssignRequest:
       type: object
       description: Serializer for bulk assigning packages to products.
@@ -217,31 +230,21 @@ components:
             $ref: '#/components/schemas/PackageAssignmentInputRequest'
       required:
       - assignments
-    PaginatedUnifiedPackageList:
+    PackageAssignResponse:
       type: object
-      required:
-      - count
-      - results
+      description: Response serializer for assign packages - returns assigned packages.
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedPackage'
+          readOnly: true
+        count:
+          type: integer
+          readOnly: true
+      required:
+      - count
+      - results
     UnifiedPackage:
       type: object
       description: Serializer for TraceabilityPackage - read/response only.
@@ -288,34 +291,31 @@ components:
       - label
       - quantity
       - unit_of_measure
-    PackageAssignResponse:
+    PaginatedUnifiedPackageList:
       type: object
-      description: Response serializer for assign packages - returns assigned packages.
+      required:
+      - count
+      - results
       properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedPackage'
-          readOnly: true
-        count:
-          type: integer
-          readOnly: true
-      required:
-      - count
-      - results
-    PackageAssignmentInputRequest:
-      type: object
-      description: Serializer for a single package-to-product assignment.
-      properties:
-        package_id:
-          type: integer
-        product_id:
-          type:
-          - integer
-          - 'null'
-      required:
-      - package_id
-      - product_id
   securitySchemes:
     bearerAuth:
       type: http

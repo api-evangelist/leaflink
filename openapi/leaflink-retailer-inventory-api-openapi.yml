@@ -139,16 +139,7 @@ paths:
       - retailer-inventory
 components:
   schemas:
-    RetailerInventoryCreate:
-      required:
-      - is_low
-      - source
-      - name
-      - sku
-      - brand
-      - quantity
-      - company
-      - unit_of_measure
+    RetailerInventoryUpdate:
       type: object
       properties:
         is_low:
@@ -185,7 +176,16 @@ components:
           type: string
           maxLength: 400
           minLength: 1
-    RetailerInventoryUpdate:
+    RetailerInventoryCreate:
+      required:
+      - is_low
+      - source
+      - name
+      - sku
+      - brand
+      - quantity
+      - company
+      - unit_of_measure
       type: object
       properties:
         is_low:

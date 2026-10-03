@@ -491,31 +491,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    PaginatedUnifiedCustomerGroupList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedCustomerGroup'
     PatchedUnifiedCustomerGroupRequest:
       type: object
       description: Serializer for Customer Group.
@@ -540,11 +515,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/UnifiedCustomerGroupStatusEnum'
           description: Overall status of the company customer group.
-    UnifiedCustomerGroupStatusEnum:
-      enum:
-      - active
-      - archived
-      type: string
     UnifiedCustomerGroup:
       type: object
       description: Serializer for Customer Group.
@@ -612,6 +582,36 @@ components:
           description: Overall status of the company customer group.
       required:
       - name
+    UnifiedCustomerGroupStatusEnum:
+      enum:
+      - active
+      - archived
+      type: string
+    PaginatedUnifiedCustomerGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedCustomerGroup'
   securitySchemes:
     bearerAuth:
       type: http

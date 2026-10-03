@@ -146,6 +146,13 @@ paths:
       tags:
       - Promo Codes
 components:
+  requestBodies:
+    PromoCode:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromoCode'
+      required: true
   schemas:
     PromoCode:
       required:
@@ -185,13 +192,6 @@ components:
           title: End date
           type: string
           format: date-time
-  requestBodies:
-    PromoCode:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PromoCode'
-      required: true
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

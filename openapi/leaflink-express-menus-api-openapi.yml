@@ -292,7 +292,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UnifiedExpressProductMenuRequest:
+    PatchedUnifiedExpressProductMenuRequest:
       type: object
       properties:
         brand:
@@ -307,10 +307,6 @@ components:
             type: integer
             title: Public Menu Products
           title: Public Menu Products
-      required:
-      - brand
-      - price_schedule
-      - products
     UnifiedExpressProductMenu:
       type: object
       properties:
@@ -347,7 +343,7 @@ components:
       - products
       - products_count
       - slug
-    PatchedUnifiedExpressProductMenuRequest:
+    UnifiedExpressProductMenuRequest:
       type: object
       properties:
         brand:
@@ -362,6 +358,10 @@ components:
             type: integer
             title: Public Menu Products
           title: Public Menu Products
+      required:
+      - brand
+      - price_schedule
+      - products
   securitySchemes:
     bearerAuth:
       type: http

@@ -70,6 +70,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UnifiedPomsOrderApprovalRequestData:
+      type: object
+      description: Unified POMS Order Approval serializer for request data.
+      properties:
+        order_id:
+          type: integer
+          description: Order ID from POMS system
+        purchase_order_number:
+          type: string
+          format: uuid
+          description: UUID of Order for approval
+        status:
+          allOf:
+          - $ref: '#/components/schemas/CartOrderPomsStatusEnum'
+          description: Status of the POMS order that defines the action to be taken
+        message:
+          type: string
+          description: Optional message
+      required:
+      - purchase_order_number
+      - status
     UnifiedPomsOrderApprovalRequestDataRequest:
       type: object
       description: Unified POMS Order Approval serializer for request data.
@@ -99,27 +120,6 @@ components:
       - completed
       - error
       type: string
-    UnifiedPomsOrderApprovalRequestData:
-      type: object
-      description: Unified POMS Order Approval serializer for request data.
-      properties:
-        order_id:
-          type: integer
-          description: Order ID from POMS system
-        purchase_order_number:
-          type: string
-          format: uuid
-          description: UUID of Order for approval
-        status:
-          allOf:
-          - $ref: '#/components/schemas/CartOrderPomsStatusEnum'
-          description: Status of the POMS order that defines the action to be taken
-        message:
-          type: string
-          description: Optional message
-      required:
-      - purchase_order_number
-      - status
   securitySchemes:
     bearerAuth:
       type: http

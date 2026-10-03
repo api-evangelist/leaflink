@@ -169,34 +169,6 @@ paths:
       - Credits
 components:
   schemas:
-    LightCompanyCustomer:
-      title: Customer
-      description: Seller's customer record for the company on the buyer side of the order
-      required:
-      - id
-      - delinquent
-      type: object
-      properties:
-        id:
-          title: Id
-          description: id for the customer
-          type: integer
-        display_name:
-          title: Display name
-          description: Customer nickname if one exists, else the customer name
-          type: string
-          readOnly: true
-        ext_acct_id:
-          title: Accounting Service External ID
-          description: ID of Customer in 3rd party accouting software
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-        delinquent:
-          title: Delinquent
-          description: Is this account marked delinquent?
-          type: boolean
     Credit:
       type: object
       readOnly: true
@@ -298,6 +270,34 @@ components:
           type: boolean
           description: Whether the credit has been soft-deleted
           readOnly: true
+    LightCompanyCustomer:
+      title: Customer
+      description: Seller's customer record for the company on the buyer side of the order
+      required:
+      - id
+      - delinquent
+      type: object
+      properties:
+        id:
+          title: Id
+          description: id for the customer
+          type: integer
+        display_name:
+          title: Display name
+          description: Customer nickname if one exists, else the customer name
+          type: string
+          readOnly: true
+        ext_acct_id:
+          title: Accounting Service External ID
+          description: ID of Customer in 3rd party accouting software
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        delinquent:
+          title: Delinquent
+          description: Is this account marked delinquent?
+          type: boolean
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

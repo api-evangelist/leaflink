@@ -186,41 +186,6 @@ components:
       - click_url
       - id
       - impression_url
-    AdPlacement:
-      type: object
-      description: Serializer for ll.ads.data_models.AdPlacement
-      properties:
-        id:
-          type: string
-        style:
-          type: string
-        provider:
-          type: string
-      required:
-      - id
-      - provider
-      - style
-    UnifiedRecommendedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-        sponsorship:
-          $ref: '#/components/schemas/Sponsorship'
-        image:
-          type: string
-          format: uri
-      required:
-      - id
-      - image
-      - name
-      - sponsorship
     Sponsorship:
       type: object
       description: Serializer for ll.ads.data_models.Sponsorship
@@ -274,6 +239,41 @@ components:
       - target_resource_name
       - target_url
       - target_user_id
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
+    UnifiedRecommendedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+      - name
+      - sponsorship
     BrandResponse:
       type: object
       properties:

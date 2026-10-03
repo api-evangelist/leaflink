@@ -695,10 +695,12 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    FacilityMeasurementResponse:
+    ProductFacilityMeasurementResponse:
       type: object
-      description: Response shape for GET .../measurements/by-facility.
+      description: Response shape for GET .../measurements/by-product-and-facility.
       properties:
+        product_id:
+          type: integer
         facility_id:
           type: integer
         measurements:
@@ -709,6 +711,73 @@ components:
       required:
       - facility_id
       - measurements
+      - product_id
+      - updated_at
+    BatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-batch.
+      properties:
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - updated_at
+    Allocation:
+      type: object
+      description: Serializes an ``AllocationItem`` for the API response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        group_ids:
+          type: array
+          items:
+            type: integer
+        buyer_ids:
+          type: array
+          items:
+            type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - buyer_ids
+      - created_at
+      - facility_id
+      - group_ids
+      - product_id
+      - quantity
+    ProductBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-and-batch.
+      properties:
+        product_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - product_id
       - updated_at
     Reservation:
       type: object
@@ -748,42 +817,6 @@ components:
       - order_id
       - product_id
       - quantity
-    ProductFacilityMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-and-facility.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - facility_id
-      - measurements
-      - product_id
-      - updated_at
-    ProductBatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-and-batch.
-      properties:
-        product_id:
-          type: integer
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - measurements
-      - product_id
-      - updated_at
     ProductFacilityBatchMeasurementResponse:
       type: object
       description: Response shape for GET .../measurements/by-product-facility-and-batch.
@@ -820,39 +853,6 @@ components:
       - measurements
       - product_id
       - updated_at
-    BatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-batch.
-      properties:
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - measurements
-      - updated_at
-    FacilityBatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-facility-and-batch.
-      properties:
-        facility_id:
-          type: integer
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - facility_id
-      - measurements
-      - updated_at
     MeasurementData:
       type: object
       description: Nested measurement quantities; field names match MeasurementData.
@@ -888,39 +888,39 @@ components:
       - held_quantity
       - on_hand_quantity
       - reserved_quantity
-    Allocation:
+    FacilityMeasurementResponse:
       type: object
-      description: Serializes an ``AllocationItem`` for the API response.
+      description: Response shape for GET .../measurements/by-facility.
       properties:
-        product_id:
+        facility_id:
           type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - facility_id
+      - measurements
+      - updated_at
+    FacilityBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-facility-and-batch.
+      properties:
         facility_id:
           type: integer
         batch_id:
           type: integer
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        group_ids:
-          type: array
-          items:
-            type: integer
-        buyer_ids:
-          type: array
-          items:
-            type: integer
-        created_at:
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
           type: string
           format: date-time
       required:
       - batch_id
-      - buyer_ids
-      - created_at
       - facility_id
-      - group_ids
-      - product_id
-      - quantity
+      - measurements
+      - updated_at
   securitySchemes:
     bearerAuth:
       type: http

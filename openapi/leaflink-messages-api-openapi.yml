@@ -334,6 +334,52 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedMessageList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        current_page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    Author:
+      type: object
+      description: Author serializer
+      properties:
+        id:
+          type: integer
+        company:
+          allOf:
+          - $ref: '#/components/schemas/DiscussionCompany'
+          readOnly: true
+        user:
+          type: integer
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+      required:
+      - company
+      - email
+      - id
+      - name
+      - user
     MessageRequest:
       type: object
       description: Discussion Message serializer
@@ -375,30 +421,6 @@ components:
       - message
       - read_by_recipient
       - read_by_sender
-    Author:
-      type: object
-      description: Author serializer
-      properties:
-        id:
-          type: integer
-        company:
-          allOf:
-          - $ref: '#/components/schemas/DiscussionCompany'
-          readOnly: true
-        user:
-          type: integer
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-      required:
-      - company
-      - email
-      - id
-      - name
-      - user
     DiscussionCompany:
       type: object
       description: Company serializer
@@ -417,28 +439,6 @@ components:
       required:
       - id
       - image_url
-    PaginatedMessageList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 420
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        current_page:
-          type: integer
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
   securitySchemes:
     bearerAuth:
       type: http

@@ -177,31 +177,6 @@ components:
           type: number
           format: decimal
           description: Number of inventory items available.
-    InventoryItemCreate:
-      required:
-      - batch
-      - is_archived
-      - facility
-      - product
-      - quantity
-      type: object
-      properties:
-        batch:
-          type: integer
-          description: ID of the associated batch.
-        is_archived:
-          type: boolean
-          description: Indicated whether the inventory item is archived.
-        facility:
-          type: integer
-          description: ID of the associated facility.
-        product:
-          type: integer
-          description: ID of the associated product.
-        quantity:
-          type: number
-          format: decimal
-          description: Number of inventory items available.
     InventoryItem:
       type: object
       properties:
@@ -239,6 +214,31 @@ components:
         is_archived:
           type: boolean
           description: Indicated whether the inventory item is active.
+    InventoryItemCreate:
+      required:
+      - batch
+      - is_archived
+      - facility
+      - product
+      - quantity
+      type: object
+      properties:
+        batch:
+          type: integer
+          description: ID of the associated batch.
+        is_archived:
+          type: boolean
+          description: Indicated whether the inventory item is archived.
+        facility:
+          type: integer
+          description: ID of the associated facility.
+        product:
+          type: integer
+          description: ID of the associated product.
+        quantity:
+          type: number
+          format: decimal
+          description: Number of inventory items available.
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

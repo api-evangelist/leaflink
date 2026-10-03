@@ -433,92 +433,6 @@ components:
       - modified
       - state_abbr
       - type
-    PaginatedCompanyLicenseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyLicense'
-    LicensesCreateUpdateResponse:
-      type: object
-      description: Serializer for returning a list of created or updated license IDs.
-      properties:
-        license_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - license_ids
-    UnifiedLicenseCreateUpdateRequest:
-      type: object
-      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
-      properties:
-        number:
-          type: string
-        issue_date:
-          type: string
-          format: date
-          readOnly: true
-        expiration_date:
-          type: string
-          format: date
-          readOnly: true
-        type:
-          type: integer
-          readOnly: true
-      required:
-      - expiration_date
-      - issue_date
-      - number
-      - type
-    CompanyLicense:
-      type: object
-      description: Unified serializer for License models.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-          description: id for license
-        number:
-          type: string
-          title: License Number
-          description: License Number
-          maxLength: 100
-        type:
-          $ref: '#/components/schemas/CompanyLicenseType'
-        display_type:
-          type: string
-          readOnly: true
-          description: Display type
-        classification:
-          type: string
-          readOnly: true
-          description: Classification
-      required:
-      - classification
-      - display_type
-      - id
-      - number
-      - type
     LicenseTypeInternalResponse:
       type: object
       description: Serializer for LicenseType models via the internal API
@@ -581,6 +495,28 @@ components:
       - modified
       - state_id
       - type
+    UnifiedLicenseCreateUpdateRequest:
+      type: object
+      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
+      properties:
+        number:
+          type: string
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+        expiration_date:
+          type: string
+          format: date
+          readOnly: true
+        type:
+          type: integer
+          readOnly: true
+      required:
+      - expiration_date
+      - issue_date
+      - number
+      - type
     LicenseCreateUpdateRequest:
       type: object
       properties:
@@ -602,6 +538,16 @@ components:
       - number
       - start_date
       - type_id
+    LicensesCreateUpdateResponse:
+      type: object
+      description: Serializer for returning a list of created or updated license IDs.
+      properties:
+        license_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - license_ids
     PaginatedLicenseTypeInternalResponseList:
       type: object
       required:
@@ -627,6 +573,60 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LicenseTypeInternalResponse'
+    CompanyLicense:
+      type: object
+      description: Unified serializer for License models.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: id for license
+        number:
+          type: string
+          title: License Number
+          description: License Number
+          maxLength: 100
+        type:
+          $ref: '#/components/schemas/CompanyLicenseType'
+        display_type:
+          type: string
+          readOnly: true
+          description: Display type
+        classification:
+          type: string
+          readOnly: true
+          description: Classification
+      required:
+      - classification
+      - display_type
+      - id
+      - number
+      - type
+    PaginatedCompanyLicenseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyLicense'
   securitySchemes:
     bearerAuth:
       type: http

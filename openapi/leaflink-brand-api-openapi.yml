@@ -335,26 +335,91 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    SponsorshipPayload:
+    Sponsorship:
       type: object
-      description: "Serializer for sponsorship content.\n\n\"sponsorships\": {\n    \"banners\": [\n        {\"sponsorship\": {}},\n        {\"sponsorship\": {}},\n        …\n    ],\n    \"listing\": [\n        {\"resource\": {}, \"sponsorship\": {}},\n        {\"resource\": {}, \"sponsorship\": {}},\n        …\n    ],\n    \"skyscrapers\": [\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...},\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...}\n    ]\n}"
+      description: Serializer for ll.ads.data_models.Sponsorship
       properties:
-        banners:
+        rank:
+          type: integer
+        provider_id:
+          type: string
+        ad_id:
+          type: string
+        campaign_id:
+          type: string
+        target_url:
+          type: string
+        click_url:
+          type: string
+        creative:
+          type: object
+          additionalProperties: {}
+        impression_url:
+          type: string
+        items:
           type: array
           items:
-            $ref: '#/components/schemas/SponsorshipContent'
-        listing:
-          type: array
-          items:
-            $ref: '#/components/schemas/SponsorshipResource'
-        skyscrapers:
-          type: array
-          items:
-            $ref: '#/components/schemas/SkyscraperSponsorshipContent'
+            $ref: '#/components/schemas/SponsorshipItem'
+        page_load_id:
+          type: string
+        placement:
+          $ref: '#/components/schemas/AdPlacement'
+        target_company_id:
+          type: integer
+        target_user_id:
+          type: integer
+        target_resource_id:
+          type: string
+        target_resource_name:
+          type: string
       required:
-      - banners
-      - listing
-      - skyscrapers
+      - ad_id
+      - campaign_id
+      - click_url
+      - creative
+      - impression_url
+      - items
+      - page_load_id
+      - placement
+      - provider_id
+      - rank
+      - target_company_id
+      - target_resource_id
+      - target_resource_name
+      - target_url
+      - target_user_id
+    CompanyResource:
+      type: object
+      description: Serializer for Company resource.
+      properties:
+        resource_id:
+          type: integer
+        resource_name:
+          type: string
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        enable_vendor_menu:
+          type: boolean
+          readOnly: true
+      required:
+      - enable_vendor_menu
+      - name
+      - resource_id
+      - resource_name
+    SponsorshipContent:
+      type: object
+      description: Serializer for an individual sponsorship result.
+      properties:
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+      required:
+      - sponsorship
     UnifiedRecommendedBrand:
       type: object
       properties:
@@ -376,14 +441,41 @@ components:
       - image
       - name
       - sponsorship
-    SponsorshipContent:
+    SponsorshipResource:
       type: object
-      description: Serializer for an individual sponsorship result.
+      description: Serializer for an individual sponsorship with Brand details.
       properties:
         sponsorship:
           $ref: '#/components/schemas/Sponsorship'
+        resource:
+          $ref: '#/components/schemas/BrandResource'
       required:
+      - resource
       - sponsorship
+    SkyscraperBrand:
+      type: object
+      description: Serializer for Brand resource.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        image_url:
+          type: string
+          format: uri
+        company_name:
+          type: string
+        company_id:
+          type: string
+        enable_vendor_menu:
+          type: boolean
+      required:
+      - company_id
+      - company_name
+      - enable_vendor_menu
+      - id
+      - image_url
+      - name
     BrandListingContent:
       type: object
       properties:
@@ -396,37 +488,6 @@ components:
       required:
       - collection
       - sponsorships
-    Badge:
-      type: object
-      description: Serializer for Badges.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        code:
-          type: string
-          maxLength: 32
-        self_identify:
-          type: boolean
-          description: This badge can be added or removed by an external user.
-      required:
-      - code
-      - id
-      - name
-    SponsorshipResource:
-      type: object
-      description: Serializer for an individual sponsorship with Brand details.
-      properties:
-        sponsorship:
-          $ref: '#/components/schemas/Sponsorship'
-        resource:
-          $ref: '#/components/schemas/BrandResource'
-      required:
-      - resource
-      - sponsorship
     PaginatedUnifiedRecommendedBrandList:
       type: object
       required:
@@ -452,70 +513,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedRecommendedBrand'
-    SkyscraperBrand:
+    SponsorshipPayload:
       type: object
-      description: Serializer for Brand resource.
+      description: "Serializer for sponsorship content.\n\n\"sponsorships\": {\n    \"banners\": [\n        {\"sponsorship\": {}},\n        {\"sponsorship\": {}},\n        …\n    ],\n    \"listing\": [\n        {\"resource\": {}, \"sponsorship\": {}},\n        {\"resource\": {}, \"sponsorship\": {}},\n        …\n    ],\n    \"skyscrapers\": [\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...},\n        {\"brand\": {}, \"banner\": {}, \"products\": [], ...}\n    ]\n}"
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        image_url:
-          type: string
-          format: uri
-        company_name:
-          type: string
-        company_id:
-          type: string
-        enable_vendor_menu:
-          type: boolean
+        banners:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipContent'
+        listing:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsorshipResource'
+        skyscrapers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkyscraperSponsorshipContent'
       required:
-      - company_id
-      - company_name
-      - enable_vendor_menu
-      - id
-      - image_url
-      - name
-    AdPlacement:
-      type: object
-      description: Serializer for ll.ads.data_models.AdPlacement
-      properties:
-        id:
-          type: string
-        style:
-          type: string
-        provider:
-          type: string
-      required:
-      - id
-      - provider
-      - style
-    SkyscraperSponsorshipItem:
-      type: object
-      description: Serializer for ll.ads.data_models.SkyscraperSponsorshipItem
-      properties:
-        id:
-          type: string
-        impression_url:
-          type: string
-          format: uri
-        click_url:
-          type: string
-          format: uri
-        display_price:
-          type: string
-        image_url:
-          type: string
-          format: uri
-        name:
-          type: string
-      required:
-      - click_url
-      - display_price
-      - id
-      - image_url
-      - impression_url
-      - name
+      - banners
+      - listing
+      - skyscrapers
     BrandResource:
       type: object
       description: Serializer for Brand resource.
@@ -576,24 +593,6 @@ components:
       - social_equity_programs
       - sponsored
       - tagline
-    PaginatedBrandListingContentList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 420
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        content:
-          $ref: '#/components/schemas/BrandListingContent'
     SponsorshipItem:
       type: object
       description: Serializer for ll.ads.data_models.SponsorshipItem
@@ -610,30 +609,26 @@ components:
       - click_url
       - id
       - impression_url
-    CompanyResource:
+    Badge:
       type: object
-      description: Serializer for Company resource.
+      description: Serializer for Badges.
       properties:
-        resource_id:
+        id:
           type: integer
-        resource_name:
-          type: string
+          readOnly: true
         name:
           type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        slug:
+          maxLength: 128
+        code:
           type: string
-          maxLength: 50
-          pattern: ^[-a-zA-Z0-9_]+$
-        enable_vendor_menu:
+          maxLength: 32
+        self_identify:
           type: boolean
-          readOnly: true
+          description: This badge can be added or removed by an external user.
       required:
-      - enable_vendor_menu
+      - code
+      - id
       - name
-      - resource_id
-      - resource_name
     SkyscraperSponsorshipContent:
       type: object
       description: Serializer for an individual Skyscraper style sponsorship result.
@@ -685,59 +680,64 @@ components:
       - provider_id
       - target_company_id
       - target_user_id
-    Sponsorship:
+    AdPlacement:
       type: object
-      description: Serializer for ll.ads.data_models.Sponsorship
+      description: Serializer for ll.ads.data_models.AdPlacement
       properties:
-        rank:
-          type: integer
-        provider_id:
+        id:
           type: string
-        ad_id:
+        style:
           type: string
-        campaign_id:
-          type: string
-        target_url:
-          type: string
-        click_url:
-          type: string
-        creative:
-          type: object
-          additionalProperties: {}
-        impression_url:
-          type: string
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SponsorshipItem'
-        page_load_id:
-          type: string
-        placement:
-          $ref: '#/components/schemas/AdPlacement'
-        target_company_id:
-          type: integer
-        target_user_id:
-          type: integer
-        target_resource_id:
-          type: string
-        target_resource_name:
+        provider:
           type: string
       required:
-      - ad_id
-      - campaign_id
+      - id
+      - provider
+      - style
+    SkyscraperSponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SkyscraperSponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+        display_price:
+          type: string
+        image_url:
+          type: string
+          format: uri
+        name:
+          type: string
+      required:
       - click_url
-      - creative
+      - display_price
+      - id
+      - image_url
       - impression_url
-      - items
-      - page_load_id
-      - placement
-      - provider_id
-      - rank
-      - target_company_id
-      - target_resource_id
-      - target_resource_name
-      - target_url
-      - target_user_id
+      - name
+    PaginatedBrandListingContentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        content:
+          $ref: '#/components/schemas/BrandListingContent'
   securitySchemes:
     bearerAuth:
       type: http

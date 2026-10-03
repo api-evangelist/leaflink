@@ -132,6 +132,107 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UnifiedBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+      required:
+      - id
+      - name
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
+    PromotionStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Completed
+      type: string
+    ProductPromotion:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        moloco_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/PromotionStatusEnum'
+        period:
+          allOf:
+          - $ref: '#/components/schemas/PeriodEnum'
+          default: Weekly
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        max_cpc:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        max_budget:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        budget_per_period:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        approver_email:
+          type:
+          - string
+          - 'null'
+          format: email
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedBrand'
+          readOnly: true
+        company:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompany'
+          readOnly: true
+        billing_company:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCompany'
+          readOnly: true
+        products:
+          type: array
+          items:
+            type: integer
+      required:
+      - billing_company
+      - brand
+      - budget_per_period
+      - company
+      - id
+      - max_budget
+      - max_cpc
+      - products
+      - start_date
+      - status
     ProductPromotionRequest:
       type: object
       properties:
@@ -210,107 +311,6 @@ components:
         name:
           type: string
           description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-      required:
-      - id
-      - name
-    ProductPromotion:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        moloco_id:
-          type: string
-        status:
-          $ref: '#/components/schemas/PromotionStatusEnum'
-        period:
-          allOf:
-          - $ref: '#/components/schemas/PeriodEnum'
-          default: Weekly
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        max_cpc:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        max_budget:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        budget_per_period:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        approver_email:
-          type:
-          - string
-          - 'null'
-          format: email
-        brand:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedBrand'
-          readOnly: true
-        company:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedCompany'
-          readOnly: true
-        billing_company:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedCompany'
-          readOnly: true
-        products:
-          type: array
-          items:
-            type: integer
-      required:
-      - billing_company
-      - brand
-      - budget_per_period
-      - company
-      - id
-      - max_budget
-      - max_cpc
-      - products
-      - start_date
-      - status
-    PromotionStatusEnum:
-      enum:
-      - Pending
-      - Approved
-      - Completed
-      type: string
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
-    UnifiedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
           maxLength: 400
       required:
       - id

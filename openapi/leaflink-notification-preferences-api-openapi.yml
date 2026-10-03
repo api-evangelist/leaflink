@@ -254,43 +254,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    NotificationPreferences:
-      type: object
-      description: Schema for notification preferences payload.
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        display_description:
-          type: string
-          maxLength: 255
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTopic'
-          readOnly: true
-      required:
-      - display_description
-      - items
-      - name
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-        code:
-          type: string
-        title:
-          type: string
-        detail:
-          type: string
-        source:
-          $ref: '#/components/schemas/ErrorSource'
-        meta: {}
-      required:
-      - status
     PaginatedNotificationPreferencesList:
       type: object
       required:
@@ -316,26 +279,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotificationPreferences'
-    NotificationPreferencesPayloadSchema:
-      type: object
-      properties:
-        topic:
-          type: string
-        medium:
-          type: string
-        enabled_timestamp:
-          type: boolean
-      required:
-      - enabled_timestamp
-      - medium
-      - topic
-    ErrorSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-        parameter:
-          type: string
     NotificationPreferences-unified-upstream-notification-service:
       type: object
       properties:
@@ -352,15 +295,43 @@ components:
       - enabled_timestamp
       - medium
       - topic
-    MultipleErrors:
+    Error:
       type: object
       properties:
-        errors:
+        id:
+          type: string
+        status:
+          type: string
+        code:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        source:
+          $ref: '#/components/schemas/ErrorSource'
+        meta: {}
+      required:
+      - status
+    NotificationPreferences:
+      type: object
+      description: Schema for notification preferences payload.
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        display_description:
+          type: string
+          maxLength: 255
+        items:
           type: array
           items:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/NotificationTopic'
+          readOnly: true
       required:
-      - errors
+      - display_description
+      - items
+      - name
     NotificationTopic:
       type: object
       description: Serializer for NotificationTopic model.
@@ -383,6 +354,35 @@ components:
       - default_value
       - description
       - name
+    NotificationPreferencesPayloadSchema:
+      type: object
+      properties:
+        topic:
+          type: string
+        medium:
+          type: string
+        enabled_timestamp:
+          type: boolean
+      required:
+      - enabled_timestamp
+      - medium
+      - topic
+    MultipleErrors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+    ErrorSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+        parameter:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

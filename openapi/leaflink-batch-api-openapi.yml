@@ -435,33 +435,27 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    TerpeneRequest:
+    BatchCreateRequest:
       type: object
-      description: Serializer for Terpene (nested in Batch)
+      description: Serializer for creating a batch. company_id is injected by the view.
       properties:
-        name:
+        company_id:
+          type: integer
+        number:
           type: string
           minLength: 1
-        percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+          maxLength: 100
+        source_type:
+          allOf:
+          - $ref: '#/components/schemas/SourceTypeEnum'
+          default: production_batch
+        product_ids:
+          type: array
+          items:
+            type: integer
       required:
-      - name
-      - percentage
-    Terpene:
-      type: object
-      description: Serializer for Terpene (nested in Batch)
-      properties:
-        name:
-          type: string
-        percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - name
-      - percentage
+      - company_id
+      - number
     PricingStrategyInputRequest:
       type: object
       description: Serializer for pricing strategy input (nested in batch update).
@@ -479,6 +473,123 @@ components:
       required:
       - price
       - product_id
+    BatchMetaPayload:
+      type: object
+      properties:
+        active_batch_count:
+          type: integer
+        inactive_batch_count:
+          type: integer
+        low_inventory_batch_count:
+          type: integer
+      required:
+      - active_batch_count
+      - inactive_batch_count
+      - low_inventory_batch_count
+    SourceTypeEnum:
+      enum:
+      - production_batch
+      - source_label
+      type: string
+    Terpene:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
+    BatchListPaginatedResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedBatch'
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/BatchMetaPayload'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    BatchUpdateRequest:
+      type: object
+      description: Serializer for updating a batch (PUT, full replace). id and company_id are injected by the view.
+      properties:
+        id:
+          type: integer
+        company_id:
+          type: integer
+        number:
+          type: string
+          minLength: 1
+          maxLength: 100
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
+        harvest_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        sku:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        terpenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TerpeneRequest'
+        is_assigned:
+          type: boolean
+        append_thc:
+          type: boolean
+        supplier:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        pricing_strategies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricingStrategyInputRequest'
+        product_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - append_thc
+      - company_id
+      - id
+      - is_assigned
+      - status
+      - terpenes
     UnifiedBatch:
       type: object
       description: Serializer for Batch - read/response only.
@@ -591,131 +702,20 @@ components:
       - source
       - source_type
       - status
-    BatchListPaginatedResponse:
+    TerpeneRequest:
       type: object
+      description: Serializer for Terpene (nested in Batch)
       properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedBatch'
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/BatchMetaPayload'
-      required:
-      - count
-      - next
-      - previous
-      - results
-    BatchUpdateRequest:
-      type: object
-      description: Serializer for updating a batch (PUT, full replace). id and company_id are injected by the view.
-      properties:
-        id:
-          type: integer
-        company_id:
-          type: integer
-        number:
+        name:
           type: string
           minLength: 1
-          maxLength: 100
-        status:
+        percentage:
           type: string
-          minLength: 1
-          maxLength: 20
-        harvest_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        sku:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        terpenes:
-          type: array
-          items:
-            $ref: '#/components/schemas/TerpeneRequest'
-        is_assigned:
-          type: boolean
-        append_thc:
-          type: boolean
-        supplier:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        pricing_strategies:
-          type: array
-          items:
-            $ref: '#/components/schemas/PricingStrategyInputRequest'
-        product_ids:
-          type: array
-          items:
-            type: integer
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
       required:
-      - append_thc
-      - company_id
-      - id
-      - is_assigned
-      - status
-      - terpenes
-    SourceTypeEnum:
-      enum:
-      - production_batch
-      - source_label
-      type: string
-    BatchCreateRequest:
-      type: object
-      description: Serializer for creating a batch. company_id is injected by the view.
-      properties:
-        company_id:
-          type: integer
-        number:
-          type: string
-          minLength: 1
-          maxLength: 100
-        source_type:
-          allOf:
-          - $ref: '#/components/schemas/SourceTypeEnum'
-          default: production_batch
-        product_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - company_id
-      - number
-    BatchMetaPayload:
-      type: object
-      properties:
-        active_batch_count:
-          type: integer
-        inactive_batch_count:
-          type: integer
-        low_inventory_batch_count:
-          type: integer
-      required:
-      - active_batch_count
-      - inactive_batch_count
-      - low_inventory_batch_count
+      - name
+      - percentage
   securitySchemes:
     bearerAuth:
       type: http
