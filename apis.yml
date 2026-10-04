@@ -282,6 +282,8 @@ apis:
   humanURL: https://developer.leaflink.com/api/
   baseURL: https://api.leaflink.com
   tags:
+  - Buyer Orders
+  tags_raw:
   - buyer-orders
   properties:
   - type: OpenAPI
