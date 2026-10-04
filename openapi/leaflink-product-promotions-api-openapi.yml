@@ -146,18 +146,19 @@ components:
       required:
       - id
       - name
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
-    PromotionStatusEnum:
-      enum:
-      - Pending
-      - Approved
-      - Completed
-      type: string
+    UnifiedCompany:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+      required:
+      - id
+      - name
     ProductPromotion:
       type: object
       properties:
@@ -302,19 +303,18 @@ components:
       - products
       - start_date
       - status
-    UnifiedCompany:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-      required:
-      - id
-      - name
+    PromotionStatusEnum:
+      enum:
+      - Pending
+      - Approved
+      - Completed
+      type: string
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
   securitySchemes:
     bearerAuth:
       type: http

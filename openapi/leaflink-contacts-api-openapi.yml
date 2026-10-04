@@ -481,6 +481,92 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
+    UnifiedContact:
+      type: object
+      description: Unified Contact serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        owner:
+          type: integer
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Email address
+          maxLength: 255
+        secondary_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          title: Secondary email address
+          maxLength: 255
+        role:
+          type:
+          - string
+          - 'null'
+          title: Position
+          description: Position or role at company
+          maxLength: 400
+        description:
+          type:
+          - string
+          - 'null'
+          description: An overview of the contact
+          maxLength: 1500
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        secondary_phone:
+          type:
+          - string
+          - 'null'
+          description: Secondary Phone Number of Brand
+          pattern: ^(\d{10})?$
+          maxLength: 400
+        secondary_phone_extension:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        delete:
+          type: boolean
+          title: Contact deleted
+          description: Is this Contact marked as deleted?
+      required:
+      - created_date
+      - first_name
+      - id
+      - modified_date
+      - owner
     PatchedUnifiedContactRequest:
       type: object
       description: Unified Contact serializer
@@ -619,92 +705,6 @@ components:
           description: Is this Contact marked as deleted?
       required:
       - first_name
-      - owner
-    UnifiedContact:
-      type: object
-      description: Unified Contact serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time the resource was created
-        modified_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time of the last edit
-        owner:
-          type: integer
-        first_name:
-          type: string
-          maxLength: 30
-        last_name:
-          type: string
-          maxLength: 30
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          title: Email address
-          maxLength: 255
-        secondary_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          title: Secondary email address
-          maxLength: 255
-        role:
-          type:
-          - string
-          - 'null'
-          title: Position
-          description: Position or role at company
-          maxLength: 400
-        description:
-          type:
-          - string
-          - 'null'
-          description: An overview of the contact
-          maxLength: 1500
-        phone:
-          type:
-          - string
-          - 'null'
-          description: Phone Number of Brand
-          pattern: ^(\d{10})?$
-          maxLength: 400
-        phone_extension:
-          type:
-          - string
-          - 'null'
-          maxLength: 20
-        secondary_phone:
-          type:
-          - string
-          - 'null'
-          description: Secondary Phone Number of Brand
-          pattern: ^(\d{10})?$
-          maxLength: 400
-        secondary_phone_extension:
-          type:
-          - string
-          - 'null'
-          maxLength: 20
-        delete:
-          type: boolean
-          title: Contact deleted
-          description: Is this Contact marked as deleted?
-      required:
-      - created_date
-      - first_name
-      - id
-      - modified_date
       - owner
     Contact:
       required:

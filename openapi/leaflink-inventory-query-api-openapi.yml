@@ -695,13 +695,11 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    ProductFacilityMeasurementResponse:
+    ProductMeasurementResponse:
       type: object
-      description: Response shape for GET .../measurements/by-product-and-facility.
+      description: Response shape for GET .../measurements/by-product.
       properties:
         product_id:
-          type: integer
-        facility_id:
           type: integer
         measurements:
           $ref: '#/components/schemas/MeasurementData'
@@ -709,114 +707,9 @@ components:
           type: string
           format: date-time
       required:
-      - facility_id
       - measurements
       - product_id
       - updated_at
-    BatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-batch.
-      properties:
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - measurements
-      - updated_at
-    Allocation:
-      type: object
-      description: Serializes an ``AllocationItem`` for the API response.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        batch_id:
-          type: integer
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        group_ids:
-          type: array
-          items:
-            type: integer
-        buyer_ids:
-          type: array
-          items:
-            type: integer
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - buyer_ids
-      - created_at
-      - facility_id
-      - group_ids
-      - product_id
-      - quantity
-    ProductBatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-and-batch.
-      properties:
-        product_id:
-          type: integer
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - measurements
-      - product_id
-      - updated_at
-    Reservation:
-      type: object
-      description: Serializes a ``ReservationItem`` for the API response.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        batch_id:
-          type: integer
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        allocated_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        fulfilled_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        order_id:
-          type:
-          - integer
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - allocated_quantity
-      - batch_id
-      - created_at
-      - facility_id
-      - fulfilled_quantity
-      - order_id
-      - product_id
-      - quantity
     ProductFacilityBatchMeasurementResponse:
       type: object
       description: Response shape for GET .../measurements/by-product-facility-and-batch.
@@ -838,11 +731,13 @@ components:
       - measurements
       - product_id
       - updated_at
-    ProductMeasurementResponse:
+    ProductBatchMeasurementResponse:
       type: object
-      description: Response shape for GET .../measurements/by-product.
+      description: Response shape for GET .../measurements/by-product-and-batch.
       properties:
         product_id:
+          type: integer
+        batch_id:
           type: integer
         measurements:
           $ref: '#/components/schemas/MeasurementData'
@@ -850,6 +745,7 @@ components:
           type: string
           format: date-time
       required:
+      - batch_id
       - measurements
       - product_id
       - updated_at
@@ -903,6 +799,110 @@ components:
       - facility_id
       - measurements
       - updated_at
+    ProductFacilityMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-and-facility.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - facility_id
+      - measurements
+      - product_id
+      - updated_at
+    BatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-batch.
+      properties:
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - updated_at
+    Reservation:
+      type: object
+      description: Serializes a ``ReservationItem`` for the API response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        allocated_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        fulfilled_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        order_id:
+          type:
+          - integer
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - allocated_quantity
+      - batch_id
+      - created_at
+      - facility_id
+      - fulfilled_quantity
+      - order_id
+      - product_id
+      - quantity
+    Allocation:
+      type: object
+      description: Serializes an ``AllocationItem`` for the API response.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        group_ids:
+          type: array
+          items:
+            type: integer
+        buyer_ids:
+          type: array
+          items:
+            type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - buyer_ids
+      - created_at
+      - facility_id
+      - group_ids
+      - product_id
+      - quantity
     FacilityBatchMeasurementResponse:
       type: object
       description: Response shape for GET .../measurements/by-facility-and-batch.

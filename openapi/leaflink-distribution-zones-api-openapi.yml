@@ -355,6 +355,29 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
+    PatchedDistributionZoneUpdateRequest:
+      type: object
+      description: 'Serializer to update a Distribution Zone.
+
+        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
+      properties:
+        id:
+          type: integer
+        owner_id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+          minLength: 1
+        facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacilityRequest'
+        zip_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZipCodeRequest'
     FacilityRequest:
       type: object
       description: Serializer for a Facility.
@@ -389,18 +412,6 @@ components:
       required:
       - name
       - value
-    Facility:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Name of the facility
-      required:
-      - id
-      - name
     PaginatedDistributionZoneList:
       type: object
       required:
@@ -426,29 +437,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DistributionZone'
-    PatchedDistributionZoneUpdateRequest:
+    ZipCodeRequest:
       type: object
-      description: 'Serializer to update a Distribution Zone.
-
-        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
+      description: Serializer for a zip code with optional polygon in a distribution zone.
       properties:
-        id:
-          type: integer
-        owner_id:
-          type: integer
-        is_active:
-          type: boolean
         name:
           type: string
           minLength: 1
-        facilities:
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          minLength: 1
+          description: ZIP code value (e.g. '80939')
+        polygon:
           type: array
           items:
-            $ref: '#/components/schemas/FacilityRequest'
-        zip_codes:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZipCodeRequest'
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
     DistributionZoneCreateRequest:
       type: object
       description: 'Serializer to create a Distribution Zone.
@@ -501,29 +512,18 @@ components:
       - id
       - is_active
       - name
-    ZipCodeRequest:
+    Facility:
       type: object
-      description: Serializer for a zip code with optional polygon in a distribution zone.
+      description: Serializer for a Facility.
       properties:
+        id:
+          type: integer
         name:
           type: string
-          minLength: 1
-          description: State or region name (e.g. 'CO')
-        value:
-          type: string
-          minLength: 1
-          description: ZIP code value (e.g. '80939')
-        polygon:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-              format: double
-          description: List of [lat, lng] coordinates defining the polygon boundary
+          description: Name of the facility
       required:
+      - id
       - name
-      - value
   securitySchemes:
     bearerAuth:
       type: http

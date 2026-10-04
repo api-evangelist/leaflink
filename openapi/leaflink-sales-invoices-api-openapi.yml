@@ -157,6 +157,65 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UnifiedOrderedProductAsInvoiceLineItem:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+          description: The number of units ordered
+        ordered_unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: The price at the time of order.
+      required:
+      - description
+      - name
+      - quantity
+    UnifiedInvoiceCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - name
+    PaginatedUnifiedOrderAsSalesInvoiceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedOrderAsSalesInvoice'
     UnifiedOrderAsSalesInvoice:
       type: object
       description: 'Base serializer class to rename created_on and modified fields to
@@ -219,65 +278,6 @@ components:
       - line_items
       - modified_date
       - order
-    UnifiedInvoiceCustomer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
-      required:
-      - id
-      - name
-    PaginatedUnifiedOrderAsSalesInvoiceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedOrderAsSalesInvoice'
-    UnifiedOrderedProductAsInvoiceLineItem:
-      type: object
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-          description: The number of units ordered
-        ordered_unit_price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: The price at the time of order.
-      required:
-      - description
-      - name
-      - quantity
   securitySchemes:
     bearerAuth:
       type: http

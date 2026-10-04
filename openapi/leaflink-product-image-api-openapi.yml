@@ -437,7 +437,82 @@ components:
       required:
       - position
       - product
-    UnifiedProductBulkCreate:
+    UnifiedProductImageRequest:
+      type: object
+      description: Unified ProductImage serializer.
+      properties:
+        image:
+          type: string
+          format: binary
+          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
+        product:
+          type: integer
+          description: The Product this image is attached to
+        position:
+          type: integer
+          description: The position of the image in the product image gallery
+        crop_x:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box X Position
+          description: The X position of the image crop box
+        crop_y:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Y Position
+          description: The Y position of the image crop box
+        crop_w:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Width
+          description: The width of the image crop box
+        crop_h:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+          title: Crop Box Height
+          description: The height of the image crop box
+      required:
+      - image
+      - position
+      - product
+    PaginatedUnifiedProductImageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductImage'
+    UnifiedProductBulkCreateRequest:
       type: object
       description: Unified ProductImage bulk create serializer.
       properties:
@@ -448,7 +523,7 @@ components:
           type: array
           items:
             type: string
-            format: uri
+            format: binary
           minItems: 1
         positions:
           type: array
@@ -525,6 +600,28 @@ components:
       - modified_date
       - position
       - product
+    UnifiedProductBulkCreate:
+      type: object
+      description: Unified ProductImage bulk create serializer.
+      properties:
+        product_id:
+          type: integer
+          description: Product ID
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          minItems: 1
+        positions:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+      required:
+      - images
+      - positions
+      - product_id
     UnifiedCloneProductImage:
       type: object
       description: Unified Product Image serializer for cloning product images.
@@ -590,103 +687,6 @@ components:
       - id
       - image
       - modified_date
-      - position
-      - product
-    UnifiedProductBulkCreateRequest:
-      type: object
-      description: Unified ProductImage bulk create serializer.
-      properties:
-        product_id:
-          type: integer
-          description: Product ID
-        images:
-          type: array
-          items:
-            type: string
-            format: binary
-          minItems: 1
-        positions:
-          type: array
-          items:
-            type: integer
-          minItems: 1
-      required:
-      - images
-      - positions
-      - product_id
-    PaginatedUnifiedProductImageList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductImage'
-    UnifiedProductImageRequest:
-      type: object
-      description: Unified ProductImage serializer.
-      properties:
-        image:
-          type: string
-          format: binary
-          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
-        product:
-          type: integer
-          description: The Product this image is attached to
-        position:
-          type: integer
-          description: The position of the image in the product image gallery
-        crop_x:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box X Position
-          description: The X position of the image crop box
-        crop_y:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box Y Position
-          description: The Y position of the image crop box
-        crop_w:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box Width
-          description: The width of the image crop box
-        crop_h:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-          title: Crop Box Height
-          description: The height of the image crop box
-      required:
-      - image
       - position
       - product
   securitySchemes:

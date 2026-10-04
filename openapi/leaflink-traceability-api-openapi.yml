@@ -2146,125 +2146,75 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    TraceabilityPackage:
+    CompanyApiKeyRequest:
       type: object
-      description: Traceability package fields from the Traceability.common_package and Traceability.metrc_package tables.
       properties:
-        id:
-          type: integer
-          description: ID of the package in the Traceability Service
-        external_id:
-          type: string
-          description: ID of the package in the vendor's system
-        label:
-          type: string
-        license_number:
-          type: string
-        status:
-          type: string
-        quantity:
+        integration_id:
           type:
-          - string
+          - integer
           - 'null'
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        vendor_type:
+        api_key:
           type: string
-          description: Name of vendor's system (Biotrack, Metrc, ...
-        vendor_fields:
-          $ref: '#/components/schemas/MetrcPackage'
-        location_id:
-          type: integer
-        location:
-          $ref: '#/components/schemas/TraceabilityLocation'
-        in_transit:
-          type:
-          - boolean
-          - 'null'
-        is_testing_sample:
-          type:
-          - boolean
-          - 'null'
-        lab_test_unit_of_measure:
-          type:
-          - string
-          - 'null'
-        lab_testing_status:
-          type:
-          - string
-          - 'null'
-        ll_product_ids:
+          minLength: 1
+        license_ids:
           type: array
           items:
             type: integer
-        result_cbd:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_cbda:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_thc:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_thca:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
       required:
-      - external_id
-      - id
-      - in_transit
-      - is_testing_sample
-      - lab_test_unit_of_measure
-      - lab_testing_status
-      - label
+      - api_key
+      - license_ids
+    TraceabilityDeliveryPackage:
+      type: object
+      description: Serializer for traceability DeliveryPackages.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+        company_id:
+          type: string
+        license_number:
+          type: string
+        package_label:
+          type: string
+        shipment_package_state:
+          type:
+          - string
+          - 'null'
+        shipped_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        received_quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        delivery_reference_id:
+          type: string
+        package_external_id:
+          type: string
+        transfer_external_id:
+          type: string
+        vendor_type:
+          type: string
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicDeliveryPackageVendorFields'
+      required:
+      - company_id
+      - delivery_reference_id
       - license_number
-      - ll_product_ids
-      - location
-      - location_id
-      - quantity
-      - result_cbd
-      - result_cbda
-      - result_thc
-      - result_thca
-      - status
+      - package_external_id
+      - package_label
+      - received_quantity
+      - shipment_package_state
+      - shipped_quantity
+      - transfer_external_id
       - vendor_fields
       - vendor_type
-    MetrcTransfer:
-      type: object
-      description: Metrc-specific transfer fields serializer.
-      properties:
-        resource_type:
-          type: string
-          readOnly: true
-        metrc_delivery_id:
-          type: integer
-        recipient_facility_name:
-          type:
-          - string
-          - 'null'
-        shipment_type_name:
-          type:
-          - string
-          - 'null'
-        shipment_license_type:
-          type:
-          - string
-          - 'null'
-        shipment_transaction_type:
-          type:
-          - string
-          - 'null'
-        received_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - resource_type
     MetrcDeliveryPackage:
       type: object
       description: Metrc-specific DeliveryPackage fields serializer.
@@ -2373,318 +2323,6 @@ components:
       - shipped_unit_of_measure_name
       - shipper_wholesale_price
       - source_package_label
-    MetrcDriver:
-      type: object
-      properties:
-        resource_type:
-          type: string
-          readOnly: true
-        common_driver_id:
-          type: integer
-        drivers_license_number:
-          type: string
-        employee_id:
-          type: string
-      required:
-      - common_driver_id
-      - drivers_license_number
-      - employee_id
-      - resource_type
-    TraceabilityTransferBuyer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-      required:
-      - name
-    TraceabilityCompanyIncludedLocation:
-      type: object
-      properties:
-        id:
-          type: integer
-        external_id:
-          type: string
-        license_number:
-          type: string
-        name:
-          type: string
-      required:
-      - external_id
-      - id
-      - license_number
-      - name
-    PatchedTraceabilityVehicleCreateUpdateInputRequest:
-      type: object
-      properties:
-        license_plate_number:
-          type: string
-          minLength: 1
-        make:
-          type: string
-          minLength: 1
-        model:
-          type: string
-          minLength: 1
-        name:
-          type: string
-          minLength: 1
-        color:
-          type: string
-          minLength: 1
-        vin:
-          type: string
-          minLength: 1
-        year:
-          type: string
-          minLength: 1
-    TraceabilityVehicleCreateUpdateInputRequest:
-      type: object
-      properties:
-        license_plate_number:
-          type: string
-          minLength: 1
-        make:
-          type: string
-          minLength: 1
-        model:
-          type: string
-          minLength: 1
-        name:
-          type: string
-          minLength: 1
-        color:
-          type: string
-          minLength: 1
-        vin:
-          type: string
-          minLength: 1
-        year:
-          type: string
-          minLength: 1
-      required:
-      - color
-      - license_plate_number
-      - make
-      - model
-      - name
-      - vin
-      - year
-    CompanyWriteSuccessResponse:
-      type: object
-      properties:
-        company_id:
-          type: integer
-      required:
-      - company_id
-    TransferCreateInputRequest:
-      type: object
-      properties:
-        ll_order_id:
-          type: integer
-        ll_order_number:
-          type: string
-          minLength: 1
-        buyer_external_id:
-          type: string
-          minLength: 1
-        turn_by_turn_directions:
-          type: string
-          minLength: 1
-        estimated_arrival_datetime:
-          type: string
-          minLength: 1
-        estimated_departure_datetime:
-          type: string
-          minLength: 1
-        driver_id:
-          type: integer
-        vehicle_id:
-          type: integer
-        packages:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransferCreateUpdatePackageRequest'
-      required:
-      - buyer_external_id
-      - driver_id
-      - estimated_arrival_datetime
-      - estimated_departure_datetime
-      - ll_order_id
-      - ll_order_number
-      - packages
-      - turn_by_turn_directions
-      - vehicle_id
-    TransferCreateUpdatePackageRequest:
-      type: object
-      properties:
-        label:
-          type: string
-          minLength: 1
-      required:
-      - label
-    UnifiedTraceabilityCompanyCustomer:
-      type: object
-      description: Traceability Company Customer Serializer - returns very limited information
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        display_name:
-          type: string
-          readOnly: true
-        license_number:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        partner_id:
-          type: integer
-      required:
-      - display_name
-      - id
-      - license_number
-      - partner_id
-    TraceabilityRefreshRequest:
-      type: object
-      properties:
-        created_at:
-          type: string
-        errors:
-          type: array
-          items:
-            type: string
-        id:
-          type: integer
-        refresh_type:
-          type: string
-        resource_types:
-          type: array
-          items:
-            type: string
-        status:
-          type: string
-      required:
-      - created_at
-      - errors
-      - id
-      - refresh_type
-      - resource_types
-      - status
-    PaginatedUnifiedTraceabilityPackageOrdersList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedTraceabilityPackageOrders'
-    CompanyApiKeyRequest:
-      type: object
-      properties:
-        integration_id:
-          type:
-          - integer
-          - 'null'
-        api_key:
-          type: string
-          minLength: 1
-        license_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - api_key
-      - license_ids
-    PolymorphicTransferVendorFields:
-      oneOf:
-      - $ref: '#/components/schemas/MetrcTransfer'
-      - $ref: '#/components/schemas/BiotrackTransfer'
-      discriminator:
-        propertyName: resource_type
-        mapping:
-          MetrcTransferFields: '#/components/schemas/MetrcTransfer'
-          BiotrackTransferFields: '#/components/schemas/BiotrackTransfer'
-    PaginatedTraceabilityPackageList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityPackage'
-    TransferCompany:
-      type: object
-      description: Name + license_number combination of a shipper or recipient from the Traceability.transfer table.
-      properties:
-        name:
-          type: string
-        license_number:
-          type: string
-      required:
-      - license_number
-      - name
-    BiotrackDeliveryPackage:
-      type: object
-      description: BioTrack-specific DeliveryPackage fields serializer.
-      properties:
-        resource_type:
-          type: string
-          readOnly: true
-        common_delivery_package_id:
-          type: integer
-        description:
-          type:
-          - string
-          - 'null'
-        session_time:
-          type: integer
-        stop_number:
-          type: integer
-        transaction_id:
-          type: integer
-      required:
-      - common_delivery_package_id
-      - description
-      - resource_type
-      - session_time
-      - stop_number
-      - transaction_id
     BiotrackDriver:
       type: object
       properties:
@@ -2712,147 +2350,6 @@ components:
       - resource_type
       - state_issued
       - transaction_id
-    PaginatedTraceabilityDriverList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityDriver'
-    PaginatedTraceabilityRefreshRequestList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityRefreshRequest'
-    PaginatedUnifiedTraceabilityCompanyCustomerList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedTraceabilityCompanyCustomer'
-    TypeCodeEnum:
-      enum:
-      - ADU
-      - ANC
-      - CAN
-      - COM
-      - MED
-      - REC
-      type: string
-    CompanyCreateRequest:
-      type: object
-      properties:
-        enable_seed_to_sale:
-          type: boolean
-        enable_hide_attached_packages:
-          type: boolean
-        enable_license_verification:
-          type:
-          - boolean
-          - 'null'
-        enable_search_by_product_id:
-          type: boolean
-        api_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyApiKeyRequest'
-        included_location_ids:
-          type: array
-          items:
-            type: integer
-        excluded_lab_test_states:
-          type: array
-          items:
-            type: string
-            minLength: 1
-      required:
-      - api_configs
-      - enable_hide_attached_packages
-      - enable_seed_to_sale
-      - excluded_lab_test_states
-    InternalCompanyAPIConfig:
-      type: object
-      description: Internal serializer for traceability API config.
-      properties:
-        integration_id:
-          type: integer
-        api_key:
-          type: string
-          readOnly: true
-        username:
-          type: string
-          readOnly: true
-        ubi:
-          type: string
-          readOnly: true
-        licenses:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalCompanyLicense'
-          readOnly: true
-      required:
-      - api_key
-      - integration_id
-      - licenses
-      - ubi
-      - username
     TraceabilityTemplateDetail:
       type: object
       properties:
@@ -2960,33 +2457,345 @@ components:
       - shipper_facility_name
       - turn_by_turn_directions
       - vehicle
-    MetrcLocation:
+    MetrcPackage:
       type: object
-      description: Metrc specific location fields from the Traceability.metrc_location table.
+      description: Metrc package fields from the Traceability.metrc_package table.
       properties:
-        common_location_id:
+        common_package_id:
           type: integer
-          description: ID of the common_location in the Traceability Service
-        metrc_type_id:
-          type: integer
-        type_name:
+        external_last_modified_at:
           type: string
-        for_harvests:
+          format: date-time
+        item_id:
+          type: integer
+        item:
+          $ref: '#/components/schemas/TraceabilityItem'
+        has_lab_test_document:
           type: boolean
-          default: false
-        for_packages:
-          type: boolean
-          default: false
-        for_plant_batches:
-          type: boolean
-          default: false
-        for_plants:
+        item_from_facility_license_number:
+          type: string
+        item_from_facility_name:
+          type: string
+        note:
+          type: string
+        packaged_date:
+          type: string
+          format: date
+        production_batch_number:
+          type:
+          - string
+          - 'null'
+        received_date_time:
+          type:
+          - string
+          - 'null'
+        received_from_facility_license_number:
+          type:
+          - string
+          - 'null'
+        received_from_facility_name:
+          type:
+          - string
+          - 'null'
+        received_from_manifest_number:
+          type:
+          - string
+          - 'null'
+        result_cbc:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbg:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbga:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbn:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_delta10:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_delta8:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thcv:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thcva:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_total_thc:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        source_package_labels:
+          type: array
+          items:
+            type: string
+        source_production_batch_numbers:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        unit_of_measure:
+          type:
+          - string
+          - 'null'
+        use_item_level_lab_result:
           type: boolean
           default: false
       required:
-      - common_location_id
-      - metrc_type_id
-      - type_name
+      - common_package_id
+      - external_last_modified_at
+      - has_lab_test_document
+      - item
+      - item_from_facility_license_number
+      - item_from_facility_name
+      - item_id
+      - note
+      - packaged_date
+      - production_batch_number
+      - received_date_time
+      - received_from_facility_license_number
+      - received_from_facility_name
+      - received_from_manifest_number
+      - result_cbc
+      - result_cbg
+      - result_cbga
+      - result_cbn
+      - result_delta10
+      - result_delta8
+      - result_thcv
+      - result_thcva
+      - result_total_thc
+      - source_package_labels
+      - source_production_batch_numbers
+      - type
+      - unit_of_measure
+    InternalLicenseTypeResponse:
+      type: object
+      description: Internal serializer for LicenseTypes filtered by state.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          description: License Type
+          maxLength: 100
+        display_type:
+          type: string
+          description: Type for display in the Leaflink frontend
+          maxLength: 100
+        type_code:
+          allOf:
+          - $ref: '#/components/schemas/TypeCodeEnum'
+          description: License Type shorthand code.
+        classification:
+          type: string
+          title: License Classification Type
+          description: License Classification Type
+          maxLength: 100
+        has_medical_line_items:
+          type: boolean
+          description: This license type can sell medical line items.
+        state:
+          type: string
+          readOnly: true
+      required:
+      - classification
+      - display_type
+      - id
+      - state
+      - type
+    CompanyCreateRequest:
+      type: object
+      properties:
+        enable_seed_to_sale:
+          type: boolean
+        enable_hide_attached_packages:
+          type: boolean
+        enable_license_verification:
+          type:
+          - boolean
+          - 'null'
+        enable_search_by_product_id:
+          type: boolean
+        api_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyApiKeyRequest'
+        included_location_ids:
+          type: array
+          items:
+            type: integer
+        excluded_lab_test_states:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      required:
+      - api_configs
+      - enable_hide_attached_packages
+      - enable_seed_to_sale
+      - excluded_lab_test_states
+    PolymorphicTransferVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcTransfer'
+      - $ref: '#/components/schemas/BiotrackTransfer'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcTransferFields: '#/components/schemas/MetrcTransfer'
+          BiotrackTransferFields: '#/components/schemas/BiotrackTransfer'
+    PaginatedTraceabilityTransferList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of items matching the query
+        max_count:
+          type:
+          - integer
+          - 'null'
+          description: Maximum count limit, if applicable
+        next:
+          type:
+          - string
+          - 'null'
+          description: URL to the next page of results
+        prev:
+          type:
+          - string
+          - 'null'
+          description: URL to the previous page of results
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityTransfer'
+      required:
+      - count
+      - results
+    TraceabilityRefreshRequest:
+      type: object
+      properties:
+        created_at:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+        id:
+          type: integer
+        refresh_type:
+          type: string
+        resource_types:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+      required:
+      - created_at
+      - errors
+      - id
+      - refresh_type
+      - resource_types
+      - status
+    PatchedTransferUpdateInputRequest:
+      type: object
+      properties:
+        ll_order_id:
+          type: integer
+        ll_order_number:
+          type: string
+          minLength: 1
+        buyer_external_id:
+          type: string
+          minLength: 1
+        turn_by_turn_directions:
+          type: string
+          minLength: 1
+        estimated_arrival_datetime:
+          type: string
+          minLength: 1
+        estimated_departure_datetime:
+          type: string
+          minLength: 1
+        driver_id:
+          type: integer
+        vehicle_id:
+          type: integer
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferCreateUpdatePackageRequest'
+        type:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          minLength: 1
+    TraceabilityStrain:
+      type: object
+      properties:
+        company_id:
+          type: integer
+        metrc_id:
+          type: integer
+        license_number:
+          type: string
+        name:
+          type: string
+        is_active:
+          type: boolean
+        indica_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        sativa_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        thc_level:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        cbd_level:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        testing_status:
+          type:
+          - string
+          - 'null'
+      required:
+      - cbd_level
+      - company_id
+      - indica_percentage
+      - is_active
+      - license_number
+      - metrc_id
+      - name
+      - sativa_percentage
+      - testing_status
+      - thc_level
     PatchedTemplateUpdateRequest:
       type: object
       properties:
@@ -3038,6 +2847,287 @@ components:
           - string
           - 'null'
           minLength: 1
+    PolymorphicDeliveryPackageVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcDeliveryPackage'
+      - $ref: '#/components/schemas/BiotrackDeliveryPackage'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcDeliveryPackageFields: '#/components/schemas/MetrcDeliveryPackage'
+          BiotrackDeliveryPackageFields: '#/components/schemas/BiotrackDeliveryPackage'
+    CompanyWriteSuccessResponse:
+      type: object
+      properties:
+        company_id:
+          type: integer
+      required:
+      - company_id
+    TraceabilityLocation:
+      type: object
+      description: Location object from the Traceability.common_location and Traceability.(vendor)_location tables.
+      properties:
+        id:
+          type: integer
+          description: ID of the location in the Traceability Service
+        company_id:
+          type: integer
+          description: ID of the company in the Traceability Service
+        external_id:
+          type: string
+          description: ID of the location in the vendor's system
+        vendor_type:
+          type: string
+        label:
+          type: string
+        license_number:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        is_excluded:
+          type: boolean
+          default: false
+        vendor_fields:
+          $ref: '#/components/schemas/MetrcLocation'
+      required:
+      - company_id
+      - external_id
+      - id
+      - label
+      - license_number
+      - name
+      - status
+      - vendor_fields
+      - vendor_type
+    PatchedTraceabilityDriverCreateUpdateInputRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        drivers_license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        birth_date:
+          type: string
+          format: date
+        hire_date:
+          type: string
+          format: date
+        email:
+          type: string
+          minLength: 1
+        state_issued:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+    TraceabilityVehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        company_id:
+          type: integer
+        external_id:
+          type: string
+        vendor_type:
+          type: string
+        license_number:
+          type: string
+        resource_type:
+          type: string
+          readOnly: true
+        make:
+          type: string
+        model:
+          type: string
+        license_plate_number:
+          type: string
+        is_active:
+          type: boolean
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicVehicleVendorFields'
+      required:
+      - company_id
+      - external_id
+      - id
+      - is_active
+      - license_number
+      - license_plate_number
+      - make
+      - model
+      - resource_type
+      - vendor_fields
+      - vendor_type
+    MetrcDriver:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        common_driver_id:
+          type: integer
+        drivers_license_number:
+          type: string
+        employee_id:
+          type: string
+      required:
+      - common_driver_id
+      - drivers_license_number
+      - employee_id
+      - resource_type
+    TraceabilityPackage:
+      type: object
+      description: Traceability package fields from the Traceability.common_package and Traceability.metrc_package tables.
+      properties:
+        id:
+          type: integer
+          description: ID of the package in the Traceability Service
+        external_id:
+          type: string
+          description: ID of the package in the vendor's system
+        label:
+          type: string
+        license_number:
+          type: string
+        status:
+          type: string
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        vendor_type:
+          type: string
+          description: Name of vendor's system (Biotrack, Metrc, ...
+        vendor_fields:
+          $ref: '#/components/schemas/MetrcPackage'
+        location_id:
+          type: integer
+        location:
+          $ref: '#/components/schemas/TraceabilityLocation'
+        in_transit:
+          type:
+          - boolean
+          - 'null'
+        is_testing_sample:
+          type:
+          - boolean
+          - 'null'
+        lab_test_unit_of_measure:
+          type:
+          - string
+          - 'null'
+        lab_testing_status:
+          type:
+          - string
+          - 'null'
+        ll_product_ids:
+          type: array
+          items:
+            type: integer
+        result_cbd:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_cbda:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thc:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+        result_thca:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
+      required:
+      - external_id
+      - id
+      - in_transit
+      - is_testing_sample
+      - lab_test_unit_of_measure
+      - lab_testing_status
+      - label
+      - license_number
+      - ll_product_ids
+      - location
+      - location_id
+      - quantity
+      - result_cbd
+      - result_cbda
+      - result_thc
+      - result_thca
+      - status
+      - vendor_fields
+      - vendor_type
+    PaginatedTransferCompanyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferCompany'
+    BiotrackDeliveryPackage:
+      type: object
+      description: BioTrack-specific DeliveryPackage fields serializer.
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+        common_delivery_package_id:
+          type: integer
+        description:
+          type:
+          - string
+          - 'null'
+        session_time:
+          type: integer
+        stop_number:
+          type: integer
+        transaction_id:
+          type: integer
+      required:
+      - common_delivery_package_id
+      - description
+      - resource_type
+      - session_time
+      - stop_number
+      - transaction_id
+    TypeCodeEnum:
+      enum:
+      - ADU
+      - ANC
+      - CAN
+      - COM
+      - MED
+      - REC
+      type: string
     MetrcDelivery:
       type: object
       description: Metrc-specific transfer fields serializer.
@@ -3088,57 +3178,20 @@ components:
       - recipient_facility_name
       - rejected_packages_returned
       - shipment_type_name
-    TraceabilityDriver:
+    TraceabilityLicenses:
       type: object
       properties:
-        id:
-          type: integer
-        company_id:
-          type: integer
-        external_id:
-          type: string
-        vendor_type:
-          type: string
-        license_number:
-          type: string
-        resource_type:
-          type: string
-          readOnly: true
-        name:
-          type: string
-        drivers_license_number:
-          type:
-          - string
-          - 'null'
-        is_active:
-          type: boolean
-        vendor_fields:
-          $ref: '#/components/schemas/PolymorphicDriverVendorFields'
+        errors:
+          type: array
+          items:
+            type: string
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityLicense'
       required:
-      - company_id
-      - drivers_license_number
-      - external_id
-      - id
-      - is_active
-      - license_number
-      - name
-      - resource_type
-      - vendor_fields
-      - vendor_type
-    TraceabilityOrder:
-      type: object
-      properties:
-        order_number:
-          type: string
-        order_seller_number:
-          type: string
-          readOnly: true
-        seller:
-          $ref: '#/components/schemas/LightCompany'
-      required:
-      - order_number
-      - order_seller_number
-      - seller
+      - errors
+      - licenses
     PolymorphicCreateUpdateTransferResponse:
       oneOf:
       - $ref: '#/components/schemas/TraceabilityTransfer'
@@ -3146,6 +3199,70 @@ components:
         propertyName: resource_type
         mapping:
           TraceabilityTransfer: '#/components/schemas/TraceabilityTransfer'
+    UnifiedTraceabilityCompanyCustomer:
+      type: object
+      description: Traceability Company Customer Serializer - returns very limited information
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        license_number:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        partner_id:
+          type: integer
+      required:
+      - display_name
+      - id
+      - license_number
+      - partner_id
+    TraceabilityCompanyIncludedLocation:
+      type: object
+      properties:
+        id:
+          type: integer
+        external_id:
+          type: string
+        license_number:
+          type: string
+        name:
+          type: string
+      required:
+      - external_id
+      - id
+      - license_number
+      - name
+    PatchedCompanyUpdateRequest:
+      type: object
+      properties:
+        enable_seed_to_sale:
+          type: boolean
+        enable_hide_attached_packages:
+          type: boolean
+        enable_license_verification:
+          type:
+          - boolean
+          - 'null'
+        enable_search_by_product_id:
+          type: boolean
+        api_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyApiKeyRequest'
+        included_location_ids:
+          type: array
+          items:
+            type: integer
+        excluded_lab_test_states:
+          type: array
+          items:
+            type: string
+            minLength: 1
     PaginatedTraceabilityVehicleList:
       type: object
       required:
@@ -3171,68 +3288,217 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TraceabilityVehicle'
-    TemplateWriteSuccessResponse:
+    TraceabilityTransferBuyer:
       type: object
       properties:
-        template_id:
-          type: integer
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
       required:
-      - template_id
-    PatchedTraceabilityRefreshProductsPackagesRequest:
+      - name
+    InternalCompanyAPIConfig:
       type: object
+      description: Internal serializer for traceability API config.
       properties:
-        product_ids:
+        integration_id:
+          type: integer
+        api_key:
+          type: string
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        ubi:
+          type: string
+          readOnly: true
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalCompanyLicense'
+          readOnly: true
+      required:
+      - api_key
+      - integration_id
+      - licenses
+      - ubi
+      - username
+    PolymorphicDriverVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcDriver'
+      - $ref: '#/components/schemas/BiotrackDriver'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcDriverFields: '#/components/schemas/MetrcDriver'
+          BiotrackDriverFields: '#/components/schemas/BiotrackDriver'
+    InternalCompanyLicense:
+      type: object
+      description: Serializer for the Company License model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company_license_id:
+          type: integer
+          readOnly: true
+        number:
+          type: string
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/InternalLicenseTypeResponse'
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+        expiration_date:
+          type: string
+          format: date
+          readOnly: true
+        public:
+          type: boolean
+          description: Decides whether retailers are allowed to see this license
+        archived:
+          type: boolean
+        document:
+          type: string
+          format: uri
+      required:
+      - company_license_id
+      - document
+      - expiration_date
+      - id
+      - issue_date
+      - number
+      - type
+    TraceabilityTransfer:
+      type: object
+      description: Serializer for traceability transfers. Composed of CommonTransfer + vendor-specific transfer data.
+      properties:
+        id:
+          type:
+          - integer
+          - 'null'
+        company_id:
+          type: string
+        license_number:
+          type: string
+        manifest_number:
+          type: string
+        package_count:
+          type: integer
+        delivery_count:
+          type: integer
+        type:
+          type: string
+        status:
+          type: string
+        shipper_facility_license_number:
+          type:
+          - string
+          - 'null'
+        shipper_facility_name:
+          type:
+          - string
+          - 'null'
+        recipient_facility_license_number:
+          type:
+          - string
+          - 'null'
+        actual_departure_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actual_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_modified_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invoice_number:
+          type:
+          - string
+          - 'null'
+        ll_order_ids:
           type: array
           items:
             type: integer
-    BiotrackVehicle:
-      type: object
-      properties:
+        driver_external_id:
+          type:
+          - string
+          - 'null'
+        vehicle_external_id:
+          type:
+          - string
+          - 'null'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityOrder'
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/TraceabilityTransferBuyer'
         resource_type:
           type: string
           readOnly: true
-        name:
+        external_id:
           type: string
-        color:
+        vendor_type:
           type: string
-        vin:
-          type: string
-        year:
-          type: string
-        transaction_id:
-          type: integer
-      required:
-      - color
-      - name
-      - resource_type
-      - transaction_id
-      - vin
-      - year
-    PaginatedTraceabilityItemList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicTransferVendorFields'
+        deliveries:
           type: array
           items:
-            $ref: '#/components/schemas/TraceabilityItem'
+            $ref: '#/components/schemas/TraceabilityDelivery'
+        delivery_packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityDeliveryPackage'
+      required:
+      - buyer
+      - company_id
+      - deliveries
+      - delivery_count
+      - delivery_packages
+      - external_id
+      - license_number
+      - manifest_number
+      - package_count
+      - resource_type
+      - status
+      - type
+      - vendor_fields
+      - vendor_type
+    TraceabilityOrder:
+      type: object
+      properties:
+        order_number:
+          type: string
+        order_seller_number:
+          type: string
+          readOnly: true
+        seller:
+          $ref: '#/components/schemas/LightCompany'
+      required:
+      - order_number
+      - order_seller_number
+      - seller
     TraceabilityItem:
       type: object
       properties:
@@ -3370,326 +3636,6 @@ components:
       - unit_weight
       - unit_weight_unit_of_measure_name
       - used
-    PolymorphicVehicleVendorFields:
-      oneOf:
-      - $ref: '#/components/schemas/MetrcVehicle'
-      - $ref: '#/components/schemas/BiotrackVehicle'
-      discriminator:
-        propertyName: resource_type
-        mapping:
-          MetrcVehicleFields: '#/components/schemas/MetrcVehicle'
-          BiotrackVehicleFields: '#/components/schemas/BiotrackVehicle'
-    TraceabilityVehicle:
-      type: object
-      properties:
-        id:
-          type: integer
-        company_id:
-          type: integer
-        external_id:
-          type: string
-        vendor_type:
-          type: string
-        license_number:
-          type: string
-        resource_type:
-          type: string
-          readOnly: true
-        make:
-          type: string
-        model:
-          type: string
-        license_plate_number:
-          type: string
-        is_active:
-          type: boolean
-        vendor_fields:
-          $ref: '#/components/schemas/PolymorphicVehicleVendorFields'
-      required:
-      - company_id
-      - external_id
-      - id
-      - is_active
-      - license_number
-      - license_plate_number
-      - make
-      - model
-      - resource_type
-      - vendor_fields
-      - vendor_type
-    InternalLicenseTypeResponse:
-      type: object
-      description: Internal serializer for LicenseTypes filtered by state.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          description: License Type
-          maxLength: 100
-        display_type:
-          type: string
-          description: Type for display in the Leaflink frontend
-          maxLength: 100
-        type_code:
-          allOf:
-          - $ref: '#/components/schemas/TypeCodeEnum'
-          description: License Type shorthand code.
-        classification:
-          type: string
-          title: License Classification Type
-          description: License Classification Type
-          maxLength: 100
-        has_medical_line_items:
-          type: boolean
-          description: This license type can sell medical line items.
-        state:
-          type: string
-          readOnly: true
-      required:
-      - classification
-      - display_type
-      - id
-      - state
-      - type
-    TemplateCreateRequest:
-      type: object
-      properties:
-        estimated_departure_datetime:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        estimated_arrival_datetime:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        shipment_type_name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        ll_order_id:
-          type:
-          - integer
-          - 'null'
-        package_labels:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            minLength: 1
-        packages:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: array
-            items:
-              type: string
-              minLength: 1
-        driver_id:
-          type:
-          - integer
-          - 'null'
-        vehicle_id:
-          type:
-          - integer
-          - 'null'
-        turn_by_turn_directions:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        license_number:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        destination_company_id:
-          type:
-          - integer
-          - 'null'
-        destination_license_number:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-      required:
-      - destination_company_id
-    LicenseApiKeyRequest:
-      type: object
-      properties:
-        api_key:
-          type: string
-          minLength: 1
-      required:
-      - api_key
-    TraceabilityDelivery:
-      type: object
-      description: 'Serializer for traceability Deliveries. Uses CommonDelivery + vendor-specific data.
-
-
-        Metrc will return one instance and BioTrack will have none as there is no use-case for delivery data at the time.'
-      properties:
-        company_id:
-          type: string
-        license_number:
-          type: string
-        delivery_package_count:
-          type: integer
-        recipient_facility_license_number:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - integer
-          - 'null'
-        reference_id:
-          type: string
-        transfer_external_id:
-          type: string
-        vendor_type:
-          type: string
-        actual_departure_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        actual_arrival_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        vendor_fields:
-          $ref: '#/components/schemas/MetrcDelivery'
-      required:
-      - company_id
-      - delivery_package_count
-      - license_number
-      - recipient_facility_license_number
-      - reference_id
-      - transfer_external_id
-      - vendor_fields
-      - vendor_type
-    TraceabilityTransfer:
-      type: object
-      description: Serializer for traceability transfers. Composed of CommonTransfer + vendor-specific transfer data.
-      properties:
-        id:
-          type:
-          - integer
-          - 'null'
-        company_id:
-          type: string
-        license_number:
-          type: string
-        manifest_number:
-          type: string
-        package_count:
-          type: integer
-        delivery_count:
-          type: integer
-        type:
-          type: string
-        status:
-          type: string
-        shipper_facility_license_number:
-          type:
-          - string
-          - 'null'
-        shipper_facility_name:
-          type:
-          - string
-          - 'null'
-        recipient_facility_license_number:
-          type:
-          - string
-          - 'null'
-        actual_departure_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        actual_arrival_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        estimated_departure_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        estimated_arrival_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        last_modified_datetime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        invoice_number:
-          type:
-          - string
-          - 'null'
-        ll_order_ids:
-          type: array
-          items:
-            type: integer
-        driver_external_id:
-          type:
-          - string
-          - 'null'
-        vehicle_external_id:
-          type:
-          - string
-          - 'null'
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityOrder'
-        buyer:
-          allOf:
-          - $ref: '#/components/schemas/TraceabilityTransferBuyer'
-        resource_type:
-          type: string
-          readOnly: true
-        external_id:
-          type: string
-        vendor_type:
-          type: string
-        vendor_fields:
-          $ref: '#/components/schemas/PolymorphicTransferVendorFields'
-        deliveries:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityDelivery'
-        delivery_packages:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityDeliveryPackage'
-      required:
-      - buyer
-      - company_id
-      - deliveries
-      - delivery_count
-      - delivery_packages
-      - external_id
-      - license_number
-      - manifest_number
-      - package_count
-      - resource_type
-      - status
-      - type
-      - vendor_fields
-      - vendor_type
     TraceabilityTemplate:
       type: object
       properties:
@@ -3794,24 +3740,6 @@ components:
       - shipment_type_name
       - shipper_facility_license_number
       - shipper_facility_name
-    LightCompany:
-      type: object
-      description: Company serializer contains only basic fields.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        slug:
-          type: string
-          maxLength: 50
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - id
-      - name
     TraceabilityLicense:
       type: object
       properties:
@@ -3828,48 +3756,194 @@ components:
       - number
       - start_date
       - type
-    PatchedTransferUpdateInputRequest:
+    PaginatedTraceabilityItemList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        ll_order_id:
+        count:
           type: integer
-        ll_order_number:
-          type: string
-          minLength: 1
-        buyer_external_id:
-          type: string
-          minLength: 1
-        turn_by_turn_directions:
-          type: string
-          minLength: 1
-        estimated_arrival_datetime:
-          type: string
-          minLength: 1
-        estimated_departure_datetime:
-          type: string
-          minLength: 1
-        driver_id:
-          type: integer
-        vehicle_id:
-          type: integer
-        packages:
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/TransferCreateUpdatePackageRequest'
-        type:
-          type: string
-          minLength: 1
-        status:
-          type: string
-          minLength: 1
-    MetrcVehicle:
+            $ref: '#/components/schemas/TraceabilityItem'
+    TemplateWriteSuccessResponse:
       type: object
+      properties:
+        template_id:
+          type: integer
+      required:
+      - template_id
+    PatchedTraceabilityVehicleCreateUpdateInputRequest:
+      type: object
+      properties:
+        license_plate_number:
+          type: string
+          minLength: 1
+        make:
+          type: string
+          minLength: 1
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        color:
+          type: string
+          minLength: 1
+        vin:
+          type: string
+          minLength: 1
+        year:
+          type: string
+          minLength: 1
+    LicenseApiKeyRequest:
+      type: object
+      properties:
+        api_key:
+          type: string
+          minLength: 1
+      required:
+      - api_key
+    TraceabilityDriver:
+      type: object
+      properties:
+        id:
+          type: integer
+        company_id:
+          type: integer
+        external_id:
+          type: string
+        vendor_type:
+          type: string
+        license_number:
+          type: string
+        resource_type:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        drivers_license_number:
+          type:
+          - string
+          - 'null'
+        is_active:
+          type: boolean
+        vendor_fields:
+          $ref: '#/components/schemas/PolymorphicDriverVendorFields'
+      required:
+      - company_id
+      - drivers_license_number
+      - external_id
+      - id
+      - is_active
+      - license_number
+      - name
+      - resource_type
+      - vendor_fields
+      - vendor_type
+    TraceabilityDelivery:
+      type: object
+      description: 'Serializer for traceability Deliveries. Uses CommonDelivery + vendor-specific data.
+
+
+        Metrc will return one instance and BioTrack will have none as there is no use-case for delivery data at the time.'
+      properties:
+        company_id:
+          type: string
+        license_number:
+          type: string
+        delivery_package_count:
+          type: integer
+        recipient_facility_license_number:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - integer
+          - 'null'
+        reference_id:
+          type: string
+        transfer_external_id:
+          type: string
+        vendor_type:
+          type: string
+        actual_departure_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        actual_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        vendor_fields:
+          $ref: '#/components/schemas/MetrcDelivery'
+      required:
+      - company_id
+      - delivery_package_count
+      - license_number
+      - recipient_facility_license_number
+      - reference_id
+      - transfer_external_id
+      - vendor_fields
+      - vendor_type
+    MetrcTransfer:
+      type: object
+      description: Metrc-specific transfer fields serializer.
       properties:
         resource_type:
           type: string
           readOnly: true
+        metrc_delivery_id:
+          type: integer
+        recipient_facility_name:
+          type:
+          - string
+          - 'null'
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+        shipment_license_type:
+          type:
+          - string
+          - 'null'
+        shipment_transaction_type:
+          type:
+          - string
+          - 'null'
+        received_datetime:
+          type:
+          - string
+          - 'null'
+          format: date-time
       required:
       - resource_type
+    PatchedTraceabilityRefreshProductsPackagesRequest:
+      type: object
+      properties:
+        product_ids:
+          type: array
+          items:
+            type: integer
     TraceabilityCompany:
       type: object
       properties:
@@ -3923,305 +3997,40 @@ components:
       - integration_ids
       - integration_type
       - is_live
-    TraceabilityStrain:
+    BiotrackVehicle:
       type: object
       properties:
-        company_id:
-          type: integer
-        metrc_id:
-          type: integer
-        license_number:
+        resource_type:
           type: string
+          readOnly: true
         name:
           type: string
-        is_active:
-          type: boolean
-        indica_percentage:
+        color:
           type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        sativa_percentage:
+        vin:
           type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        thc_level:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        cbd_level:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        testing_status:
-          type:
-          - string
-          - 'null'
+        year:
+          type: string
+        transaction_id:
+          type: integer
       required:
-      - cbd_level
-      - company_id
-      - indica_percentage
-      - is_active
-      - license_number
-      - metrc_id
+      - color
       - name
-      - sativa_percentage
-      - testing_status
-      - thc_level
-    MetrcPackage:
+      - resource_type
+      - transaction_id
+      - vin
+      - year
+    TransferCompany:
       type: object
-      description: Metrc package fields from the Traceability.metrc_package table.
+      description: Name + license_number combination of a shipper or recipient from the Traceability.transfer table.
       properties:
-        common_package_id:
-          type: integer
-        external_last_modified_at:
-          type: string
-          format: date-time
-        item_id:
-          type: integer
-        item:
-          $ref: '#/components/schemas/TraceabilityItem'
-        has_lab_test_document:
-          type: boolean
-        item_from_facility_license_number:
-          type: string
-        item_from_facility_name:
-          type: string
-        note:
-          type: string
-        packaged_date:
-          type: string
-          format: date
-        production_batch_number:
-          type:
-          - string
-          - 'null'
-        received_date_time:
-          type:
-          - string
-          - 'null'
-        received_from_facility_license_number:
-          type:
-          - string
-          - 'null'
-        received_from_facility_name:
-          type:
-          - string
-          - 'null'
-        received_from_manifest_number:
-          type:
-          - string
-          - 'null'
-        result_cbc:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_cbg:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_cbga:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_cbn:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_delta10:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_delta8:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_thcv:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_thcva:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        result_total_thc:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        source_package_labels:
-          type: array
-          items:
-            type: string
-        source_production_batch_numbers:
-          type:
-          - string
-          - 'null'
-        type:
-          type:
-          - string
-          - 'null'
-        unit_of_measure:
-          type:
-          - string
-          - 'null'
-        use_item_level_lab_result:
-          type: boolean
-          default: false
-      required:
-      - common_package_id
-      - external_last_modified_at
-      - has_lab_test_document
-      - item
-      - item_from_facility_license_number
-      - item_from_facility_name
-      - item_id
-      - note
-      - packaged_date
-      - production_batch_number
-      - received_date_time
-      - received_from_facility_license_number
-      - received_from_facility_name
-      - received_from_manifest_number
-      - result_cbc
-      - result_cbg
-      - result_cbga
-      - result_cbn
-      - result_delta10
-      - result_delta8
-      - result_thcv
-      - result_thcva
-      - result_total_thc
-      - source_package_labels
-      - source_production_batch_numbers
-      - type
-      - unit_of_measure
-    TraceabilityDeliveryPackage:
-      type: object
-      description: Serializer for traceability DeliveryPackages.
-      properties:
-        id:
-          type:
-          - integer
-          - 'null'
-        company_id:
-          type: string
-        license_number:
-          type: string
-        package_label:
-          type: string
-        shipment_package_state:
-          type:
-          - string
-          - 'null'
-        shipped_quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        received_quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,16}(?:\.\d{0,4})?$
-        delivery_reference_id:
-          type: string
-        package_external_id:
-          type: string
-        transfer_external_id:
-          type: string
-        vendor_type:
-          type: string
-        vendor_fields:
-          $ref: '#/components/schemas/PolymorphicDeliveryPackageVendorFields'
-      required:
-      - company_id
-      - delivery_reference_id
-      - license_number
-      - package_external_id
-      - package_label
-      - received_quantity
-      - shipment_package_state
-      - shipped_quantity
-      - transfer_external_id
-      - vendor_fields
-      - vendor_type
-    PolymorphicDriverVendorFields:
-      oneOf:
-      - $ref: '#/components/schemas/MetrcDriver'
-      - $ref: '#/components/schemas/BiotrackDriver'
-      discriminator:
-        propertyName: resource_type
-        mapping:
-          MetrcDriverFields: '#/components/schemas/MetrcDriver'
-          BiotrackDriverFields: '#/components/schemas/BiotrackDriver'
-    PaginatedTransferCompanyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransferCompany'
-    TraceabilityLocation:
-      type: object
-      description: Location object from the Traceability.common_location and Traceability.(vendor)_location tables.
-      properties:
-        id:
-          type: integer
-          description: ID of the location in the Traceability Service
-        company_id:
-          type: integer
-          description: ID of the company in the Traceability Service
-        external_id:
-          type: string
-          description: ID of the location in the vendor's system
-        vendor_type:
-          type: string
-        label:
-          type: string
-        license_number:
-          type: string
         name:
           type: string
-        status:
+        license_number:
           type: string
-        is_excluded:
-          type: boolean
-          default: false
-        vendor_fields:
-          $ref: '#/components/schemas/MetrcLocation'
       required:
-      - company_id
-      - external_id
-      - id
-      - label
       - license_number
       - name
-      - status
-      - vendor_fields
-      - vendor_type
     PaginatedTraceabilityTemplateList:
       type: object
       required:
@@ -4247,20 +4056,179 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TraceabilityTemplate'
-    TraceabilityLicenses:
+    TraceabilityVehicleCreateUpdateInputRequest:
       type: object
       properties:
-        errors:
-          type: array
-          items:
-            type: string
-        licenses:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityLicense'
+        license_plate_number:
+          type: string
+          minLength: 1
+        make:
+          type: string
+          minLength: 1
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        color:
+          type: string
+          minLength: 1
+        vin:
+          type: string
+          minLength: 1
+        year:
+          type: string
+          minLength: 1
       required:
-      - errors
-      - licenses
+      - color
+      - license_plate_number
+      - make
+      - model
+      - name
+      - vin
+      - year
+    MetrcLocation:
+      type: object
+      description: Metrc specific location fields from the Traceability.metrc_location table.
+      properties:
+        common_location_id:
+          type: integer
+          description: ID of the common_location in the Traceability Service
+        metrc_type_id:
+          type: integer
+        type_name:
+          type: string
+        for_harvests:
+          type: boolean
+          default: false
+        for_packages:
+          type: boolean
+          default: false
+        for_plant_batches:
+          type: boolean
+          default: false
+        for_plants:
+          type: boolean
+          default: false
+      required:
+      - common_location_id
+      - metrc_type_id
+      - type_name
+    UnifiedTraceabilityPackageOrders:
+      type: object
+      properties:
+        short_id:
+          type: string
+        order_number:
+          type: string
+        is_post:
+          type: boolean
+      required:
+      - is_post
+      - order_number
+      - short_id
+    PaginatedTraceabilityRefreshRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityRefreshRequest'
+    LightCompany:
+      type: object
+      description: Company serializer contains only basic fields.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+    PaginatedUnifiedTraceabilityPackageOrdersList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedTraceabilityPackageOrders'
+    BiotrackTransfer:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          readOnly: true
+      required:
+      - resource_type
+    PaginatedTraceabilityPackageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityPackage'
     TraceabilityDriverCreateUpdateInputRequest:
       type: object
       properties:
@@ -4293,134 +4261,7 @@ components:
       - hire_date
       - name
       - state_issued
-    PatchedTraceabilityDriverCreateUpdateInputRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-        drivers_license_number:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        birth_date:
-          type: string
-          format: date
-        hire_date:
-          type: string
-          format: date
-        email:
-          type: string
-          minLength: 1
-        state_issued:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-    PaginatedTraceabilityTransferList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Total number of items matching the query
-        max_count:
-          type:
-          - integer
-          - 'null'
-          description: Maximum count limit, if applicable
-        next:
-          type:
-          - string
-          - 'null'
-          description: URL to the next page of results
-        prev:
-          type:
-          - string
-          - 'null'
-          description: URL to the previous page of results
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TraceabilityTransfer'
-      required:
-      - count
-      - results
-    PolymorphicDeliveryPackageVendorFields:
-      oneOf:
-      - $ref: '#/components/schemas/MetrcDeliveryPackage'
-      - $ref: '#/components/schemas/BiotrackDeliveryPackage'
-      discriminator:
-        propertyName: resource_type
-        mapping:
-          MetrcDeliveryPackageFields: '#/components/schemas/MetrcDeliveryPackage'
-          BiotrackDeliveryPackageFields: '#/components/schemas/BiotrackDeliveryPackage'
-    PatchedCompanyUpdateRequest:
-      type: object
-      properties:
-        enable_seed_to_sale:
-          type: boolean
-        enable_hide_attached_packages:
-          type: boolean
-        enable_license_verification:
-          type:
-          - boolean
-          - 'null'
-        enable_search_by_product_id:
-          type: boolean
-        api_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyApiKeyRequest'
-        included_location_ids:
-          type: array
-          items:
-            type: integer
-        excluded_lab_test_states:
-          type: array
-          items:
-            type: string
-            minLength: 1
-    InternalCompanyLicense:
-      type: object
-      description: Serializer for the Company License model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        company_license_id:
-          type: integer
-          readOnly: true
-        number:
-          type: string
-          readOnly: true
-        type:
-          $ref: '#/components/schemas/InternalLicenseTypeResponse'
-        issue_date:
-          type: string
-          format: date
-          readOnly: true
-        expiration_date:
-          type: string
-          format: date
-          readOnly: true
-        public:
-          type: boolean
-          description: Decides whether retailers are allowed to see this license
-        archived:
-          type: boolean
-        document:
-          type: string
-          format: uri
-      required:
-      - company_license_id
-      - document
-      - expiration_date
-      - id
-      - issue_date
-      - number
-      - type
-    BiotrackTransfer:
+    MetrcVehicle:
       type: object
       properties:
         resource_type:
@@ -4428,19 +4269,178 @@ components:
           readOnly: true
       required:
       - resource_type
-    UnifiedTraceabilityPackageOrders:
+    PaginatedTraceabilityDriverList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceabilityDriver'
+    TransferCreateUpdatePackageRequest:
       type: object
       properties:
-        short_id:
+        label:
           type: string
-        order_number:
-          type: string
-        is_post:
-          type: boolean
+          minLength: 1
       required:
-      - is_post
-      - order_number
-      - short_id
+      - label
+    TemplateCreateRequest:
+      type: object
+      properties:
+        estimated_departure_datetime:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        estimated_arrival_datetime:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        shipment_type_name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        ll_order_id:
+          type:
+          - integer
+          - 'null'
+        package_labels:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            minLength: 1
+        packages:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              minLength: 1
+        driver_id:
+          type:
+          - integer
+          - 'null'
+        vehicle_id:
+          type:
+          - integer
+          - 'null'
+        turn_by_turn_directions:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        destination_company_id:
+          type:
+          - integer
+          - 'null'
+        destination_license_number:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+      required:
+      - destination_company_id
+    TransferCreateInputRequest:
+      type: object
+      properties:
+        ll_order_id:
+          type: integer
+        ll_order_number:
+          type: string
+          minLength: 1
+        buyer_external_id:
+          type: string
+          minLength: 1
+        turn_by_turn_directions:
+          type: string
+          minLength: 1
+        estimated_arrival_datetime:
+          type: string
+          minLength: 1
+        estimated_departure_datetime:
+          type: string
+          minLength: 1
+        driver_id:
+          type: integer
+        vehicle_id:
+          type: integer
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferCreateUpdatePackageRequest'
+      required:
+      - buyer_external_id
+      - driver_id
+      - estimated_arrival_datetime
+      - estimated_departure_datetime
+      - ll_order_id
+      - ll_order_number
+      - packages
+      - turn_by_turn_directions
+      - vehicle_id
+    PolymorphicVehicleVendorFields:
+      oneOf:
+      - $ref: '#/components/schemas/MetrcVehicle'
+      - $ref: '#/components/schemas/BiotrackVehicle'
+      discriminator:
+        propertyName: resource_type
+        mapping:
+          MetrcVehicleFields: '#/components/schemas/MetrcVehicle'
+          BiotrackVehicleFields: '#/components/schemas/BiotrackVehicle'
+    PaginatedUnifiedTraceabilityCompanyCustomerList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedTraceabilityCompanyCustomer'
   securitySchemes:
     bearerAuth:
       type: http

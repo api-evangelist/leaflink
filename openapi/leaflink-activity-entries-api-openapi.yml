@@ -371,13 +371,6 @@ paths:
       tags:
       - activity-entries
 components:
-  requestBodies:
-    CompanyActivityEntry:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CompanyActivityEntry'
-      required: true
   schemas:
     CompanyActivityEntry:
       required:
@@ -454,6 +447,13 @@ components:
           type:
           - integer
           - 'null'
+  requestBodies:
+    CompanyActivityEntry:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CompanyActivityEntry'
+      required: true
   securitySchemes:
     Token:
       description: 'You must authenticate your requests by including your API key in each request header as described below.

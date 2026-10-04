@@ -369,6 +369,100 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    LicensesCreateUpdateResponse:
+      type: object
+      description: Serializer for returning a list of created or updated license IDs.
+      properties:
+        license_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - license_ids
+    UnifiedLicenseCreateUpdateRequest:
+      type: object
+      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
+      properties:
+        number:
+          type: string
+        issue_date:
+          type: string
+          format: date
+          readOnly: true
+        expiration_date:
+          type: string
+          format: date
+          readOnly: true
+        type:
+          type: integer
+          readOnly: true
+      required:
+      - expiration_date
+      - issue_date
+      - number
+      - type
+    LicenseTypeInternalResponse:
+      type: object
+      description: Serializer for LicenseType models via the internal API
+      properties:
+        active_for_registration:
+          type: boolean
+          description: This license type is available for current registrations.
+        classification:
+          type: string
+          title: License Classification Type
+          description: License Classification Type
+          maxLength: 100
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description or Notes
+          maxLength: 5000
+        display_type:
+          type: string
+          description: Type for display in the Leaflink frontend
+          maxLength: 100
+        has_medical_line_items:
+          type: boolean
+          description: This license type can sell medical line items.
+        id:
+          type: integer
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        post_2018_CA:
+          type: boolean
+          description: post-2018 CA license.
+        pre_2018_CA:
+          type: boolean
+          description: pre-2018 CA license.
+        require_ein:
+          type: boolean
+          description: EIN is required to register under this license type.
+        state_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        type:
+          type: string
+          description: License Type
+          maxLength: 100
+      required:
+      - classification
+      - created_on
+      - display_type
+      - id
+      - modified
+      - state_id
+      - type
     CompanyLicenseType:
       type: object
       description: Unified serializer for LicenseType models.
@@ -433,121 +527,6 @@ components:
       - modified
       - state_abbr
       - type
-    LicenseTypeInternalResponse:
-      type: object
-      description: Serializer for LicenseType models via the internal API
-      properties:
-        active_for_registration:
-          type: boolean
-          description: This license type is available for current registrations.
-        classification:
-          type: string
-          title: License Classification Type
-          description: License Classification Type
-          maxLength: 100
-        created_on:
-          type: string
-          format: date-time
-          readOnly: true
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description or Notes
-          maxLength: 5000
-        display_type:
-          type: string
-          description: Type for display in the Leaflink frontend
-          maxLength: 100
-        has_medical_line_items:
-          type: boolean
-          description: This license type can sell medical line items.
-        id:
-          type: integer
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        post_2018_CA:
-          type: boolean
-          description: post-2018 CA license.
-        pre_2018_CA:
-          type: boolean
-          description: pre-2018 CA license.
-        require_ein:
-          type: boolean
-          description: EIN is required to register under this license type.
-        state_id:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        type:
-          type: string
-          description: License Type
-          maxLength: 100
-      required:
-      - classification
-      - created_on
-      - display_type
-      - id
-      - modified
-      - state_id
-      - type
-    UnifiedLicenseCreateUpdateRequest:
-      type: object
-      description: Unified serializer for creating or updating licenses supplied by seed-to-sale vendors.
-      properties:
-        number:
-          type: string
-        issue_date:
-          type: string
-          format: date
-          readOnly: true
-        expiration_date:
-          type: string
-          format: date
-          readOnly: true
-        type:
-          type: integer
-          readOnly: true
-      required:
-      - expiration_date
-      - issue_date
-      - number
-      - type
-    LicenseCreateUpdateRequest:
-      type: object
-      properties:
-        number:
-          type: string
-          minLength: 1
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type: string
-          format: date
-        type_id:
-          type: integer
-      required:
-      - end_date
-      - number
-      - start_date
-      - type_id
-    LicensesCreateUpdateResponse:
-      type: object
-      description: Serializer for returning a list of created or updated license IDs.
-      properties:
-        license_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - license_ids
     PaginatedLicenseTypeInternalResponseList:
       type: object
       required:
@@ -573,6 +552,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LicenseTypeInternalResponse'
+    PaginatedCompanyLicenseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyLicense'
     CompanyLicense:
       type: object
       description: Unified serializer for License models.
@@ -602,31 +606,27 @@ components:
       - id
       - number
       - type
-    PaginatedCompanyLicenseList:
+    LicenseCreateUpdateRequest:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        number:
+          type: string
+          minLength: 1
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type: string
+          format: date
+        type_id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanyLicense'
+      required:
+      - end_date
+      - number
+      - start_date
+      - type_id
   securitySchemes:
     bearerAuth:
       type: http

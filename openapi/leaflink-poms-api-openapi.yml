@@ -70,6 +70,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    CartOrderPomsStatusEnum:
+      enum:
+      - approved
+      - rejected
+      - completed
+      - error
+      type: string
     UnifiedPomsOrderApprovalRequestData:
       type: object
       description: Unified POMS Order Approval serializer for request data.
@@ -113,13 +120,6 @@ components:
       required:
       - purchase_order_number
       - status
-    CartOrderPomsStatusEnum:
-      enum:
-      - approved
-      - rejected
-      - completed
-      - error
-      type: string
   securitySchemes:
     bearerAuth:
       type: http

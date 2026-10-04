@@ -381,6 +381,39 @@ paths:
       - buyer-orders
 components:
   schemas:
+    OrderAddress:
+      type: object
+      title: Delivery Address
+      description: Read only delivery address as provided during order creation.
+      readOnly: true
+      properties:
+        address:
+          title: Address
+          type: string
+        unit_number:
+          title: Unit Number
+          type: string
+        city:
+          title: City
+          type: string
+        state:
+          title: State
+          description: State abbreviation
+          type: string
+        zipcode:
+          title: Zip Code
+          type: string
+    BuyerLicense:
+      type: object
+      properties:
+        id:
+          type: string
+        number:
+          type: string
+        type:
+          type: string
+        classification:
+          type: string
     ProductCategoryResponse:
       type: object
       properties:
@@ -408,17 +441,6 @@ components:
         category:
           type: integer
           description: The id for the category this subcategory belongs to.  See `id` in the product-categories response.
-    BuyerLicense:
-      type: object
-      properties:
-        id:
-          type: string
-        number:
-          type: string
-        type:
-          type: string
-        classification:
-          type: string
     BuyerOrderResponse:
       type: object
       properties:
@@ -754,28 +776,6 @@ components:
           state: CO
           unit_number: 1A
           zipcode: '81143'
-    OrderAddress:
-      type: object
-      title: Delivery Address
-      description: Read only delivery address as provided during order creation.
-      readOnly: true
-      properties:
-        address:
-          title: Address
-          type: string
-        unit_number:
-          title: Unit Number
-          type: string
-        city:
-          title: City
-          type: string
-        state:
-          title: State
-          description: State abbreviation
-          type: string
-        zipcode:
-          title: Zip Code
-          type: string
   parameters:
     PaymentTerm:
       name: payment_term

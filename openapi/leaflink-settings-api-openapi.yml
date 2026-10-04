@@ -194,6 +194,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    BuyerNotificationSettingRequest:
+      type: object
+      description: Buyer Notification Setting Serializer for managing email notifications.
+      properties:
+        order_accepted:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_rejected:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_fulfilled:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_shipped:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_complete:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_detail_changed:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        flower_available:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
     User:
       type: object
       properties:
@@ -211,6 +236,31 @@ components:
           type:
           - integer
           - 'null'
+    PaginatedBuyerNotificationSettingList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyerNotificationSetting'
     BuyerNotificationSettingEvent:
       type: object
       properties:
@@ -245,6 +295,15 @@ components:
         flower_available:
           allOf:
           - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
+    BuyerNotificationSettingEventRequest:
+      type: object
+      properties:
+        users:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/UserRequest'
     UserRequest:
       type: object
       properties:
@@ -264,65 +323,6 @@ components:
           type:
           - integer
           - 'null'
-    BuyerNotificationSettingRequest:
-      type: object
-      description: Buyer Notification Setting Serializer for managing email notifications.
-      properties:
-        order_accepted:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_rejected:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_fulfilled:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_shipped:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_complete:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_detail_changed:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        flower_available:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-    PaginatedBuyerNotificationSettingList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuyerNotificationSetting'
-    BuyerNotificationSettingEventRequest:
-      type: object
-      properties:
-        users:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/UserRequest'
   securitySchemes:
     bearerAuth:
       type: http

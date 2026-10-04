@@ -435,27 +435,19 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    BatchCreateRequest:
+    BatchMetaPayload:
       type: object
-      description: Serializer for creating a batch. company_id is injected by the view.
       properties:
-        company_id:
+        active_batch_count:
           type: integer
-        number:
-          type: string
-          minLength: 1
-          maxLength: 100
-        source_type:
-          allOf:
-          - $ref: '#/components/schemas/SourceTypeEnum'
-          default: production_batch
-        product_ids:
-          type: array
-          items:
-            type: integer
+        inactive_batch_count:
+          type: integer
+        low_inventory_batch_count:
+          type: integer
       required:
-      - company_id
-      - number
+      - active_batch_count
+      - inactive_batch_count
+      - low_inventory_batch_count
     PricingStrategyInputRequest:
       type: object
       description: Serializer for pricing strategy input (nested in batch update).
@@ -473,24 +465,6 @@ components:
       required:
       - price
       - product_id
-    BatchMetaPayload:
-      type: object
-      properties:
-        active_batch_count:
-          type: integer
-        inactive_batch_count:
-          type: integer
-        low_inventory_batch_count:
-          type: integer
-      required:
-      - active_batch_count
-      - inactive_batch_count
-      - low_inventory_batch_count
-    SourceTypeEnum:
-      enum:
-      - production_batch
-      - source_label
-      type: string
     Terpene:
       type: object
       description: Serializer for Terpene (nested in Batch)
@@ -504,33 +478,6 @@ components:
       required:
       - name
       - percentage
-    BatchListPaginatedResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedBatch'
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/BatchMetaPayload'
-      required:
-      - count
-      - next
-      - previous
-      - results
     BatchUpdateRequest:
       type: object
       description: Serializer for updating a batch (PUT, full replace). id and company_id are injected by the view.
@@ -590,6 +537,27 @@ components:
       - is_assigned
       - status
       - terpenes
+    BatchCreateRequest:
+      type: object
+      description: Serializer for creating a batch. company_id is injected by the view.
+      properties:
+        company_id:
+          type: integer
+        number:
+          type: string
+          minLength: 1
+          maxLength: 100
+        source_type:
+          allOf:
+          - $ref: '#/components/schemas/SourceTypeEnum'
+          default: production_batch
+        product_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - company_id
+      - number
     UnifiedBatch:
       type: object
       description: Serializer for Batch - read/response only.
@@ -702,6 +670,11 @@ components:
       - source
       - source_type
       - status
+    SourceTypeEnum:
+      enum:
+      - production_batch
+      - source_label
+      type: string
     TerpeneRequest:
       type: object
       description: Serializer for Terpene (nested in Batch)
@@ -716,6 +689,33 @@ components:
       required:
       - name
       - percentage
+    BatchListPaginatedResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedBatch'
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/BatchMetaPayload'
+      required:
+      - count
+      - next
+      - previous
+      - results
   securitySchemes:
     bearerAuth:
       type: http

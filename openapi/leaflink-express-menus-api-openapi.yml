@@ -307,6 +307,25 @@ components:
             type: integer
             title: Public Menu Products
           title: Public Menu Products
+    UnifiedExpressProductMenuRequest:
+      type: object
+      properties:
+        brand:
+          type: integer
+          title: Express Menu Brand
+        price_schedule:
+          type: integer
+          title: Public Menu Price Schedule
+        products:
+          type: array
+          items:
+            type: integer
+            title: Public Menu Products
+          title: Public Menu Products
+      required:
+      - brand
+      - price_schedule
+      - products
     UnifiedExpressProductMenu:
       type: object
       properties:
@@ -343,25 +362,6 @@ components:
       - products
       - products_count
       - slug
-    UnifiedExpressProductMenuRequest:
-      type: object
-      properties:
-        brand:
-          type: integer
-          title: Express Menu Brand
-        price_schedule:
-          type: integer
-          title: Public Menu Price Schedule
-        products:
-          type: array
-          items:
-            type: integer
-            title: Public Menu Products
-          title: Public Menu Products
-      required:
-      - brand
-      - price_schedule
-      - products
   securitySchemes:
     bearerAuth:
       type: http

@@ -275,6 +275,33 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedStrain'
+    Choice:
+      type: object
+      description: Unified Strain Classification serializer.
+      properties:
+        value:
+          type: string
+        display_value:
+          type: string
+      required:
+      - display_value
+      - value
+    StrainClassificationEnum:
+      enum:
+      - sativa
+      - indica
+      - hybrid
+      - 11-cbd
+      - high-cbd
+      - sativa-hybrid
+      - indica-hybrid
+      - 21-cbd
+      - thc
+      - na
+      type: string
+    BlankEnum-unified-upstream-marketplace:
+      enum:
+      - ''
     UnifiedStrain:
       type: object
       description: Unified Strain serializer.
@@ -312,33 +339,6 @@ components:
       - modified_date
       - name
       - strain_classification
-    BlankEnum-unified-upstream-marketplace:
-      enum:
-      - ''
-    StrainClassificationEnum:
-      enum:
-      - sativa
-      - indica
-      - hybrid
-      - 11-cbd
-      - high-cbd
-      - sativa-hybrid
-      - indica-hybrid
-      - 21-cbd
-      - thc
-      - na
-      type: string
-    Choice:
-      type: object
-      description: Unified Strain Classification serializer.
-      properties:
-        value:
-          type: string
-        display_value:
-          type: string
-      required:
-      - display_value
-      - value
   securitySchemes:
     bearerAuth:
       type: http

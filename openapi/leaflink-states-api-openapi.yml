@@ -160,46 +160,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Country:
-      type: object
-      description: "Serializer for Country models via the internal API\n\nNote:\n    The code -> iso_code is alias is intentional"
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        abbr:
-          type: string
-          maxLength: 3
-        iso_code:
-          type: string
-        name:
-          type: string
-          maxLength: 50
-      required:
-      - abbr
-      - id
-      - iso_code
-      - name
-    State-unified-upstream-marketplace:
-      type: object
-      description: Serializer for State models via the internal API
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        abbr:
-          type: string
-          maxLength: 2
-        name:
-          type: string
-          maxLength: 100
-        country:
-          $ref: '#/components/schemas/Country'
-      required:
-      - abbr
-      - country
-      - id
-      - name
     PaginatedStateList:
       type: object
       required:
@@ -225,6 +185,46 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/State-unified-upstream-marketplace'
+    State-unified-upstream-marketplace:
+      type: object
+      description: Serializer for State models via the internal API
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        abbr:
+          type: string
+          maxLength: 2
+        name:
+          type: string
+          maxLength: 100
+        country:
+          $ref: '#/components/schemas/Country'
+      required:
+      - abbr
+      - country
+      - id
+      - name
+    Country:
+      type: object
+      description: "Serializer for Country models via the internal API\n\nNote:\n    The code -> iso_code is alias is intentional"
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        abbr:
+          type: string
+          maxLength: 3
+        iso_code:
+          type: string
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - abbr
+      - id
+      - iso_code
+      - name
   securitySchemes:
     bearerAuth:
       type: http

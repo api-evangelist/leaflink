@@ -342,13 +342,16 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    CollectionDayPreferenceEnum:
+    VerificationStatusEnum:
       enum:
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
+      - active
+      - pending
+      - applied
+      - expired
+      - inactive
+      - not_found
+      - invalid_format
+      - not_verified
       type: string
     LicenseTypeEnum:
       enum:
@@ -361,6 +364,178 @@ components:
       - medical_transporter
       - ancillary_logisitics
       type: string
+    ContractStats:
+      type: object
+      description: Serializer for CompanyStats
+      properties:
+        first_completed_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        most_recent_eligible_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        most_recent_assigned_invoice_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        eligible_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        eligible_invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+        funded_invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+        funded_invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        funded_invoice_percentage:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -1000
+          exclusiveMaximum: 1000
+        invoice_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        invoice_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          exclusiveMinimum: -10000000000
+          exclusiveMaximum: 10000000000
+    DefaultFlexiblePaymentStrategyEnum:
+      enum:
+      - factored
+      - reverse_factored
+      type: string
+    ContractRequest:
+      type: object
+      description: Serializer for Contract
+      properties:
+        docusign_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        seller_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+          minLength: 1
+        custom_reverse_factor_auto_assignment:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - buyer_id
+      - seller_id
+    LegalEntity:
+      type: object
+      description: Serializer for LegalEntity
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+        street_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        zipcode:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+        unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        state:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+        lexis_nexis_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        rep_title:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+      required:
+      - name
     Buyer:
       type: object
       description: Used to serialize buyer data (a buyer is a company where `type` = `buyer`)
@@ -499,11 +674,10 @@ components:
       - marketplace_dashboard_url
       - modified
       - type
-    PreferredPaymentProgramEnum:
+    Type7a8Enum:
       enum:
-      - do_not_process
-      - flexible
-      - direct
+      - seller
+      - buyer
       type: string
     PatchedContractRequest:
       type: object
@@ -538,6 +712,12 @@ components:
           type:
           - boolean
           - 'null'
+    PreferredPaymentProgramEnum:
+      enum:
+      - do_not_process
+      - flexible
+      - direct
+      type: string
     License:
       type: object
       description: Licenses Serializer
@@ -578,220 +758,6 @@ components:
       - id
       - number
       - state
-    ContractRequest:
-      type: object
-      description: Serializer for Contract
-      properties:
-        docusign_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        status:
-          type: string
-          default: active
-        buyer_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        seller_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        default_payment_program:
-          allOf:
-          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
-          default: do_not_process
-        default_flexible_payment_strategy:
-          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
-        custom_direct_payment_term_type:
-          type: string
-          minLength: 1
-        custom_reverse_factor_auto_assignment:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - buyer_id
-      - seller_id
-    DefaultFlexiblePaymentStrategyEnum:
-      enum:
-      - factored
-      - reverse_factored
-      type: string
-    Contract:
-      type: object
-      description: Serializer for Contract
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        docusign_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        status:
-          type: string
-          default: active
-        buyer:
-          allOf:
-          - $ref: '#/components/schemas/Buyer'
-          readOnly: true
-        seller:
-          allOf:
-          - $ref: '#/components/schemas/Seller'
-          readOnly: true
-        contract_stats:
-          allOf:
-          - $ref: '#/components/schemas/ContractStats'
-          readOnly: true
-        created_on:
-          type: string
-          format: date-time
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-        default_payment_program:
-          allOf:
-          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
-          default: do_not_process
-        default_flexible_payment_strategy:
-          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
-        custom_direct_payment_term_type:
-          type: string
-        custom_reverse_factor_auto_assignment:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - buyer
-      - contract_stats
-      - created_on
-      - id
-      - modified
-      - seller
-    DefaultPaymentProgramEnum:
-      enum:
-      - do_not_process
-      - flexible
-      - direct
-      - factoring
-      - b2b
-      type: string
-    BlankEnum:
-      enum:
-      - ''
-    VerificationStatusEnum:
-      enum:
-      - active
-      - pending
-      - applied
-      - expired
-      - inactive
-      - not_found
-      - invalid_format
-      - not_verified
-      type: string
-    PaginatedContractList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contract'
-    LegalEntity:
-      type: object
-      description: Serializer for LegalEntity
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          maxLength: 200
-        street_address:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        city:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        zipcode:
-          type:
-          - string
-          - 'null'
-          maxLength: 20
-        unit_number:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        state:
-          type:
-          - string
-          - 'null'
-        country:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-        lexis_nexis_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        rep_first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        rep_last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-        rep_title:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-        phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-      required:
-      - name
-    Type7a8Enum:
-      enum:
-      - seller
-      - buyer
-      type: string
     StatusEnum:
       enum:
       - not_onboarded
@@ -799,22 +765,6 @@ components:
       - paused
       - offboarded
       type: string
-    State:
-      type: object
-      description: State Serializer
-      properties:
-        id:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
-    NullEnum:
-      enum:
-      - null
     Seller:
       type: object
       description: Used to serialize seller data (a seller is a company where `type` = `seller`)
@@ -965,71 +915,121 @@ components:
       - marketplace_dashboard_url
       - modified
       - type
-    ContractStats:
+    DefaultPaymentProgramEnum:
+      enum:
+      - do_not_process
+      - flexible
+      - direct
+      - factoring
+      - b2b
+      type: string
+    State:
       type: object
-      description: Serializer for CompanyStats
+      description: State Serializer
       properties:
-        first_completed_invoice_date:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
+    NullEnum:
+      enum:
+      - null
+    BlankEnum:
+      enum:
+      - ''
+    CollectionDayPreferenceEnum:
+      enum:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      type: string
+    PaginatedContractList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          format: date-time
-        most_recent_eligible_invoice_date:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
           - string
           - 'null'
-          format: date-time
-        most_recent_assigned_invoice_date:
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contract'
+    Contract:
+      type: object
+      description: Serializer for Contract
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        docusign_id:
           type:
           - string
           - 'null'
+          maxLength: 200
+        status:
+          type: string
+          default: active
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/Buyer'
+          readOnly: true
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        contract_stats:
+          allOf:
+          - $ref: '#/components/schemas/ContractStats'
+          readOnly: true
+        created_on:
+          type: string
           format: date-time
-        eligible_invoice_count:
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        default_payment_program:
+          allOf:
+          - $ref: '#/components/schemas/DefaultPaymentProgramEnum'
+          default: do_not_process
+        default_flexible_payment_strategy:
+          $ref: '#/components/schemas/DefaultFlexiblePaymentStrategyEnum'
+        custom_direct_payment_term_type:
+          type: string
+        custom_reverse_factor_auto_assignment:
           type:
-          - integer
+          - boolean
           - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        eligible_invoice_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -10000000000
-          exclusiveMaximum: 10000000000
-        funded_invoice_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -10000000000
-          exclusiveMaximum: 10000000000
-        funded_invoice_count:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        funded_invoice_percentage:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -1000
-          exclusiveMaximum: 1000
-        invoice_count:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        invoice_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          exclusiveMinimum: -10000000000
-          exclusiveMaximum: 10000000000
+      required:
+      - buyer
+      - contract_stats
+      - created_on
+      - id
+      - modified
+      - seller
   securitySchemes:
     bearerAuth:
       type: http

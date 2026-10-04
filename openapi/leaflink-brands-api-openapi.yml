@@ -170,22 +170,27 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
-    SponsorshipItem:
+    UnifiedRecommendedBrand:
       type: object
-      description: Serializer for ll.ads.data_models.SponsorshipItem
       properties:
         id:
+          type: integer
+          readOnly: true
+        name:
           type: string
-        impression_url:
-          type: string
-          format: uri
-        click_url:
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        sponsorship:
+          $ref: '#/components/schemas/Sponsorship'
+        image:
           type: string
           format: uri
       required:
-      - click_url
       - id
-      - impression_url
+      - image
+      - name
+      - sponsorship
     Sponsorship:
       type: object
       description: Serializer for ll.ads.data_models.Sponsorship
@@ -239,6 +244,22 @@ components:
       - target_resource_name
       - target_url
       - target_user_id
+    SponsorshipItem:
+      type: object
+      description: Serializer for ll.ads.data_models.SponsorshipItem
+      properties:
+        id:
+          type: string
+        impression_url:
+          type: string
+          format: uri
+        click_url:
+          type: string
+          format: uri
+      required:
+      - click_url
+      - id
+      - impression_url
     AdPlacement:
       type: object
       description: Serializer for ll.ads.data_models.AdPlacement
@@ -253,27 +274,6 @@ components:
       - id
       - provider
       - style
-    UnifiedRecommendedBrand:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-        sponsorship:
-          $ref: '#/components/schemas/Sponsorship'
-        image:
-          type: string
-          format: uri
-      required:
-      - id
-      - image
-      - name
-      - sponsorship
     BrandResponse:
       type: object
       properties:
