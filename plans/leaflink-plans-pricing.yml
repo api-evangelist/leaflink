@@ -26,3 +26,23 @@ plans:
 - name: For Retailers
   price_text: signing up to shop is free
   period: none
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: For Brands
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: For Retailers
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
