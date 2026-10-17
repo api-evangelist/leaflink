@@ -710,80 +710,6 @@ components:
       - measurements
       - product_id
       - updated_at
-    ProductFacilityBatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-facility-and-batch.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - facility_id
-      - measurements
-      - product_id
-      - updated_at
-    ProductBatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-and-batch.
-      properties:
-        product_id:
-          type: integer
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
-      - measurements
-      - product_id
-      - updated_at
-    MeasurementData:
-      type: object
-      description: Nested measurement quantities; field names match MeasurementData.
-      properties:
-        on_hand_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        available_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        reserved_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        allocated_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        held_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-        archived_quantity:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
-      required:
-      - allocated_quantity
-      - archived_quantity
-      - available_quantity
-      - held_quantity
-      - on_hand_quantity
-      - reserved_quantity
     FacilityMeasurementResponse:
       type: object
       description: Response shape for GET .../measurements/by-facility.
@@ -797,39 +723,6 @@ components:
           format: date-time
       required:
       - facility_id
-      - measurements
-      - updated_at
-    ProductFacilityMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-product-and-facility.
-      properties:
-        product_id:
-          type: integer
-        facility_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - facility_id
-      - measurements
-      - product_id
-      - updated_at
-    BatchMeasurementResponse:
-      type: object
-      description: Response shape for GET .../measurements/by-batch.
-      properties:
-        batch_id:
-          type: integer
-        measurements:
-          $ref: '#/components/schemas/MeasurementData'
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - batch_id
       - measurements
       - updated_at
     Reservation:
@@ -870,6 +763,80 @@ components:
       - order_id
       - product_id
       - quantity
+    MeasurementData:
+      type: object
+      description: Nested measurement quantities; field names match MeasurementData.
+      properties:
+        on_hand_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        available_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        reserved_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        allocated_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        held_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+        archived_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+      required:
+      - allocated_quantity
+      - archived_quantity
+      - available_quantity
+      - held_quantity
+      - on_hand_quantity
+      - reserved_quantity
+    ProductFacilityBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-facility-and-batch.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - facility_id
+      - measurements
+      - product_id
+      - updated_at
+    ProductFacilityMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-and-facility.
+      properties:
+        product_id:
+          type: integer
+        facility_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - facility_id
+      - measurements
+      - product_id
+      - updated_at
     Allocation:
       type: object
       description: Serializes an ``AllocationItem`` for the API response.
@@ -920,6 +887,39 @@ components:
       - batch_id
       - facility_id
       - measurements
+      - updated_at
+    BatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-batch.
+      properties:
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - updated_at
+    ProductBatchMeasurementResponse:
+      type: object
+      description: Response shape for GET .../measurements/by-product-and-batch.
+      properties:
+        product_id:
+          type: integer
+        batch_id:
+          type: integer
+        measurements:
+          $ref: '#/components/schemas/MeasurementData'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - batch_id
+      - measurements
+      - product_id
       - updated_at
   securitySchemes:
     bearerAuth:

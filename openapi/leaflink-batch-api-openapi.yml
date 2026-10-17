@@ -435,42 +435,18 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    BatchMetaPayload:
-      type: object
-      properties:
-        active_batch_count:
-          type: integer
-        inactive_batch_count:
-          type: integer
-        low_inventory_batch_count:
-          type: integer
-      required:
-      - active_batch_count
-      - inactive_batch_count
-      - low_inventory_batch_count
-    PricingStrategyInputRequest:
-      type: object
-      description: Serializer for pricing strategy input (nested in batch update).
-      properties:
-        product_id:
-          type: integer
-        price:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        customer_group_id:
-          type:
-          - integer
-          - 'null'
-      required:
-      - price
-      - product_id
-    Terpene:
+    SourceTypeEnum:
+      enum:
+      - production_batch
+      - source_label
+      type: string
+    TerpeneRequest:
       type: object
       description: Serializer for Terpene (nested in Batch)
       properties:
         name:
           type: string
+          minLength: 1
         percentage:
           type: string
           format: decimal
@@ -558,6 +534,63 @@ components:
       required:
       - company_id
       - number
+    BatchListPaginatedResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedBatch'
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/BatchMetaPayload'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PricingStrategyInputRequest:
+      type: object
+      description: Serializer for pricing strategy input (nested in batch update).
+      properties:
+        product_id:
+          type: integer
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        customer_group_id:
+          type:
+          - integer
+          - 'null'
+      required:
+      - price
+      - product_id
+    Terpene:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
     UnifiedBatch:
       type: object
       description: Serializer for Batch - read/response only.
@@ -670,52 +703,19 @@ components:
       - source
       - source_type
       - status
-    SourceTypeEnum:
-      enum:
-      - production_batch
-      - source_label
-      type: string
-    TerpeneRequest:
-      type: object
-      description: Serializer for Terpene (nested in Batch)
-      properties:
-        name:
-          type: string
-          minLength: 1
-        percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - name
-      - percentage
-    BatchListPaginatedResponse:
+    BatchMetaPayload:
       type: object
       properties:
-        count:
+        active_batch_count:
           type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedBatch'
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/BatchMetaPayload'
+        inactive_batch_count:
+          type: integer
+        low_inventory_batch_count:
+          type: integer
       required:
-      - count
-      - next
-      - previous
-      - results
+      - active_batch_count
+      - inactive_batch_count
+      - low_inventory_batch_count
   securitySchemes:
     bearerAuth:
       type: http

@@ -207,6 +207,16 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
+    PackageAssignRequest:
+      type: object
+      description: Serializer for bulk assigning packages to products.
+      properties:
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageAssignmentInputRequest'
+      required:
+      - assignments
     PaginatedUnifiedPackageList:
       type: object
       required:
@@ -291,16 +301,6 @@ components:
       - label
       - quantity
       - unit_of_measure
-    PackageAssignRequest:
-      type: object
-      description: Serializer for bulk assigning packages to products.
-      properties:
-        assignments:
-          type: array
-          items:
-            $ref: '#/components/schemas/PackageAssignmentInputRequest'
-      required:
-      - assignments
     PackageAssignResponse:
       type: object
       description: Response serializer for assign packages - returns assigned packages.

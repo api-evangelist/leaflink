@@ -375,6 +375,46 @@ components:
       - message
       - read_by_recipient
       - read_by_sender
+    DiscussionCompany:
+      type: object
+      description: Company serializer
+      properties:
+        id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+        image_url:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+      required:
+      - id
+      - image_url
+    PaginatedMessageList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        current_page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
     Author:
       type: object
       description: Author serializer
@@ -399,46 +439,6 @@ components:
       - id
       - name
       - user
-    PaginatedMessageList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 420
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        current_page:
-          type: integer
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-    DiscussionCompany:
-      type: object
-      description: Company serializer
-      properties:
-        id:
-          type: integer
-        name:
-          type:
-          - string
-          - 'null'
-        image_url:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-      required:
-      - id
-      - image_url
   securitySchemes:
     bearerAuth:
       type: http

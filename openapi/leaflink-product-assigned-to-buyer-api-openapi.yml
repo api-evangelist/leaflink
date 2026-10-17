@@ -161,17 +161,16 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedProductAssignmentGroupItem:
+    UnifiedProductAssignmentBuyerItemInputRequest:
       type: object
-      description: Serializer for Product Assignment Group Item
+      description: Serializer for Product Assignment Buyer Item input (PUT request)
       properties:
-        customer_group_id:
+        buyer_id:
           type: integer
         expiration_date:
           type:
           - string
           - 'null'
-          format: date-time
         call_to_action:
           type:
           - string
@@ -180,6 +179,32 @@ components:
           type:
           - integer
           - 'null'
+      required:
+      - buyer_id
+    UnifiedProductAssignmentWithItems:
+      type: object
+      description: Serializer for Product Assignment with buyer and group items
+      properties:
+        seller_id:
+          type: integer
+        product_id:
+          type: integer
+        is_exclusive:
+          type: boolean
+        assigned_buyers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItem'
+        assigned_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItem'
+      required:
+      - assigned_buyers
+      - assigned_groups
+      - is_exclusive
+      - product_id
+      - seller_id
     UnifiedProductAssignmentUpdateRequest:
       type: object
       description: Serializer for updating product assignments (PUT request)
@@ -222,6 +247,44 @@ components:
           - 'null'
       required:
       - customer_group_id
+    UnifiedProductAssignmentGroupItem:
+      type: object
+      description: Serializer for Product Assignment Group Item
+      properties:
+        customer_group_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+    UnifiedProductAssignmentBuyerItem:
+      type: object
+      description: Serializer for Product Assignment Buyer Item
+      properties:
+        buyer_id:
+          type: integer
+        expiration_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        call_to_action:
+          type:
+          - string
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
     PaginatedUnifiedProductAssignmentWithItemsList:
       type: object
       required:
@@ -247,69 +310,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedProductAssignmentWithItems'
-    UnifiedProductAssignmentWithItems:
-      type: object
-      description: Serializer for Product Assignment with buyer and group items
-      properties:
-        seller_id:
-          type: integer
-        product_id:
-          type: integer
-        is_exclusive:
-          type: boolean
-        assigned_buyers:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductAssignmentBuyerItem'
-        assigned_groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedProductAssignmentGroupItem'
-      required:
-      - assigned_buyers
-      - assigned_groups
-      - is_exclusive
-      - product_id
-      - seller_id
-    UnifiedProductAssignmentBuyerItemInputRequest:
-      type: object
-      description: Serializer for Product Assignment Buyer Item input (PUT request)
-      properties:
-        buyer_id:
-          type: integer
-        expiration_date:
-          type:
-          - string
-          - 'null'
-        call_to_action:
-          type:
-          - string
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
-      required:
-      - buyer_id
-    UnifiedProductAssignmentBuyerItem:
-      type: object
-      description: Serializer for Product Assignment Buyer Item
-      properties:
-        buyer_id:
-          type: integer
-        expiration_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        call_to_action:
-          type:
-          - string
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
   securitySchemes:
     bearerAuth:
       type: http

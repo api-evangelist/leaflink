@@ -892,6 +892,31 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
+    TypeEnum:
+      enum:
+      - percentage_delta
+      - delta
+      - absolute
+      type: string
+    FeaturedBrand:
+      type: object
+      description: Serializer for Product Spotlight brands
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Brand Name
+          description: Name of the Brand
+          maxLength: 400
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+      - name
     FieldEnum:
       enum:
       - maximum_order
@@ -904,33 +929,102 @@ components:
       - show_quantity
       - sale_price
       type: string
-    PaginatedProductAuditLogResponse:
+    ProductBulkUpdateResponseErrorDetail:
       type: object
       properties:
-        count:
-          type: integer
-          description: Total number of entries
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: URL to the next page
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: URL to the previous page
-        results:
+        products:
           type: array
           items:
-            $ref: '#/components/schemas/ProductAuditLogEntry'
+            $ref: '#/components/schemas/ProductBulkUpdateResponseProduct'
+        message:
+          type: string
       required:
-      - count
-      - next
-      - previous
-      - results
+      - message
+      - products
+    AdPlacement:
+      type: object
+      description: Serializer for ll.ads.data_models.AdPlacement
+      properties:
+        id:
+          type: string
+        style:
+          type: string
+        provider:
+          type: string
+      required:
+      - id
+      - provider
+      - style
+    ProductBulkUpdateResponseProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        display_name:
+          type: string
+      required:
+      - display_name
+      - id
+      - name
+    ProductAuditLogEntry:
+      type: object
+      description: Polymorphic serializer for product audit log entries.
+      properties:
+        log_type:
+          type: string
+          readOnly: true
+        created_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        editor:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        source:
+          type: string
+          readOnly: true
+        source_detail:
+          type: string
+          readOnly: true
+        source_data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        changed_fields:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        product:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+        inventory_item:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - changed_fields
+      - created_on
+      - editor
+      - inventory_item
+      - log_type
+      - product
+      - source
+      - source_data
+      - source_detail
     SponsorshipItem:
       type: object
       description: Serializer for ll.ads.data_models.SponsorshipItem
@@ -947,220 +1041,6 @@ components:
       - click_url
       - id
       - impression_url
-    FeaturedProduct:
-      type: object
-      description: Serializer for Product Spotlight featured products
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Product
-          description: Product Name
-          maxLength: 400
-        company_id:
-          type: string
-        company_name:
-          type: string
-        enable_vendor_menu:
-          type: boolean
-        slug:
-          type: string
-          readOnly: true
-          pattern: ^[-a-zA-Z0-9_]+$
-        image:
-          type: string
-          format: uri
-        featured:
-          type: boolean
-          description: This product is featured for it's brand.
-        spotlight_badges:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpotlightBadgesEnum'
-          readOnly: true
-        display_price:
-          type: string
-          readOnly: true
-        display_unit_price:
-          type: string
-          readOnly: true
-        display_price_unit:
-          type: string
-          readOnly: true
-        unit_price:
-          type: string
-          readOnly: true
-        base_unit_price:
-          type: string
-          readOnly: true
-        sale_or_deal_price:
-          type: number
-          format: double
-        discount_percent:
-          oneOf:
-          - type: integer
-          - type: number
-            format: double
-          readOnly: true
-        minimum_order:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
-          description: Minimum Units per Order
-        brand:
-          $ref: '#/components/schemas/FeaturedBrand'
-        sponsorship:
-          allOf:
-          - $ref: '#/components/schemas/Sponsorship'
-          readOnly: true
-        pricing:
-          type: object
-          properties:
-            wholesale_price:
-              type: object
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-            sale_price:
-              type:
-              - object
-              - 'null'
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-            base_price:
-              type: object
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-            retail_price:
-              type: object
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-            effective_price:
-              type: object
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-            base_unit_price:
-              type:
-              - object
-              - 'null'
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-            price_per_unit:
-              type: object
-              properties:
-                amount:
-                  type: number
-                currency:
-                  type: string
-              required:
-              - amount
-              - currency
-          required:
-          - wholesale_price
-          - sale_price
-          - base_price
-          - retail_price
-          - effective_price
-          - base_unit_price
-          - price_per_unit
-          readOnly: true
-        sub_category:
-          allOf:
-          - $ref: '#/components/schemas/SubCategory'
-          readOnly: true
-        sold_in_bulk:
-          type: boolean
-          readOnly: true
-        unit_multiplier:
-          type: integer
-          maximum: 2147483647
-          minimum: 1
-          description: How many individual units are sold when checking out by Unit of Measure
-        display_min_order:
-          oneOf:
-          - type: number
-            format: double
-          - type: integer
-          readOnly: true
-        display_max_order:
-          type:
-          - number
-          - 'null'
-          format: double
-          readOnly: true
-      required:
-      - base_unit_price
-      - brand
-      - company_id
-      - company_name
-      - discount_percent
-      - display_max_order
-      - display_min_order
-      - display_price
-      - display_price_unit
-      - display_unit_price
-      - enable_vendor_menu
-      - id
-      - image
-      - name
-      - pricing
-      - sale_or_deal_price
-      - slug
-      - sold_in_bulk
-      - sponsorship
-      - spotlight_badges
-      - sub_category
-      - unit_price
-    ProductBulkUpdateResponseProduct:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        display_name:
-          type: string
-      required:
-      - display_name
-      - id
-      - name
     Sponsorship:
       type: object
       description: Serializer for ll.ads.data_models.Sponsorship
@@ -1214,37 +1094,6 @@ components:
       - target_resource_name
       - target_url
       - target_user_id
-    TypeEnum:
-      enum:
-      - percentage_delta
-      - delta
-      - absolute
-      type: string
-    SpotlightBadgesEnum:
-      enum:
-      - deal
-      - new
-      - sponsored
-      type: string
-    FeaturedBrand:
-      type: object
-      description: Serializer for Product Spotlight brands
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          title: Brand Name
-          description: Name of the Brand
-          maxLength: 400
-        image:
-          type: string
-          format: uri
-      required:
-      - id
-      - image
-      - name
     UnifiedProductBulkUpdateRequest:
       type: object
       description: Unified Product Bulk Update Serializer
@@ -1265,37 +1114,31 @@ components:
       - selector
       - selector_values
       - update_data
-    AdPlacement:
+    PaginatedRecommendedProductList:
       type: object
-      description: Serializer for ll.ads.data_models.AdPlacement
-      properties:
-        id:
-          type: string
-        style:
-          type: string
-        provider:
-          type: string
       required:
-      - id
-      - provider
-      - style
-    ProductBulkUpdateResponse:
-      type: object
+      - count
+      - results
       properties:
-        updated:
+        count:
           type: integer
-        expected:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/ProductBulkUpdateResponseErrorDetail'
-      required:
-      - errors
-      - expected
-      - updated
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendedProduct'
     SubCategory:
       type: object
       properties:
@@ -1316,6 +1159,59 @@ components:
       - base_unit_of_measure_short_name
       - id
       - name
+    PaginatedFeaturedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeaturedProduct'
+    SelectorEnum:
+      enum:
+      - product_line
+      - product
+      type: string
+    ProductBulkUpdateResponse:
+      type: object
+      properties:
+        updated:
+          type: integer
+        expected:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductBulkUpdateResponseErrorDetail'
+      required:
+      - errors
+      - expected
+      - updated
+    SpotlightBadgesEnum:
+      enum:
+      - deal
+      - new
+      - sponsored
+      type: string
     RecommendedProduct:
       type: object
       description: Serializer for Recommended Products
@@ -1525,36 +1421,6 @@ components:
       - spotlight_badges
       - sub_category
       - unit_price
-    SelectorEnum:
-      enum:
-      - product_line
-      - product
-      type: string
-    PaginatedFeaturedProductList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeaturedProduct'
     UnifiedProductBulkUpdateDataRequest:
       type: object
       description: Unified Product Bulk Update Data Serializer
@@ -1574,100 +1440,234 @@ components:
       - field
       - type
       - value
-    ProductAuditLogEntry:
+    FeaturedProduct:
       type: object
-      description: Polymorphic serializer for product audit log entries.
+      description: Serializer for Product Spotlight featured products
       properties:
-        log_type:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Product
+          description: Product Name
+          maxLength: 400
+        company_id:
+          type: string
+        company_name:
+          type: string
+        enable_vendor_menu:
+          type: boolean
+        slug:
           type: string
           readOnly: true
-        created_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        editor:
-          type:
-          - object
-          - 'null'
-          additionalProperties: {}
-          readOnly: true
-        source:
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
           type: string
-          readOnly: true
-        source_detail:
-          type: string
-          readOnly: true
-        source_data:
-          type:
-          - object
-          - 'null'
-          additionalProperties: {}
-          readOnly: true
-        changed_fields:
-          type: object
-          additionalProperties: {}
-          readOnly: true
-        product:
-          type:
-          - object
-          - 'null'
-          additionalProperties: {}
-          readOnly: true
-        inventory_item:
-          type:
-          - object
-          - 'null'
-          additionalProperties: {}
-          readOnly: true
-      required:
-      - changed_fields
-      - created_on
-      - editor
-      - inventory_item
-      - log_type
-      - product
-      - source
-      - source_data
-      - source_detail
-    ProductBulkUpdateResponseErrorDetail:
-      type: object
-      properties:
-        products:
+          format: uri
+        featured:
+          type: boolean
+          description: This product is featured for it's brand.
+        spotlight_badges:
           type: array
           items:
-            $ref: '#/components/schemas/ProductBulkUpdateResponseProduct'
-        message:
+            $ref: '#/components/schemas/SpotlightBadgesEnum'
+          readOnly: true
+        display_price:
           type: string
+          readOnly: true
+        display_unit_price:
+          type: string
+          readOnly: true
+        display_price_unit:
+          type: string
+          readOnly: true
+        unit_price:
+          type: string
+          readOnly: true
+        base_unit_price:
+          type: string
+          readOnly: true
+        sale_or_deal_price:
+          type: number
+          format: double
+        discount_percent:
+          oneOf:
+          - type: integer
+          - type: number
+            format: double
+          readOnly: true
+        minimum_order:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,32}(?:\.\d{0,6})?$
+          description: Minimum Units per Order
+        brand:
+          $ref: '#/components/schemas/FeaturedBrand'
+        sponsorship:
+          allOf:
+          - $ref: '#/components/schemas/Sponsorship'
+          readOnly: true
+        pricing:
+          type: object
+          properties:
+            wholesale_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            sale_price:
+              type:
+              - object
+              - 'null'
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            base_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            retail_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            effective_price:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            base_unit_price:
+              type:
+              - object
+              - 'null'
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+            price_per_unit:
+              type: object
+              properties:
+                amount:
+                  type: number
+                currency:
+                  type: string
+              required:
+              - amount
+              - currency
+          required:
+          - wholesale_price
+          - sale_price
+          - base_price
+          - retail_price
+          - effective_price
+          - base_unit_price
+          - price_per_unit
+          readOnly: true
+        sub_category:
+          allOf:
+          - $ref: '#/components/schemas/SubCategory'
+          readOnly: true
+        sold_in_bulk:
+          type: boolean
+          readOnly: true
+        unit_multiplier:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+          description: How many individual units are sold when checking out by Unit of Measure
+        display_min_order:
+          oneOf:
+          - type: number
+            format: double
+          - type: integer
+          readOnly: true
+        display_max_order:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
       required:
-      - message
-      - products
-    PaginatedRecommendedProductList:
+      - base_unit_price
+      - brand
+      - company_id
+      - company_name
+      - discount_percent
+      - display_max_order
+      - display_min_order
+      - display_price
+      - display_price_unit
+      - display_unit_price
+      - enable_vendor_menu
+      - id
+      - image
+      - name
+      - pricing
+      - sale_or_deal_price
+      - slug
+      - sold_in_bulk
+      - sponsorship
+      - spotlight_badges
+      - sub_category
+      - unit_price
+    PaginatedProductAuditLogResponse:
       type: object
-      required:
-      - count
-      - results
       properties:
         count:
           type: integer
-          example: 123
+          description: Total number of entries
         next:
           type:
           - string
           - 'null'
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          description: URL to the next page
         previous:
           type:
           - string
           - 'null'
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          description: URL to the previous page
         results:
           type: array
           items:
-            $ref: '#/components/schemas/RecommendedProduct'
+            $ref: '#/components/schemas/ProductAuditLogEntry'
+      required:
+      - count
+      - next
+      - previous
+      - results
   securitySchemes:
     bearerAuth:
       type: http

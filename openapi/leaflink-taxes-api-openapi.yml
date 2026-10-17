@@ -366,6 +366,34 @@ components:
       - tax_rate
       - tax_type
       - unit_type
+    PatchedUpdateInputRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+        tax_type:
+          type:
+          - integer
+          - 'null'
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
+        unit_type:
+          type:
+          - integer
+          - 'null'
+        product_category_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
     UnifiedTaxSchedule:
       type: object
       description: TaxSchedule GET Serializer
@@ -396,34 +424,6 @@ components:
       - tax_rate
       - tax_type
       - unit_type
-    PatchedUpdateInputRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-        tax_type:
-          type:
-          - integer
-          - 'null'
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,5}(?:\.\d{0,5})?$
-        unit_type:
-          type:
-          - integer
-          - 'null'
-        product_category_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: integer
     PaginatedUnifiedTaxScheduleList:
       type: object
       required:

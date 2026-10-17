@@ -363,6 +363,19 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
+    Terpene:
+      type: object
+      description: Serializer for Terpene (nested in Batch)
+      properties:
+        name:
+          type: string
+        percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - name
+      - percentage
     PatchedUnifiedBatchRequest:
       type: object
       description: Serializer for Batch - read/response only.
@@ -435,19 +448,6 @@ components:
           type:
           - integer
           - 'null'
-    Terpene:
-      type: object
-      description: Serializer for Terpene (nested in Batch)
-      properties:
-        name:
-          type: string
-        percentage:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - name
-      - percentage
     UnifiedBatch:
       type: object
       description: Serializer for Batch - read/response only.
@@ -574,42 +574,6 @@ components:
       required:
       - name
       - percentage
-    BatchUpdate:
-      type: object
-      properties:
-        production_batch_number:
-          type: string
-          maxLength: 50
-        batch_date:
-          type: string
-          format: date
-        thc:
-          type: string
-          format: decimal
-        thca:
-          type: string
-          format: decimal
-        total_thc:
-          type: string
-          format: decimal
-        cbd:
-          type: string
-          format: decimal
-        cbda:
-          type: string
-          format: decimal
-        cbg:
-          type: string
-          format: decimal
-        cbn:
-          type: string
-          format: decimal
-        total_cannabinoids:
-          type: string
-          format: decimal
-        cannabinoid_unit:
-          type: string
-          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
     BatchResponse:
       type: object
       properties:
@@ -679,6 +643,42 @@ components:
         is_from_api:
           type: boolean
           description: Describes whether this batch was created via an external system
+    BatchUpdate:
+      type: object
+      properties:
+        production_batch_number:
+          type: string
+          maxLength: 50
+        batch_date:
+          type: string
+          format: date
+        thc:
+          type: string
+          format: decimal
+        thca:
+          type: string
+          format: decimal
+        total_thc:
+          type: string
+          format: decimal
+        cbd:
+          type: string
+          format: decimal
+        cbda:
+          type: string
+          format: decimal
+        cbg:
+          type: string
+          format: decimal
+        cbn:
+          type: string
+          format: decimal
+        total_cannabinoids:
+          type: string
+          format: decimal
+        cannabinoid_unit:
+          type: string
+          description: Unit for the test results. Acceptable values include `%`, `MG/ML`, `MG/G`
     BatchCreate:
       required:
       - owner

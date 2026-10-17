@@ -355,111 +355,6 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    PatchedDistributionZoneUpdateRequest:
-      type: object
-      description: 'Serializer to update a Distribution Zone.
-
-        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
-      properties:
-        id:
-          type: integer
-        owner_id:
-          type: integer
-        is_active:
-          type: boolean
-        name:
-          type: string
-          minLength: 1
-        facilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/FacilityRequest'
-        zip_codes:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZipCodeRequest'
-    FacilityRequest:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          minLength: 1
-          description: Name of the facility
-      required:
-      - id
-      - name
-    ZipCode:
-      type: object
-      description: Serializer for a zip code with optional polygon in a distribution zone.
-      properties:
-        name:
-          type: string
-          description: State or region name (e.g. 'CO')
-        value:
-          type: string
-          description: ZIP code value (e.g. '80939')
-        polygon:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-              format: double
-          description: List of [lat, lng] coordinates defining the polygon boundary
-      required:
-      - name
-      - value
-    PaginatedDistributionZoneList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DistributionZone'
-    ZipCodeRequest:
-      type: object
-      description: Serializer for a zip code with optional polygon in a distribution zone.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: State or region name (e.g. 'CO')
-        value:
-          type: string
-          minLength: 1
-          description: ZIP code value (e.g. '80939')
-        polygon:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-              format: double
-          description: List of [lat, lng] coordinates defining the polygon boundary
-      required:
-      - name
-      - value
     DistributionZoneCreateRequest:
       type: object
       description: 'Serializer to create a Distribution Zone.
@@ -487,6 +382,50 @@ components:
       - name
       - owner_id
       - zip_codes
+    PatchedDistributionZoneUpdateRequest:
+      type: object
+      description: 'Serializer to update a Distribution Zone.
+
+        `DistributionZone` replaces the Django App''s `zones_zone` where `zone_type=facility`.'
+      properties:
+        id:
+          type: integer
+        owner_id:
+          type: integer
+        is_active:
+          type: boolean
+        name:
+          type: string
+          minLength: 1
+        facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacilityRequest'
+        zip_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZipCodeRequest'
+    ZipCode:
+      type: object
+      description: Serializer for a zip code with optional polygon in a distribution zone.
+      properties:
+        name:
+          type: string
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          description: ZIP code value (e.g. '80939')
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
     DistributionZone:
       type: object
       description: 'Serializer for a Distribution Zone.
@@ -512,6 +451,44 @@ components:
       - id
       - is_active
       - name
+    FacilityRequest:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          description: Name of the facility
+      required:
+      - id
+      - name
+    PaginatedDistributionZoneList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DistributionZone'
     Facility:
       type: object
       description: Serializer for a Facility.
@@ -524,6 +501,29 @@ components:
       required:
       - id
       - name
+    ZipCodeRequest:
+      type: object
+      description: Serializer for a zip code with optional polygon in a distribution zone.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: State or region name (e.g. 'CO')
+        value:
+          type: string
+          minLength: 1
+          description: ZIP code value (e.g. '80939')
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: List of [lat, lng] coordinates defining the polygon boundary
+      required:
+      - name
+      - value
   securitySchemes:
     bearerAuth:
       type: http

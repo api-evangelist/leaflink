@@ -194,48 +194,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    BuyerNotificationSettingRequest:
-      type: object
-      description: Buyer Notification Setting Serializer for managing email notifications.
-      properties:
-        order_accepted:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_rejected:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_fulfilled:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_shipped:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_complete:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        order_detail_changed:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-        flower_available:
-          allOf:
-          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
-    User:
+    BuyerNotificationSettingEventRequest:
       type: object
       properties:
-        display_name:
+        users:
           type:
-          - string
+          - array
           - 'null'
-          maxLength: 255
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-        id:
-          type:
-          - integer
-          - 'null'
+          items:
+            $ref: '#/components/schemas/UserRequest'
     PaginatedBuyerNotificationSettingList:
       type: object
       required:
@@ -295,15 +262,31 @@ components:
         flower_available:
           allOf:
           - $ref: '#/components/schemas/BuyerNotificationSettingEvent'
-    BuyerNotificationSettingEventRequest:
+    BuyerNotificationSettingRequest:
       type: object
+      description: Buyer Notification Setting Serializer for managing email notifications.
       properties:
-        users:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/UserRequest'
+        order_accepted:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_rejected:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_fulfilled:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_shipped:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_complete:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        order_detail_changed:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
+        flower_available:
+          allOf:
+          - $ref: '#/components/schemas/BuyerNotificationSettingEventRequest'
     UserRequest:
       type: object
       properties:
@@ -319,6 +302,23 @@ components:
           - 'null'
           format: email
           minLength: 1
+        id:
+          type:
+          - integer
+          - 'null'
+    User:
+      type: object
+      properties:
+        display_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
         id:
           type:
           - integer

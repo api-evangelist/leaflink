@@ -428,32 +428,6 @@ paths:
     - url: https://app.leaflink.com/api/v2
 components:
   schemas:
-    FacilityCreateRequest:
-      type: object
-      description: Serializer for creating a facility.
-      properties:
-        company_id:
-          type: integer
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        description:
-          type: string
-          default: ''
-        address:
-          allOf:
-          - $ref: '#/components/schemas/AddressInputRequest'
-        external_id:
-          type:
-          - integer
-          - 'null'
-        is_archived:
-          type: boolean
-          default: false
-      required:
-      - company_id
-      - name
     PaginatedFacilityList:
       type: object
       required:
@@ -479,18 +453,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Facility'
-    Facility:
-      type: object
-      description: Serializer for a Facility.
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Name of the facility
-      required:
-      - id
-      - name
     AddressInputRequest:
       type: object
       description: Nested serializer for the address payload required on facility creation.
@@ -554,6 +516,44 @@ components:
           type:
           - boolean
           - 'null'
+    FacilityCreateRequest:
+      type: object
+      description: Serializer for creating a facility.
+      properties:
+        company_id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          default: ''
+        address:
+          allOf:
+          - $ref: '#/components/schemas/AddressInputRequest'
+        external_id:
+          type:
+          - integer
+          - 'null'
+        is_archived:
+          type: boolean
+          default: false
+      required:
+      - company_id
+      - name
+    Facility:
+      type: object
+      description: Serializer for a Facility.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Name of the facility
+      required:
+      - id
+      - name
     Facility_2:
       type: object
       properties:

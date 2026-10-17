@@ -532,35 +532,6 @@ components:
       - id
       - modified_date
       - name
-    UnifiedCustomerGroupStatusEnum:
-      enum:
-      - active
-      - archived
-      type: string
-    PatchedUnifiedCustomerGroupRequest:
-      type: object
-      description: Serializer for Customer Group.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Name of the Customer Group.
-          maxLength: 256
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the Customer Group.
-          maxLength: 512
-        customers:
-          type: array
-          items:
-            type: integer
-          description: List of customer IDs associated with this customer group
-        status:
-          allOf:
-          - $ref: '#/components/schemas/UnifiedCustomerGroupStatusEnum'
-          description: Overall status of the company customer group.
     PaginatedUnifiedCustomerGroupList:
       type: object
       required:
@@ -612,6 +583,35 @@ components:
           description: Overall status of the company customer group.
       required:
       - name
+    UnifiedCustomerGroupStatusEnum:
+      enum:
+      - active
+      - archived
+      type: string
+    PatchedUnifiedCustomerGroupRequest:
+      type: object
+      description: Serializer for Customer Group.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of the Customer Group.
+          maxLength: 256
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the Customer Group.
+          maxLength: 512
+        customers:
+          type: array
+          items:
+            type: integer
+          description: List of customer IDs associated with this customer group
+        status:
+          allOf:
+          - $ref: '#/components/schemas/UnifiedCustomerGroupStatusEnum'
+          description: Overall status of the company customer group.
   securitySchemes:
     bearerAuth:
       type: http

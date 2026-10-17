@@ -264,6 +264,75 @@ components:
       required:
       - id
       - name
+    ProductPromotionRequest:
+      type: object
+      properties:
+        moloco_id:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/PromotionStatusEnum'
+        period:
+          allOf:
+          - $ref: '#/components/schemas/PeriodEnum'
+          default: Weekly
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        max_cpc:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        max_budget:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        budget_per_period:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        approver_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          minLength: 1
+        brand_id:
+          type: integer
+          writeOnly: true
+        company_id:
+          type: integer
+          writeOnly: true
+        billing_company_id:
+          type: integer
+          writeOnly: true
+        products:
+          type: array
+          items:
+            type: integer
+      required:
+      - brand_id
+      - budget_per_period
+      - company_id
+      - max_budget
+      - max_cpc
+      - products
+      - start_date
+      - status
     UnifiedCompany:
       type: object
       properties:
@@ -277,6 +346,97 @@ components:
       required:
       - id
       - name
+    PeriodEnum:
+      enum:
+      - Daily
+      - Weekly
+      - Monthly
+      type: string
+    PaginatedProductPromotionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPromotion'
+    PatchedProductPromotionRequest:
+      type: object
+      properties:
+        moloco_id:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/PromotionStatusEnum'
+        period:
+          allOf:
+          - $ref: '#/components/schemas/PeriodEnum'
+          default: Weekly
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        max_cpc:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        max_budget:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        budget_per_period:
+          type: object
+          properties:
+            amount:
+              type: number
+            currency:
+              type: string
+        approver_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          minLength: 1
+        brand_id:
+          type: integer
+          writeOnly: true
+        company_id:
+          type: integer
+          writeOnly: true
+        billing_company_id:
+          type: integer
+          writeOnly: true
+        products:
+          type: array
+          items:
+            type: integer
     ProductPromotion:
       type: object
       properties:
@@ -352,172 +512,12 @@ components:
       - products
       - start_date
       - status
-    ProductPromotionRequest:
-      type: object
-      properties:
-        moloco_id:
-          type: string
-          minLength: 1
-        status:
-          $ref: '#/components/schemas/PromotionStatusEnum'
-        period:
-          allOf:
-          - $ref: '#/components/schemas/PeriodEnum'
-          default: Weekly
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        max_cpc:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        max_budget:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        budget_per_period:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        approver_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          minLength: 1
-        brand_id:
-          type: integer
-          writeOnly: true
-        company_id:
-          type: integer
-          writeOnly: true
-        billing_company_id:
-          type: integer
-          writeOnly: true
-        products:
-          type: array
-          items:
-            type: integer
-      required:
-      - brand_id
-      - budget_per_period
-      - company_id
-      - max_budget
-      - max_cpc
-      - products
-      - start_date
-      - status
     PromotionStatusEnum:
       enum:
       - Pending
       - Approved
       - Completed
       type: string
-    PaginatedProductPromotionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPromotion'
-    PeriodEnum:
-      enum:
-      - Daily
-      - Weekly
-      - Monthly
-      type: string
-    PatchedProductPromotionRequest:
-      type: object
-      properties:
-        moloco_id:
-          type: string
-          minLength: 1
-        status:
-          $ref: '#/components/schemas/PromotionStatusEnum'
-        period:
-          allOf:
-          - $ref: '#/components/schemas/PeriodEnum'
-          default: Weekly
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        max_cpc:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        max_budget:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        budget_per_period:
-          type: object
-          properties:
-            amount:
-              type: number
-            currency:
-              type: string
-        approver_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          minLength: 1
-        brand_id:
-          type: integer
-          writeOnly: true
-        company_id:
-          type: integer
-          writeOnly: true
-        billing_company_id:
-          type: integer
-          writeOnly: true
-        products:
-          type: array
-          items:
-            type: integer
   securitySchemes:
     bearerAuth:
       type: http

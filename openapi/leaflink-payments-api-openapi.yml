@@ -205,45 +205,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UnifiedOrderPaymentRequest:
-      type: object
-      description: Serializer for handling order payment data and validations.
-      properties:
-        order:
-          type: string
-          format: uuid
-        payment_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the was submitted.
-        total:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          description: Total Paid
-        payment_type:
-          allOf:
-          - $ref: '#/components/schemas/PaymentTypeEnum'
-          description: How this payment was submitted.
-      required:
-      - order
-      - total
-    OrderPaymentUnifiedCustomer:
-      type: object
-      description: Serializer for company data focusing on name and ID.
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
-      required:
-      - id
-      - name
     PaginatedUnifiedOrderPaymentList:
       type: object
       required:
@@ -283,6 +244,20 @@ components:
       - leaflink_flexible_payment
       - leaflink_financial
       type: string
+    OrderPaymentUnifiedCustomer:
+      type: object
+      description: Serializer for company data focusing on name and ID.
+      properties:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - name
     UnifiedOrderPayment:
       type: object
       description: Serializer for handling order payment data and validations.
@@ -331,6 +306,31 @@ components:
       - customer
       - id
       - modified_date
+      - order
+      - total
+    UnifiedOrderPaymentRequest:
+      type: object
+      description: Serializer for handling order payment data and validations.
+      properties:
+        order:
+          type: string
+          format: uuid
+        payment_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the was submitted.
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Total Paid
+        payment_type:
+          allOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          description: How this payment was submitted.
+      required:
       - order
       - total
   securitySchemes:

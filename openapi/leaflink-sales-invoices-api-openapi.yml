@@ -157,6 +157,19 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UnifiedInvoiceCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of Company (Note this is not the same as Brand)
+          maxLength: 400
+        id:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - name
     UnifiedOrderedProductAsInvoiceLineItem:
       type: object
       properties:
@@ -178,19 +191,6 @@ components:
       - description
       - name
       - quantity
-    UnifiedInvoiceCustomer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of Company (Note this is not the same as Brand)
-          maxLength: 400
-        id:
-          type: integer
-          readOnly: true
-      required:
-      - id
-      - name
     PaginatedUnifiedOrderAsSalesInvoiceList:
       type: object
       required:

@@ -485,15 +485,114 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    MessageRequest:
+    UnifiedChatsRequest:
       type: object
-      description: Discussion Message serializer
+      description: Unified Chats serializer
       properties:
-        message:
+        topic:
           type: string
           minLength: 1
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        first_message:
+          allOf:
+          - $ref: '#/components/schemas/MessageRequest'
+          writeOnly: true
+        product_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
       required:
-      - message
+      - first_message
+      - recipient_company
+      - sender_company
+      - topic
+    ChatStatusEnum:
+      enum:
+      - in_progress
+      - completed
+      type: string
+    DiscussionCompanyRequest:
+      type: object
+      description: Company serializer
+      properties:
+        id:
+          type: integer
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+      required:
+      - id
+    PaginatedUnifiedChatsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 420
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        current_page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedChats'
+    PatchedUnifiedChatsRequest:
+      type: object
+      description: Unified Chats serializer
+      properties:
+        topic:
+          type: string
+          minLength: 1
+        sender_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        recipient_company:
+          $ref: '#/components/schemas/DiscussionCompanyRequest'
+        creator:
+          type:
+          - integer
+          - 'null'
+          description: Discussion Creator
+        first_message:
+          allOf:
+          - $ref: '#/components/schemas/MessageRequest'
+          writeOnly: true
+        product_id:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+    PatchedBulkChatUpdateRequest:
+      type: object
+      description: Chat status serializer
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ChatStatusEnum'
+          writeOnly: true
+        chats:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
     UnifiedChats:
       type: object
       description: Unified Chats serializer
@@ -527,50 +626,16 @@ components:
       - sender_company
       - status
       - topic
-    PatchedBulkChatUpdateRequest:
+    MessageRequest:
       type: object
-      description: Chat status serializer
+      description: Discussion Message serializer
       properties:
-        status:
-          allOf:
-          - $ref: '#/components/schemas/ChatStatusEnum'
-          writeOnly: true
-        chats:
-          type: array
-          items:
-            type: integer
-          writeOnly: true
-    UnifiedChatsRequest:
-      type: object
-      description: Unified Chats serializer
-      properties:
-        topic:
+        message:
           type: string
           minLength: 1
-        sender_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        recipient_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        creator:
-          type:
-          - integer
-          - 'null'
-          description: Discussion Creator
-        first_message:
-          allOf:
-          - $ref: '#/components/schemas/MessageRequest'
-          writeOnly: true
-        product_id:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
       required:
-      - first_message
-      - recipient_company
-      - sender_company
-      - topic
-    DiscussionCompanyRequest:
+      - message
+    DiscussionCompany:
       type: object
       description: Company serializer
       properties:
@@ -580,14 +645,14 @@ components:
           type:
           - string
           - 'null'
-          minLength: 1
+        image_url:
+          type:
+          - string
+          - 'null'
+          readOnly: true
       required:
       - id
-    ChatStatusEnum:
-      enum:
-      - in_progress
-      - completed
-      type: string
+      - image_url
     Message:
       type: object
       description: Discussion Message serializer
@@ -620,6 +685,14 @@ components:
       - message
       - read_by_recipient
       - read_by_sender
+    PatchedMessageReadRequest:
+      type: object
+      description: Discussion Message read serializer
+      properties:
+        read_by_sender_company:
+          type: boolean
+        read_by_recipient_company:
+          type: boolean
     Author:
       type: object
       description: Author serializer
@@ -644,79 +717,6 @@ components:
       - id
       - name
       - user
-    PaginatedUnifiedChatsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 420
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        current_page:
-          type: integer
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedChats'
-    PatchedMessageReadRequest:
-      type: object
-      description: Discussion Message read serializer
-      properties:
-        read_by_sender_company:
-          type: boolean
-        read_by_recipient_company:
-          type: boolean
-    DiscussionCompany:
-      type: object
-      description: Company serializer
-      properties:
-        id:
-          type: integer
-        name:
-          type:
-          - string
-          - 'null'
-        image_url:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-      required:
-      - id
-      - image_url
-    PatchedUnifiedChatsRequest:
-      type: object
-      description: Unified Chats serializer
-      properties:
-        topic:
-          type: string
-          minLength: 1
-        sender_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        recipient_company:
-          $ref: '#/components/schemas/DiscussionCompanyRequest'
-        creator:
-          type:
-          - integer
-          - 'null'
-          description: Discussion Creator
-        first_message:
-          allOf:
-          - $ref: '#/components/schemas/MessageRequest'
-          writeOnly: true
-        product_id:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
   securitySchemes:
     bearerAuth:
       type: http

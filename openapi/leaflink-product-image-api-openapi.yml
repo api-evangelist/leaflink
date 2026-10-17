@@ -392,10 +392,49 @@ paths:
               description: The time remaining before the rejected request can be tried again, specified in seconds.
 components:
   schemas:
-    UnifiedCloneProductImageRequest:
+    UnifiedProductBulkCreate:
       type: object
-      description: Unified Product Image serializer for cloning product images.
+      description: Unified ProductImage bulk create serializer.
       properties:
+        product_id:
+          type: integer
+          description: Product ID
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          minItems: 1
+        positions:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+      required:
+      - images
+      - positions
+      - product_id
+    UnifiedProductImage:
+      type: object
+      description: Unified ProductImage serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time the resource was created
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time of the last edit
+        image:
+          type: string
+          format: uri
+          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
         product:
           type: integer
           description: The Product this image is attached to
@@ -435,6 +474,10 @@ components:
           title: Crop Box Height
           description: The height of the image crop box
       required:
+      - created_date
+      - id
+      - image
+      - modified_date
       - position
       - product
     UnifiedProductImageRequest:
@@ -512,49 +555,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnifiedProductImage'
-    UnifiedProductBulkCreateRequest:
+    UnifiedCloneProductImageRequest:
       type: object
-      description: Unified ProductImage bulk create serializer.
+      description: Unified Product Image serializer for cloning product images.
       properties:
-        product_id:
-          type: integer
-          description: Product ID
-        images:
-          type: array
-          items:
-            type: string
-            format: binary
-          minItems: 1
-        positions:
-          type: array
-          items:
-            type: integer
-          minItems: 1
-      required:
-      - images
-      - positions
-      - product_id
-    UnifiedProductImage:
-      type: object
-      description: Unified ProductImage serializer.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        created_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time the resource was created
-        modified_date:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Date and time of the last edit
-        image:
-          type: string
-          format: uri
-          description: The uploaded file, sent via multipart form data. Retrieved as a url link.
         product:
           type: integer
           description: The Product this image is attached to
@@ -594,13 +598,9 @@ components:
           title: Crop Box Height
           description: The height of the image crop box
       required:
-      - created_date
-      - id
-      - image
-      - modified_date
       - position
       - product
-    UnifiedProductBulkCreate:
+    UnifiedProductBulkCreateRequest:
       type: object
       description: Unified ProductImage bulk create serializer.
       properties:
@@ -611,7 +611,7 @@ components:
           type: array
           items:
             type: string
-            format: uri
+            format: binary
           minItems: 1
         positions:
           type: array

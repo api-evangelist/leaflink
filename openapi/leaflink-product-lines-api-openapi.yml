@@ -150,18 +150,6 @@ paths:
       - Product Lines
 components:
   schemas:
-    ProductLineUpdate:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        brand:
-          type: integer
-          description: Id for the brand. See `id` in the brands response.
-        menu_position:
-          description: Position of the product line on the menu.
-          type: integer
     ProductLineResponse:
       type: object
       properties:
@@ -180,6 +168,18 @@ components:
       required:
       - name
       - brand
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        brand:
+          type: integer
+          description: Id for the brand. See `id` in the brands response.
+        menu_position:
+          description: Position of the product line on the menu.
+          type: integer
+    ProductLineUpdate:
       type: object
       properties:
         name:

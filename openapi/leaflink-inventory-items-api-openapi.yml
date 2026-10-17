@@ -167,27 +167,12 @@ paths:
       - Inventory Items
 components:
   schemas:
-    InventoryItemCreate:
-      required:
-      - batch
-      - is_archived
-      - facility
-      - product
-      - quantity
+    InventoryItemUpdate:
       type: object
       properties:
-        batch:
-          type: integer
-          description: ID of the associated batch.
         is_archived:
           type: boolean
-          description: Indicated whether the inventory item is archived.
-        facility:
-          type: integer
-          description: ID of the associated facility.
-        product:
-          type: integer
-          description: ID of the associated product.
+          description: Indicated whether the inventory item is active.
         quantity:
           type: number
           format: decimal
@@ -229,12 +214,27 @@ components:
         is_archived:
           type: boolean
           description: Indicated whether the inventory item is active.
-    InventoryItemUpdate:
+    InventoryItemCreate:
+      required:
+      - batch
+      - is_archived
+      - facility
+      - product
+      - quantity
       type: object
       properties:
+        batch:
+          type: integer
+          description: ID of the associated batch.
         is_archived:
           type: boolean
-          description: Indicated whether the inventory item is active.
+          description: Indicated whether the inventory item is archived.
+        facility:
+          type: integer
+          description: ID of the associated facility.
+        product:
+          type: integer
+          description: ID of the associated product.
         quantity:
           type: number
           format: decimal
