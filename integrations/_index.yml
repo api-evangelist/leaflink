@@ -100,3 +100,61 @@
       level: Full Validation
   status: not-a-workflow
   arazzo: null
+- slug: leaflink-npm-registry
+  label: npm registry
+  partner: npm
+  partner_name: npm registry
+  category: official SDK (JavaScript/TypeScript)
+  type: register
+  channel: package-registry
+  evidence: https://www.npmjs.com/package/@leaflink/snitch
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@leaflink/snitch'
+      version: 2.0.2
+      released: '2026-08-27'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@leaflink/snitch
+      repo_leg: github-org:leaflink
+      publisher_leg: email:leaflink.com
+      matched_by: domain
+    - name: '@leaflink/stash'
+      version: 53.4.10
+      released: null
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@leaflink/stash
+      repo_leg: domain:leaflink.com
+      publisher_leg: email:leaflink.com
+      matched_by: domain
+    - name: '@leaflink/stash-vue'
+      version: 60.6.38
+      released: '2026-10-15'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@leaflink/stash-vue
+      repo_leg: domain:leaflink.com
+      publisher_leg: email:leaflink.com
+      matched_by: domain
+    - name: '@leaflink/vue-notification-feed'
+      version: 1.27.1
+      released: '2026-01-15'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@leaflink/vue-notification-feed
+      repo_leg: github-org:leaflink
+      publisher_leg: email:leaflink.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
